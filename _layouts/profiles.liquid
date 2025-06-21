@@ -8,13 +8,13 @@ layout: page
         <h2>{{ group.title }}</h2>
         <hr>
         <div class="profile-group container ">
-        <div class=" row g-2">
+        <div class="row mx-n4">
           {% for profile in group.members %}
-            <div class="team col-md-6 border">
+            <div class="team col-md-6 p-2">
             <div class="container">
-              <div class=" row gx-2  {% if profile.align == 'right' %}flex-row-reverse{% endif %}">
+              <div class="row {% if profile.align == 'right' %}flex-row-reverse{% endif %}">
                 {% if profile.image %}
-                  <div class="col-4 p-0">
+                  <div class="col-4 p-1">
                     {% assign profile_image_path = profile.image | prepend: 'assets/img/team/' %}
                     {% if profile.image_circular %}
                       {% assign profile_image_class = 'img-fluid z-depth-1 rounded-circle' %}
@@ -28,7 +28,7 @@ layout: page
                     {% endif %}
                   </div>
                 {% endif %}
-                <div class="col-8 p-0">
+                <div class="col-8 px-2">
                   {% if profile.content %}
                     {{ profile.content | markdownify }}
                   {% else %}

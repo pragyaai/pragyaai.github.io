@@ -2,7 +2,7 @@
 layout: profiles
 permalink: /people/
 title: People
-description: members of the lab or group
+description: members of the lab
 nav: true
 nav_order: 3
 
@@ -11,7 +11,7 @@ groups:
     members:
       - name: Amitava Das
         image: amitava.png
-        align: right
+        align: left
         content: |
           **Amitava Das**  
           *Assistant Professor, started May 2025*  
@@ -36,7 +36,7 @@ groups:
 
       - name: Vasu Sharma
         image: vasu.jpeg
-        align: right
+        align: left
         content: |
           **Vasu Sharma**  
           *In the Allan Lab 2015 - 2018, now Project manager at the FMD*  
@@ -70,7 +70,7 @@ groups:
         image: jyoti.jpeg
         align: left
         content: |
-          **Rahul Raja**  
+          **Jyoti Patel**  
           *In the Allan Lab December 2015 to February 2020, now design engineer at ASML*  
           Role: PhD Student, shared with the [Groeblacher lab](http://www.groeblacherlab.tudelft.nl) at TU Delft under a NanoFront grant
 
