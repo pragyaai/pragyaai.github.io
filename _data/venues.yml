@@ -1,9 +1,15 @@
-"AJP":
-  url: https://aapt.scitation.org/journal/ajp
+"IEEE":
+  url: ieee.org
   color: "#00369f"
 
-"PhysRev":
-  url: https://journals.aps.org/
-
-"Vision":
+"ScienceDirect":
   color: "#009f36"
+
+"TrustNLP":
+  color: "#002855"
+
+"ACL":
+  color: "#990000"
+
+"NLPAI":
+  color: "#5c2d91"
