@@ -3,6 +3,7 @@
 # -----------------------------------------------------------------------------
 
 title: प्रragya Lab # the website title (if blank, full name will be used instead)
+logo: pragya.png # the logo image (if blank, the title will be used instead)
 welcome_note: >
   Welcome to प्रragya Lab at BITS Goa, India
 # first_name: You
@@ -259,8 +260,8 @@ display_categories: ["external-services"] # these categories will be displayed o
 # -----------------------------------------------------------------------------
 
 scholar:
-  last_name: [Einstein]
-  first_name: [Albert, A.]
+  last_name: [Das]
+  first_name: [Amitava]
 
   style: apa
   locale: en

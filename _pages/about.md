@@ -2,14 +2,14 @@
 layout: about
 title: Home
 permalink: /
-subtitle: 
+subtitle:
 
 profile:
   align: left
-  image: pragya.png
+  image: vision.png
   image_circular: false # crops the image to make it circular
-  more_info: >
-    <p>News: Openings at प्रragya Lab <a href="#">Join us</a>!</p>
+  # more_info: >
+  #   <p>News: Openings at प्रragya Lab <a href="#">Join us</a>!</p>
 
 selected_papers: true # includes a list of papers marked as "selected={true}"
 social: true # includes social icons at the bottom of the page
