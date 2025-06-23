@@ -1,8 +1,9 @@
 "IEEE":
-  url: ieee.org
+  url: https://ieee.org
   color: "#00369f"
 
 "ScienceDirect":
+  url: https://www.sciencedirect.com
   color: "#009f36"
 
 "TrustNLP":
