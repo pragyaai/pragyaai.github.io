@@ -13,12 +13,12 @@ groups:
         image: amitava.png
         align: left
         content: |
-          **Amitava Das**  
-          *Assistant Professor, started May 2025*  
-          - Master ETHZ, Diplomarbeit with [J Osterwalder](http://www.physik.uzh.ch/groups/osterwalder/)  
-          - PhD St Andrews (while at Cornell University) with [Felix Baumberger](http://dpmc.unige.ch/gr_baumberger/index.html) and [JC Davis](http://davisgroup.lassp.cornell.edu/)  
-          - Postdoc Cornell  
-          - ETH fellow at ETHZ with [Andreas Wallraff](https://qudev.phys.ethz.ch)  
+          **Amitava Das**
+          *Professor, Computer Science, BITS Pilani Goa*
+          - Master ETHZ, Diplomarbeit with [J Osterwalder](http://www.physik.uzh.ch/groups/osterwalder/)
+          - PhD St Andrews (while at Cornell University) with [Felix Baumberger](http://dpmc.unige.ch/gr_baumberger/index.html) and [JC Davis](http://davisgroup.lassp.cornell.edu/)
+          - Postdoc Cornell
+          - ETH fellow at ETHZ with [Andreas Wallraff](https://qudev.phys.ethz.ch)
           - [Bryan R. Coles Prize 2017](https://www.universiteitleiden.nl/en/news/2017/07/milan-allan-wins-bryan-r.-coles-prize)
         # more_info: >
         #   <p>Assistant Professor</p>
