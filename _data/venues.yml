@@ -1,16 +1,30 @@
+"Preprint":
+  color: "#6c757d" # Medium Gray
+
 "IEEE":
   url: https://ieee.org
-  color: "#00369f"
+  color: "#00369f" # Blue
 
 "ScienceDirect":
   url: https://www.sciencedirect.com
-  color: "#009f36"
+  color: "#009f36" # Green
 
 "TrustNLP":
-  color: "#002855"
+  color: "#002855" # Dark Blue
 
 "ACL":
+  color: "#990000" # Red
+"ACL 2025":
+  color: "#990000"
+"ACL 2023":
   color: "#990000"
 
 "NLPAI":
-  color: "#5c2d91"
+  color: "#5c2d91" # Purple
+
+"EMNLP":
+  color: "#DC143C" # Crimson
+"EMNLP 2024":
+  color: "#DC143C"
+"EMNLP 2023":
+  color: "#DC143C"
