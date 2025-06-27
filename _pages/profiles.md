@@ -30,49 +30,64 @@ groups:
         image: aman.jpeg
         align: left
         content: |
-          **Aman Chadha**  
-          *In the Allan Lab 2015 - 2018, now Project manager at the FMD*  
-          Role: Fine mechanical engineer associated with the FMD working in our group
+          **Aman Chadha**
+          GenAI Leadership @ AWS • Stanford AI • Ex-, Amazon Alexa, Nvidia, Qualcomm • EB-1 "Einstein Visa" Recipient/Mentor • EMNLP 2023 Outstanding Paper Award
 
       - name: Vasu Sharma
         image: vasu.jpeg
         align: left
         content: |
           **Vasu Sharma**  
-          *In the Allan Lab 2015 - 2018, now Project manager at the FMD*  
-          Role: Fine mechanical engineer associated with the FMD working in our group
+          Applied Research Scientist Lead at Facebook AI Research | 6k+ citations | ex-Citadel | CMU | IIT Kanpur | Startup advisor & mentor | Angel Investor | EB1A green card recipient
 
       - name: Vinija Jain
         image: vinija.jpeg
         align: left
         content: |
           **Vinija Jain**  
-          *In the Allan Lab Jan 2015 to June 2019, now R&D scientist at Nearfield Instruments*  
-          Role: PhD student
+          AI @ Meta | Ex-Amazon, Oracle, PANW | Stanford AI | EMNLP Outstanding Paper Award Recipient
 
       - name: Arpita Vats
         image: arpita.jpeg
         align: left
         content: |
           **Arpita Vats**  
-          *In the Allan Lab May 2017 to June 2019, now assistant professor at Yonsei University*  
-          Role: Postdoc
+          Senior AI Engineer LinkedIn | Ex- Research Scientist Intern Meta AI and Amazon | | MIT Media Labs
 
       - name: Rahul Raja
         image: rahul.jpeg
         align: left
         content: |
           **Rahul Raja**  
-          *In the Allan Lab December 2015 to February 2020, now design engineer at ASML*  
-          Role: PhD Student, shared with the [Groeblacher lab](http://www.groeblacherlab.tudelft.nl) at TU Delft under a NanoFront grant
+          Staff Software engineer at LinkedIn | Carnegie Mellon University | Stanford University
 
       - name: Jyoti Patel
         image: jyoti.jpeg
         align: left
         content: |
           **Jyoti Patel**  
-          *In the Allan Lab December 2015 to February 2020, now design engineer at ASML*  
-          Role: PhD Student, shared with the [Groeblacher lab](http://www.groeblacherlab.tudelft.nl) at TU Delft under a NanoFront grant
+          Financial & Risk Modelling | GenAI | LLM | Statistics & Optimization
+
+      - name: Aniruddha Roy
+        image: aniruddha.jpeg
+        align: left
+        content: |
+          **Aniruddha Roy (PhD)**  
+          Senior NLP Researcher
+
+      - name: Chhavi Sharma
+        image: chhavi.jpeg
+        align: left
+        content: |
+          **Chhavi Sharma**  
+          Generative AI @ LinkedIn | Data Scientist | Ex-American Express, Accenture, Mercedes-Benz
+
+      - name: Shubham Singh
+        image: shubham.jpeg
+        align: left
+        content: |
+          **Shubham Singh)**  
+          Quant Researcher & AI Engineer
 
   - title: Students
     members:
@@ -82,4 +97,11 @@ groups:
         content: |
           **Abhilekh Borah**  
           *B.Tech. in CSE, Manipal University Jaipur*
+
+      - name: Hasnat Md. Abdullah
+        image: hasnat.jpeg
+        align: left
+        content: |
+          **Hasnat Md. Abdullah**  
+          Summer'25 Research Intern@AIISC, UofSC | Graduate Researcher @ TAMU NLP | Collaborator @HRAIL | Computer Vision & NLP | Published in WACV'25, ACL'25 (NLP4PosImpact)
 ---
