@@ -190,6 +190,31 @@ ul.task-list input[type="checkbox"] {
   color: var(--global-theme-color);
 }
 
+// Media
+
+.media-icon {
+  background: white;
+  width: 16rem;
+  height: 2.5rem;
+  padding: 0.25rem;
+  object-fit: contain;
+}
+
+.awards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.awards-img {
+  flex: 20rem 1 1;
+  width: 20rem;
+  object-fit: contain;
+}
+
 // Profile
 
 .profile {

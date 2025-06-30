@@ -40,9 +40,15 @@ layout: default
 
     <div class="clearfix">{{ content }}</div>
 
+    <!-- Media Coverages -->
+    {% if page.media and page.media.enabled %}
+      <h2>Media Coverages</h2>
+      {% include media.liquid %}
+    {% endif %}
+
     <!-- News -->
     {% if page.announcements and page.announcements.enabled %}
-      <h2>Media Coverages</h2>
+      <h2>Latest News</h2>
       {% include news.liquid limit=true %}
     {% endif %}
 
