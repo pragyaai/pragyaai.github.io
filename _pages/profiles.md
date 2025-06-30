@@ -13,13 +13,9 @@ groups:
         image: amitava.png
         align: left
         content: |
-          **Amitava Das**
-          *Professor, Computer Science, BITS Pilani Goa*
-          - Master ETHZ, Diplomarbeit with [J Osterwalder](http://www.physik.uzh.ch/groups/osterwalder/)
-          - PhD St Andrews (while at Cornell University) with [Felix Baumberger](http://dpmc.unige.ch/gr_baumberger/index.html) and [JC Davis](http://davisgroup.lassp.cornell.edu/)
-          - Postdoc Cornell
-          - ETH fellow at ETHZ with [Andreas Wallraff](https://qudev.phys.ethz.ch)
-          - [Bryan R. Coles Prize 2017](https://www.universiteitleiden.nl/en/news/2017/07/milan-allan-wins-bryan-r.-coles-prize)
+          **Amitava Das**  
+          Professor, BITS Goa |   
+          Former - Research Associate Professor, AIISC, USA
         # more_info: >
         #   <p>Assistant Professor</p>
         #   <p>started May 2025</p>
@@ -30,7 +26,7 @@ groups:
         image: aman.jpeg
         align: left
         content: |
-          **Aman Chadha**
+          **Aman Chadha**  
           GenAI Leadership @ AWS • Stanford AI • Ex-, Amazon Alexa, Nvidia, Qualcomm • EB-1 "Einstein Visa" Recipient/Mentor • EMNLP 2023 Outstanding Paper Award
 
       - name: Vasu Sharma
