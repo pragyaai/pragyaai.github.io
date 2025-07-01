@@ -92,7 +92,7 @@ groups:
         align: left
         content: |
           **Abhilekh Borah**  
-          *B.Tech. in CSE, Manipal University Jaipur*
+          *Research Intern @ Adobe | AI Alignment & Socio-Cultural Modeling | B.Tech. in CSE, Manipal University Jaipur*
 
       - name: Hasnat Md. Abdullah
         image: hasnat.jpeg
