@@ -216,6 +216,14 @@ ul.task-list input[type="checkbox"] {
   object-fit: contain;
 }
 
+.video-container {
+  margin-bottom: 1rem;
+}
+
+.video-container video {
+  width: 100%;
+}
+
 // Profile
 
 .profile {
