@@ -20,7 +20,7 @@ groups:
         #   <p>Assistant Professor</p>
         #   <p>started May 2025</p>
 
-  - title: Fellows, Mentors, Collaborators
+  - title: Fellows, Mentors
     members:
       - name: Aman Chadha
         image: aman.jpeg
@@ -50,6 +50,8 @@ groups:
           **Arpita Vats**  
           Senior AI Engineer LinkedIn | Ex- Research Scientist Intern Meta AI and Amazon | | MIT Media Labs
 
+  - title: Collaborators
+    members:
       - name: Rahul Raja
         image: rahul.jpeg
         align: left

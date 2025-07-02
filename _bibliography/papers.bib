@@ -29,19 +29,6 @@
   abstract     = {Hallucination remains a critical weakness of large language models (LLMs). We propose the “Sorry, Come Again” (SCA) prompting framework, which combines optimal paraphrasing and strategic insertion of [PAUSE] tokens to slow down generation and promote deeper processing. We analyze linguistic traits such as readability, formality, and concreteness across prompts on 21 LLMs, and show that low clarity leads to more hallucinations. We then identify optimal paraphrases using integrated gradients, and fine-tune models with [PAUSE]-injected inputs. This dual approach notably improves coherence and factuality in generated outputs.}  
 }
 
-@misc{Rani2023SEPSIS,
-  abbr         = {ACL 2025},
-  selected     = {true},
-  author       = {Anku Rani and Dwip Dalal and Shreya Gautam and Pankaj Gupta and Vinija Jain and Aman Chadha and Amit Sheth and Amitava Das},
-  title        = {SEPSIS: I Can Catch Your Lies -- A New Paradigm for Deception Detection},
-  year         = {2023},
-  eprint       = {2312.00292},
-  archivePrefix= {arXiv},
-  primaryClass = {cs.CL},
-  url          = {https://arxiv.org/abs/2312.00292},
-  abstract     = {Deception is the intentional practice of twisting information. This research explores three forms: lies of omission, lies of commission, and lies of influence, focusing primarily on lies of omission. We introduce a novel NLP framework supported by an annotated dataset of 876,784 samples from merged fake-news sources and Times of India headlines. Each sample is labeled for omission type (e.g., speculation, bias), “color” of lie (black/white/gray/red), intent (influence, prestige), and topic (political, educational, religious, etc.). Our multi-task learning pipeline, which merges fine-tuned language models, attains an F1 score of 0.87 across all annotation layers. We also examine correlations between omission-based lies and propaganda techniques—e.g., loaded language often signals opinion—and will release both model and dataset under an open license.}  
-}
-
 @misc{Pawar2024ContextSurvey,
   author       = {Saurav Pawar and S. M. T. Islam Tonmoy and S. M. Zaman and Vinija Jain and Aman Chadha and Amitava Das},
   title        = {The What, Why, and How of Context Length Extension Techniques in Large Language Models -- A Detailed Survey},
@@ -197,6 +184,19 @@
   year         = {2024},
   note         = {A},
   abstract     = {This study examines whether pre-trained LLMs capture sentence structural features necessary for solving analogies (e.g., “The cat sat on the mat” : “The dog lay in the yard”). We design probing tasks and evaluate models like BERT and LLaMA. Results suggest strong correlation between structural encoding and analogy accuracy; fine-tuning on structural signals improves performance by ~8%.}
+}
+
+@misc{Rani2023SEPSIS,
+  abbr         = {ACL 2023},
+  selected     = {true},
+  author       = {Anku Rani and Dwip Dalal and Shreya Gautam and Pankaj Gupta and Vinija Jain and Aman Chadha and Amit Sheth and Amitava Das},
+  title        = {SEPSIS: I Can Catch Your Lies -- A New Paradigm for Deception Detection},
+  year         = {2023},
+  eprint       = {2312.00292},
+  archivePrefix= {arXiv},
+  primaryClass = {cs.CL},
+  url          = {https://arxiv.org/abs/2312.00292},
+  abstract     = {Deception is the intentional practice of twisting information. This research explores three forms: lies of omission, lies of commission, and lies of influence, focusing primarily on lies of omission. We introduce a novel NLP framework supported by an annotated dataset of 876,784 samples from merged fake-news sources and Times of India headlines. Each sample is labeled for omission type (e.g., speculation, bias), “color” of lie (black/white/gray/red), intent (influence, prestige), and topic (political, educational, religious, etc.). Our multi-task learning pipeline, which merges fine-tuned language models, attains an F1 score of 0.87 across all annotation layers. We also examine correlations between omission-based lies and propaganda techniques—e.g., loaded language often signals opinion—and will release both model and dataset under an open license.}  
 }
 
 @inproceedings{Rawte2023_FACTIFY3M,
