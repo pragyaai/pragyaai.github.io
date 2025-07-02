@@ -19,6 +19,14 @@ strong {
   color: var(--global-text-color);
 }
 
+h1,
+h2,
+h3,
+h4 {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 hr {
   border-top: 1px solid var(--global-divider-color);
 }
@@ -214,6 +222,58 @@ ul.task-list input[type="checkbox"] {
   flex: 20rem 1 1;
   width: 20rem;
   object-fit: contain;
+}
+
+.aether-head {
+  display: flex;
+  display: grid;
+  grid-template-areas:
+    "logo head"
+    "logo sub-head";
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.aether-img {
+  grid-area: logo;
+  width: 10rem;
+  height: auto;
+  object-fit: contain;
+  margin-right: 1rem;
+}
+
+.aether-head-text {
+  grid-area: head;
+  font-weight: 700;
+  margin: 0;
+}
+
+.aether-sub-head-text {
+  grid-area: sub-head;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .aether-head {
+    grid-template-areas:
+      "logo head"
+      "sub-head sub-head";
+  }
+
+  .aether-img {
+    width: 6rem;
+    margin-right: 0;
+  }
+
+  .aether-head-text {
+    font-size: 1.35rem;
+  }
+
+  .aether-sub-head-text {
+    font-size: 1.2rem;
+  }
 }
 
 .video-container {
@@ -773,7 +833,7 @@ footer.sticky-bottom {
           display: inline-block;
           background-color: var(--global-theme-color);
           margin-bottom: 0.5rem;
-          color: var(--global-card-bg-color) !important;
+          color: white;
 
           a {
             color: white;

@@ -4,6 +4,8 @@
 "IEEE":
   url: https://ieee.org
   color: "#00369f" # Blue
+"IEEE Internet Comp":
+  color: "#00369f"
 
 "ScienceDirect":
   url: https://www.sciencedirect.com

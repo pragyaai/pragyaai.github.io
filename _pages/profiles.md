@@ -4,7 +4,7 @@ permalink: /people/
 title: People
 description: members of the lab
 nav: true
-nav_order: 3
+nav_order: 4
 
 groups:
   - title: Faculty

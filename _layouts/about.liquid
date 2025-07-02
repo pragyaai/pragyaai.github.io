@@ -42,18 +42,21 @@ layout: default
 
     <!-- Media Coverage -->
     {% if page.media and page.media.enabled %}
+      <hr>
       <h2>Media Coverage</h2>
       {% include media.liquid %}
     {% endif %}
 
     <!-- News -->
     {% if page.announcements and page.announcements.enabled %}
+      <hr>
       <h2>Latest News</h2>
       {% include news.liquid limit=true %}
     {% endif %}
 
     <!-- Latest posts -->
     {% if page.latest_posts and page.latest_posts.enabled %}
+      <hr>
       <h2>
         <a href="{{ '/blog/' | relative_url }}" style="color: inherit">latest posts</a>
       </h2>
@@ -62,7 +65,7 @@ layout: default
 
     <!-- Selected papers -->
     {% if page.selected_papers %}
-      <br>
+      <hr>
       <h2>
         <a href="{{ '/publications/' | relative_url }}" style="color: inherit">Selected publications</a>
       </h2>

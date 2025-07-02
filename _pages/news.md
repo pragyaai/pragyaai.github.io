@@ -1,7 +1,8 @@
 ---
 layout: page
-title: news
-nav: false
+title: News
+nav: true
+nav_order: 3
 permalink: /news/
 ---
 
