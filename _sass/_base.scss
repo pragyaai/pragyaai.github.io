@@ -230,7 +230,6 @@ ul.task-list input[type="checkbox"] {
   grid-template-areas:
     "logo head"
     "logo sub-head";
-  grid-template-columns: auto 1fr;
   gap: 1rem;
   margin-top: 1rem;
   margin-bottom: 1.5rem;
@@ -242,6 +241,12 @@ ul.task-list input[type="checkbox"] {
   height: auto;
   object-fit: contain;
   margin-right: 1rem;
+}
+
+[data-theme="dark"] {
+  .aether-img {
+    filter: invert(1);
+  }
 }
 
 .aether-head-text {
