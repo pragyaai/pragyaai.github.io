@@ -6,6 +6,10 @@
   color: "#00369f" # Blue
 "IEEE Internet Comp":
   color: "#00369f"
+"IEEE CIM":
+  color: "#00369f"
+"IEEE IS":
+  color: "#00369f"
 
 "ScienceDirect":
   url: https://www.sciencedirect.com
@@ -13,12 +17,16 @@
 
 "TrustNLP":
   color: "#002855" # Dark Blue
+"TrustNLP 25":
+  color: "#002855"
 
 "ACL":
   color: "#990000" # Red
-"ACL 2025":
+"ACL 25":
   color: "#990000"
-"ACL 2023":
+"ACL 23":
+  color: "#990000"
+"ACL 11":
   color: "#990000"
 
 "NLPAI":
@@ -26,7 +34,57 @@
 
 "EMNLP":
   color: "#DC143C" # Crimson
-"EMNLP 2024":
+"EMNLP 25":
   color: "#DC143C"
-"EMNLP 2023":
+"EMNLP 24":
   color: "#DC143C"
+"EMNLP 23":
+  color: "#DC143C"
+
+"AAAI 17":
+  color: "#1A1AFF" # Deep Blue
+"AAAI 18":
+  color: "#1A1AFF"
+"AAAI 22":
+  color: "#1A1AFF"
+"AAAI 2024":
+  color: "#1A1AFF"
+
+"CICLING 12":
+  color: "#116466" # Teal
+"CICLING 16":
+  color: "#116466"
+"CICLING 18":
+  color: "#116466"
+"CICLING 19":
+  color: "#116466"
+"CICLING 2018":
+  color: "#116466"
+"CICLING 21":
+  color: "#116466"
+
+"COLING 25":
+  color: "#D7263D" # Rich Red
+
+"EACL 17":
+  color: "#990000"
+"EACL 24":
+  color: "#990000"
+
+"ASONAM 17":
+  color: "#2B2D42" # Steel Gray
+
+"Applied Intelligence 24":
+  color: "#247BA0" # Blue-Green
+
+"Artificial Intelligence Tools 20":
+  color: "#558B6E" # Sage Green
+
+"CSCW 17":
+  color: "#FFA500" # Orange
+
+"Computing and Systems 18":
+  color: "#8D8741" # Earthy Brown
+
+"Exper Systems 22":
+  color: "#00A8E8" # Sky Blue
