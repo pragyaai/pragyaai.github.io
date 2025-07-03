@@ -214,41 +214,6 @@
   abstract     = {This paper introduces a formal definition and taxonomy for LLM hallucinations, proposes automatic metrics for hallucination quantification (e.g., hallucination density, factual error scores), and presents remediations such as knowledge grounding, self-critique modules, and multi-step prompting. In experiments across GPT-3, BERT, and open-source LLMs, these countermeasures reduce hallucination by up to 35%.}
 }
 
-@inproceedings{Kavathekar2024_CT2,
-  author       = {Isha Kavathekar and Anku Rani and Ananya Chamoli and Prateek Kumaraguru and Aishwarya Sheth and Amitava Das},
-  title        = {Counter Turing Test (CT2): Investigating AI-Generated Text Detection for Hindi},
-  booktitle    = {Findings of EMNLP 2024},
-  year         = {2024},
-  abstract     = {This paper introduces the Hindi AI Detectability Index (ADIhi), a benchmark suite for detecting AI-generated Hindi text. We compile 20K instances of human-written and LLM-generated content, including code-mixed and slang-heavy samples. A variety of detectors—token-level, syntax-based, stylometric—are evaluated, with results showing current systems struggle. We release ADIhi and provide insights on adapting detection tools to non-English, low-resource, and mixed-language contexts.}
-}
-
-@inproceedings{Wijesiriwardene2024_SentAnalogy,
-  author       = {T. Wijesiriwardene and R. Wickramarachchi and Aishwarya Reganti and Vivek Jain and Aman Chadha and Amitava Sheth and Amitava Das},
-  title        = {On the Relationship between Sentence Analogy Identification and Sentence Structure Encoding in Large Language Models},
-  booktitle    = {Findings of EACL 2024},
-  year         = {2024},
-  note         = {A},
-  abstract     = {We explore whether pretrained LLMs encode structural cues necessary for solving sentence-level analogies (e.g., “king:queen :: man:?”). Through targeted probing tasks across diverse models, we find structural encoding correlates strongly with analogy accuracy. Fine-tuning on structural signals yields ~8% performance gains, suggesting explicit structure encoding enhances analogy reasoning in LLMs.}
-}
-
-@inproceedings{Rawte2023_FACTIFY3M,
-  author       = {Vipula Rawte and Amitava Das},
-  title        = {FACTIFY3M: A benchmark for multimodal fact verification with explainability through 5W Question-Answering},
-  booktitle    = {EMNLP 2023},
-  year         = {2023},
-  note         = {Oral, A*},
-  abstract     = {We introduce FACTIFY3M, a multimodal benchmark with 50K claims spanning images and text, each paired with 5W-style QA and supporting evidence. Using vision-language transformer baselines, we achieve 74.5% accuracy and add interpretability via 5W answers, enabling more granular diagnostic analysis and better fact verification transparency.}
-}
-
-@inproceedings{Rawte2023_HallucEmergence,
-  author       = {Vipula Rawte and S. Chakraborty and A. Pathak and A. Sarkar and S. M. T. Tonmoy and Aman Chadha and Aishwarya Sheth and Amitava Das},
-  title        = {The Troubling Emergence of Hallucination in Large Language Models - An Extensive Definition, Quantification, and Prescriptive Remediations},
-  booktitle    = {EMNLP 2023},
-  year         = {2023},
-  note         = {Oral, A*},
-  abstract     = {We offer a comprehensive taxonomy of hallucinations in LLMs and introduce metrics like hallucination density and factual error scores. We evaluate multiple LLMs (GPT-3, LLaMA, BERT variants) and test interventions—knowledge grounding, self-critique modules, multi-step prompting—achieving up to a 35% reduction in hallucination rates.}
-}
-
 @inproceedings{Chakraborty2023_CounterTuring,
   abbr         = {EMNLP 2023},
   selected     = {true},
@@ -331,15 +296,6 @@
   year         = {2018},
   note         = {Oral, B},
   abstract     = {We propose an SRL system adapted to Twitter's noisy text, using a CRF classifier with features from syntax, POS tagging, and lexical patterns. On a manually annotated tweet dataset, the system achieves 68.9% F₁, outperforming off-the-shelf SRL tools by ∼15%.}
-}
-
-@inproceedings{Chakma2018_CICLING_5W1H,
-  author       = {K. Chakma and A. Das},
-  title        = {A 5W1H Based Annotation Scheme for Semantic Role Labeling of English Tweets},
-  booktitle    = {CICLING 2018},
-  year         = {2018},
-  note         = {Oral, B},
-  abstract     = {We define a simplified 5W1H SRL annotation schema tailored to short, tweet-length text. The scheme includes Who, What, When, Where, Why, and How roles. We annotate a 2K tweet corpus and demonstrate annotation consistency (κ = 0.82), facilitating faster SRL labeling for social media NLP.}
 }
 
 @inproceedings{Kumar2018_CVSubwords,
@@ -491,15 +447,6 @@
   abstract     = {We explore incorporating pragmatic knowledge—e.g., implicature, presupposition—into a computational lexicon. We extend an existing lexical resource with pragmatics annotations and evaluate on inference tasks requiring context understanding. Results show improved performance in counterfactual and implicature detection, highlighting lexicon-based pragmatics’ potential.}
 }
 
-@misc{Suresh2024_Factify5WQA,
-  author       = {S. Suresh and A. Rani and P. Patwa and A. Reganti and V. Jain and A. Chadha and A. Das and A. Sheth and A. Ekbal},
-  title        = {Overview of Factify5WQA: Fact Verification through 5W Question-Answering},
-  howpublished = {arXiv preprint},
-  year         = {2024},
-  eprint       = {2410.04236},
-  abstract     = {We introduce Factify5WQA, a fact verification framework reframed as answering “Who, What, When, Where, Why” questions for each claim. Preliminary evaluation on public datasets shows the approach yields better interpretability and competitive accuracy, suggesting promise for explanation-rich verification systems.}
-}
-
 @article{Zafar2024_KIMAG,
   author       = {A. Zafar and S.K. Sahoo and H. Bhardawaj and A. Das and A. Ekbal},
   title        = {KI-MAG: A knowledge-infused abstractive question answering system in medical domain},
@@ -541,7 +488,6 @@
   volume       = {38},
   number       = {5},
   pages        = {12--16},
-  month        = sep #--# oct,
   year         = {2023},
   doi          = {10.1109/MIS.2023.3305862},
   abstract     = {This article argues that pragmatic analogy understanding requires both symbolic logical reasoning and neural modeling. Neurosymbolic AI, combining deep learning and symbolic methods, is essential to model nuanced analogies in human communication.},
@@ -644,18 +590,6 @@
   abstract     = {We propose a two-phase summarization pipeline: first ranking event-related tweets and extracting key sentences, then using Partial Textual Entailment (PTE) to reduce redundancy before generating an abstractive summary. Evaluation shows superior performance versus state-of-the-art baselines on real-time Twitter event data.}
 }
 
-@article{Maheshwari2018_PsycholinguisticDimensions,
-  author       = {T. Maheshwari and A. N. Reganti and U. Kumar and T. Chakraborty and A. Das},
-  title        = {Revealing Psycholinguistic Dimensions of Communities in Social Networks},
-  journal      = {IEEE Intelligent Systems},
-  volume       = {33},
-  number       = {4},
-  year         = {2018},
-  pages        = {36--48},
-  doi          = {10.1109/MIS.2018.111144400},
-  abstract     = {We analyze large-scale Twitter data to derive psycholinguistic characterizations (e.g., Big Five traits) of user communities, revealing consistent affective and cognitive dimensions. Results show that linguistic patterns align with psychological traits, offering insights into mining personality from social media text.}
-}
-
 @article{Solomon2018_TwitterSelectionalPreferences,
   author       = {R. Solomon and S. P. Y. K. L. Srinivas and A. Narayan and A. Das},
   title        = {Understanding the Selectional Preferences of the Twitter Mentions Network},
@@ -671,6 +605,8 @@
   author       = {K. Chakma and A. Das},
   title        = {A 5W1H Based Annotation Scheme for Semantic Role Labeling of English Tweets},
   journal      = {Computing and Systems},
+  booktitle    = {CICLING 2018},
+  note         = {Oral, B},
   volume       = {22},
   number       = {3},
   year         = {2018},
@@ -746,4 +682,3 @@
   pages        = {41--64},
   abstract     = {This paper investigates the challenges of automatic language identification in code-mixed social media text (e.g., English-Hindi, English-Bengali). It introduces a hierarchical model combining character and token-level features using CRFs, achieving 90% accuracy. This work lays the groundwork for more nuanced NLP pipelines that can accurately process multilingual social media data.}
 }
-
