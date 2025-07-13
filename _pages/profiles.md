@@ -84,7 +84,7 @@ groups:
         image: shubham.jpeg
         align: left
         content: |
-          **Shubham Singh)**  
+          **Shubham Singh**  
           Quant Researcher & AI Engineer
 
   - title: Students
@@ -102,4 +102,11 @@ groups:
         content: |
           **Hasnat Md. Abdullah**  
           Summer'25 Research Intern@AIISC, UofSC | Graduate Researcher @ TAMU NLP | Collaborator @HRAIL | Computer Vision & NLP | Published in WACV'25, ACL'25 (NLP4PosImpact)
+
+      - name: Danush Khanna
+        image: danush.jpg
+        align: left
+        content: |
+          **Danush Khanna**  
+          Research Intern @ Adobe | SIH '24 Winner | Publications @ EMNLP '25, ACL '25, NAACL SRW '25, ACL '24 | Reviewer @EMNLP '25, ACL '25, NAACL SRW '25 | B.Tech. in CSE, Manipal University Jaipur
 ---
