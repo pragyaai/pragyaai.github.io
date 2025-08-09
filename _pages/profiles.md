@@ -43,22 +43,8 @@ groups:
           **Vinija Jain**  
           AI @ Meta | Ex-Amazon, Oracle, PANW | Stanford AI | EMNLP Outstanding Paper Award Recipient
 
-      - name: Arpita Vats
-        image: arpita.jpeg
-        align: left
-        content: |
-          **Arpita Vats**  
-          Senior AI Engineer LinkedIn | Ex- Research Scientist Intern Meta AI and Amazon | | MIT Media Labs
-
   - title: Collaborators
     members:
-      - name: Rahul Raja
-        image: rahul.jpeg
-        align: left
-        content: |
-          **Rahul Raja**  
-          Staff Software engineer at LinkedIn | Carnegie Mellon University | Stanford University
-
       - name: Jyoti Patel
         image: jyoti.jpeg
         align: left
