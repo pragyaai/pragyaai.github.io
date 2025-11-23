@@ -45,12 +45,12 @@ groups:
 
   - title: Collaborators
     members:
-      - name: Jyoti Patel
-        image: jyoti.jpeg
+      - name: Gauranga Kumar Baishya
+        image: gauranga.png
         align: left
         content: |
-          **Jyoti Patel**  
-          Financial & Risk Modelling | GenAI | LLM | Statistics & Optimization
+          **Gauranga Kumar Baishya**
+          ex-Visiting Researcher @ Harvard | Khorana Scholar 24’ | M.Sc. Data Science @ CMI 23’-25’ | ex-IIT KGP | Probabilistic Machine Learning, Reinforcement Learning, Generative AI and ML theory
 
       - name: Aniruddha Roy
         image: aniruddha.jpeg
@@ -96,10 +96,4 @@ groups:
           **Danush Khanna**  
           Research Intern @ Adobe | SIH '24 Winner | Publications @ EMNLP '25, ACL '25, NAACL SRW '25, ACL '24 | Reviewer @EMNLP '25, ACL '25, NAACL SRW '25 | B.Tech. in CSE, Manipal University Jaipur
         
-      - name: Gauranga Kumar Baishya
-        image: gauranga.png
-        align: left
-        content: |
-          **Gauranga Kumar Baishya**
-          ex-Visiting Researcher @ Harvard | Khorana Scholar 24’ | M.Sc. Data Science @ CMI 23’-25’ | ex-IIT KGP | Probabilistic Machine Learning, Reinforcement Learning, Generative AI and ML theory
 ---
