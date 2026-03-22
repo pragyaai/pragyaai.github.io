@@ -32,6 +32,11 @@
 
   const links = [
     {
+      label: "Dense World",
+      href: `${appRoot}/pages/denseworld.html`,
+      key: "denseworld.html",
+    },
+    {
       label: "FactorJEPA",
       href: `${appRoot}/pages/factorjepa.html`,
       key: "factorjepa.html",
