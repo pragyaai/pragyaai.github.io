@@ -73,5 +73,4 @@
       menuToggle.setAttribute("aria-expanded", isOpen);
     });
   }
-
 })();

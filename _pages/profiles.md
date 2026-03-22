@@ -95,5 +95,4 @@ groups:
         content: |
           **Danush Khanna**  
           Research Intern @ Adobe | SIH '24 Winner | Publications @ EMNLP '25, ACL '25, NAACL SRW '25, ACL '24 | Reviewer @EMNLP '25, ACL '25, NAACL SRW '25 | B.Tech. in CSE, Manipal University Jaipur
-        
 ---

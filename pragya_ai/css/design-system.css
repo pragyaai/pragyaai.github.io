@@ -122,8 +122,7 @@
   /* ─── Transitions ──────────────────────────────────────── */
   --transition-base: all 0.2s ease;
   --transition-slow: all 0.4s ease;
-  --transition-color:
-    color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+  --transition-color: color 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
 }
 
 /* ─── 2. GLOBAL RESET & BASE ──────────────────────────────── */
@@ -240,11 +239,7 @@ span {
 
 /* Spectral gradient text — for hero headings */
 .ds-text-gradient {
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    var(--primary-container) 100%
-  );
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -286,11 +281,7 @@ span {
   justify-content: center;
   gap: 0.5rem;
   padding: 0.625rem 1.5rem;
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    var(--primary-container) 100%
-  );
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
   color: var(--on-primary);
   font-family: var(--font-label);
   font-size: var(--label-sm);
@@ -408,8 +399,7 @@ span {
 .ds-card-research {
   background: var(--surface-container-lowest);
   border-radius: var(--radius-sm);
-  padding: var(--spacing-6) var(--spacing-6) var(--spacing-6)
-    calc(var(--spacing-6) + 2px);
+  padding: var(--spacing-6) var(--spacing-6) var(--spacing-6) calc(var(--spacing-6) + 2px);
   box-shadow: inset 2px 0 0 var(--primary);
   transition: box-shadow 0.25s ease;
 }
@@ -650,17 +640,8 @@ span {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(
-      ellipse at 20% 50%,
-      rgba(35, 98, 150, 0.05) 0%,
-      transparent 60%
-    ),
-    radial-gradient(
-      ellipse at 80% 20%,
-      rgba(0, 79, 130, 0.04) 0%,
-      transparent 50%
-    );
+  background: radial-gradient(ellipse at 20% 50%, rgba(35, 98, 150, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 20%, rgba(0, 79, 130, 0.04) 0%, transparent 50%);
   pointer-events: none;
 }
 
@@ -697,11 +678,7 @@ span {
   top: 0;
   bottom: 0;
   width: 2px;
-  background: linear-gradient(
-    135deg,
-    var(--primary) 0%,
-    var(--primary-container) 100%
-  );
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
   border-radius: var(--radius-full);
 }
 
@@ -929,11 +906,7 @@ a {
 }
 
 .text-spectral-gradient {
-  background: linear-gradient(
-    135deg,
-    var(--on-surface) 0%,
-    rgba(26, 28, 28, 0.55) 100%
-  );
+  background: linear-gradient(135deg, var(--on-surface) 0%, rgba(26, 28, 28, 0.55) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

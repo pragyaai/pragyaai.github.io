@@ -25,8 +25,7 @@
   const appRoot = getAppRoot(path);
   const lowerPath = path.toLowerCase();
   const isLandingPage = lowerPath.endsWith("/pages/landing.html");
-  const isHomePage =
-    isLandingPage || lowerPath.endsWith("/index.html") || lowerPath.endsWith("/");
+  const isHomePage = isLandingPage || lowerPath.endsWith("/index.html") || lowerPath.endsWith("/");
 
   const homeHref = `${appRoot}/pages/landing.html`;
   const contactHref = isHomePage ? "#contact-form" : `${homeHref}#contact-form`;
@@ -54,10 +53,8 @@
     },
   ];
 
-  const activeClass =
-    "text-on-surface font-medium border-b border-outline-variant/20";
-  const inactiveClass =
-    "text-on-surface-variant hover:text-on-surface transition-opacity duration-300";
+  const activeClass = "text-on-surface font-medium border-b border-outline-variant/20";
+  const inactiveClass = "text-on-surface-variant hover:text-on-surface transition-opacity duration-300";
 
   const navLinks = links
     .map((link) => {
