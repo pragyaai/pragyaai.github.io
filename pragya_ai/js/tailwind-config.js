@@ -1,0 +1,91 @@
+/**
+ * THE SPATIAL ACADEMIC — Universal Tailwind Configuration
+ * Shared across all pages of the Pragya AI Research Lab
+ * Mirrors design tokens from design-system.css
+ */
+tailwind.config = {
+  darkMode: "class",
+  theme: {
+    extend: {
+      colors: {
+        /* Surface Hierarchy */
+        "surface":                   "#F9F9F9",
+        "surface-bright":            "#F9F9F9",
+        "surface-container-lowest":  "#FFFFFF",
+        "surface-container-low":     "#F3F3F4",
+        "surface-container":         "#EEEEEE",
+        "surface-container-high":    "#E8E8E8",
+        "surface-container-highest": "#E2E2E2",
+        "surface-dim":               "#DADADA",
+        "surface-variant":           "#E2E2E2",
+        "surface-tint":              "#236296",
+        "background":                "#F9F9F9",
+
+        /* Primary */
+        "primary":           "#004F82",
+        "primary-container": "#2A679C",
+        "primary-fixed":     "#D0E4FF",
+        "primary-fixed-dim": "#9BCBFF",
+        "inverse-primary":   "#9BCBFF",
+
+        /* On-Primary */
+        "on-primary":               "#FFFFFF",
+        "on-primary-container":     "#CDE3FF",
+        "on-primary-fixed":         "#001D34",
+        "on-primary-fixed-variant": "#004A7A",
+
+        /* Secondary */
+        "secondary":                 "#5F5E5E",
+        "secondary-container":       "#E5E2E1",
+        "secondary-fixed":           "#E5E2E1",
+        "secondary-fixed-dim":       "#C8C6C5",
+        "on-secondary":              "#FFFFFF",
+        "on-secondary-container":    "#656464",
+        "on-secondary-fixed":        "#1C1B1B",
+        "on-secondary-fixed-variant":"#474646",
+
+        /* Tertiary */
+        "tertiary":                   "#4A4C4F",
+        "tertiary-container":         "#626467",
+        "tertiary-fixed":             "#E2E2E5",
+        "tertiary-fixed-dim":         "#C6C6C9",
+        "on-tertiary":                "#FFFFFF",
+        "on-tertiary-container":      "#E1E1E4",
+        "on-tertiary-fixed":          "#1A1C1E",
+        "on-tertiary-fixed-variant":  "#454749",
+
+        /* Surface Text */
+        "on-surface":         "#1A1C1C",
+        "on-surface-variant": "#41474F",
+        "on-background":      "#1A1C1C",
+
+        /* Inverse */
+        "inverse-surface":    "#2F3131",
+        "inverse-on-surface": "#F0F1F1",
+
+        /* Outline */
+        "outline":         "#727780",
+        "outline-variant": "#C1C7D1",
+
+        /* Error */
+        "error":             "#BA1A1A",
+        "error-container":   "#FFDAD6",
+        "on-error":          "#FFFFFF",
+        "on-error-container":"#93000A",
+      },
+      fontFamily: {
+        headline: ["Plus Jakarta Sans", "sans-serif"],
+        body:     ["Inter", "sans-serif"],
+        label:    ["Inter", "sans-serif"],
+      },
+      borderRadius: {
+        DEFAULT: "0.125rem",
+        sm:      "0.125rem",
+        md:      "0.25rem",
+        lg:      "0.5rem",
+        xl:      "0.75rem",
+        full:    "9999px",
+      },
+    },
+  },
+};

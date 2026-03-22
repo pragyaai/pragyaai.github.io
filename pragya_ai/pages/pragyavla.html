@@ -1,0 +1,413 @@
+﻿<!doctype html>
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>PragyaVLA | The Spatial Academic</title>
+
+    <!-- â•â•â• Fonts & Icons â•â•â• -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300&family=Inter:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <!-- â•â•â• Tailwind CDN â•â•â• -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- â•â•â• Universal Tailwind Config â•â•â• -->
+    <script src="../js/tailwind-config.js"></script>
+    <!-- â•â•â• Universal Design System â•â•â• -->
+    <link rel="stylesheet" href="../css/design-system.css" />
+  </head>
+  <body
+    class="bg-surface text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed"
+    data-mode="connect"
+  >
+    <div id="site-navbar"></div>
+    <main class="pt-48 pb-24 px-12 max-w-[1920px] mx-auto">
+      <!-- Header Section -->
+      <header class="mb-32 max-w-5xl">
+        <h1
+          class="text-7xl md:text-[8rem] plus-jakarta-sans font-extralight tracking-tighter leading-none mb-12 text-primary"
+        >
+          PragyaVLA
+        </h1>
+        <div class="flex flex-col md:flex-row gap-12 items-start">
+          <div class="md:w-3/5">
+            <p
+              class="text-xl md:text-2xl inter font-light leading-relaxed text-on-surface/80"
+            >
+              An Instruction-Finetuned Vision-Language-Action Model engineered
+              for high-fidelity humanoid control. PragyaVLA introduces
+              Locomotion-Aware Chain-of-Thought (LA-CoT), bridging the gap
+              between high-level reasoning and millisecond-level motor primitive
+              execution.
+            </p>
+          </div>
+          <div
+            class="md:w-2/5 border-l border-outline-variant/20 pl-12 space-y-4"
+          >
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline"
+              >Project Status</span
+            >
+            <p class="inter text-sm font-medium">
+              Research Phase: V3.2 Deployment
+            </p>
+            <div class="flex items-center gap-2">
+              <span
+                class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"
+              ></span>
+              <span
+                class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-on-surface-variant"
+                >Active Inference Engine</span
+              >
+            </div>
+          </div>
+        </div>
+      </header>
+      <!-- Key Results Section -->
+      <section class="mb-48">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-1">
+          <div
+            class="bg-surface-container-lowest p-12 border-l-2 border-primary group hover:bg-primary transition-colors duration-500"
+          >
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline group-hover:text-primary-fixed mb-4 block"
+              >Model Scale</span
+            >
+            <h3
+              class="plus-jakarta-sans text-5xl font-light tracking-tighter group-hover:text-on-primary"
+            >
+              12.4B
+            </h3>
+            <p
+              class="inter text-xs text-on-surface-variant mt-2 group-hover:text-on-primary/70"
+            >
+              Dense Parameters
+            </p>
+          </div>
+          <div
+            class="bg-surface-container-lowest p-12 border-l-2 border-primary group hover:bg-primary transition-colors duration-500"
+          >
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline group-hover:text-primary-fixed mb-4 block"
+              >CoT Reliability</span
+            >
+            <h3
+              class="plus-jakarta-sans text-5xl font-light tracking-tighter group-hover:text-on-primary"
+            >
+              94.2%
+            </h3>
+            <p
+              class="inter text-xs text-on-surface-variant mt-2 group-hover:text-on-primary/70"
+            >
+              Success on Complex Tasks
+            </p>
+          </div>
+          <div
+            class="bg-surface-container-lowest p-12 border-l-2 border-primary group hover:bg-primary transition-colors duration-500"
+          >
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline group-hover:text-primary-fixed mb-4 block"
+              >Avg Latency</span
+            >
+            <h3
+              class="plus-jakarta-sans text-5xl font-light tracking-tighter group-hover:text-on-primary"
+            >
+              42ms
+            </h3>
+            <p
+              class="inter text-xs text-on-surface-variant mt-2 group-hover:text-on-primary/70"
+            >
+              Action Token Generation
+            </p>
+          </div>
+          <div
+            class="bg-surface-container-lowest p-12 border-l-2 border-primary group hover:bg-primary transition-colors duration-500"
+          >
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline group-hover:text-primary-fixed mb-4 block"
+              >Adaptability</span
+            >
+            <h3
+              class="plus-jakarta-sans text-5xl font-light tracking-tighter group-hover:text-on-primary"
+            >
+              High
+            </h3>
+            <p
+              class="inter text-xs text-on-surface-variant mt-2 group-hover:text-on-primary/70"
+            >
+              Zero-Shot Capabilities
+            </p>
+          </div>
+        </div>
+      </section>
+      <!-- The Evidence Section -->
+      <section class="space-y-32">
+        <!-- 01. RAW INPUT DATA -->
+        <div>
+          <div class="flex items-center gap-8 mb-12">
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-primary"
+              >01. RAW INPUT DATA</span
+            >
+            <div class="h-px flex-grow bg-outline-variant/10"></div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div
+              class="aspect-video bg-surface-container-low overflow-hidden group"
+            >
+              <img
+                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
+                data-alt="Humanoid robot hand interacting with fragile glass"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT-5e-mx3ypc3f7l8BrtubisCFnctMK4BchtRqYZium8ZyK6qX6DtshY_5ZNzoYU0IT2iQb75YqpXg2LUWpNZobzZdtZmnAY8Hdb_1AmxOyofJ_b0ykzbXCpHfBfAU0kgQ6JK3so1xF46epXP3oNFJi-aSGRolBhG9NaYEde8aRKjjL5akgKJk8f3oSrOXmfPJpyej6f2HdUF7FVG0kbP9roa1W91qneBVfywVwuEMszHGUhe7-X92-enq5dU9vujqLPECoCmMQNQG"
+              />
+              <div class="p-4 border-t border-outline-variant/10">
+                <p
+                  class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-on-surface-variant"
+                >
+                  Scenario: Dynamic Manipulation
+                </p>
+              </div>
+            </div>
+            <div
+              class="aspect-video bg-surface-container-low overflow-hidden group"
+            >
+              <img
+                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
+                data-alt="Robot traversing uneven industrial floor terrain"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6K9jRzSrJIw5bcMN6VKfPnbwCZm-zoBWPDjXaNvMWwywLFfieUqT17tk4T-0qQaXNquFO2HX9sd5yP-i-ASJ58IyuU9-QCjneTXFWeJIW-ou7bx5p7uT-EENSZjQH5Blfu9nzGdqNJh6a1OJ9NEv1KlfF1G2oQ-fgNevVglG0UwLsNfLQqbZ99eycYczYlGXVEy5-Rx8e4S60rkZ6026warTF1braMDOeM5GEhTzSAgWtiuubb92ip02OKemjxndyj4umGpLV0sKw"
+              />
+              <div class="p-4 border-t border-outline-variant/10">
+                <p
+                  class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-on-surface-variant"
+                >
+                  Scenario: Locomotion Terrain
+                </p>
+              </div>
+            </div>
+            <div
+              class="aspect-video bg-surface-container-low overflow-hidden group"
+            >
+              <img
+                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
+                data-alt="Laboratory environment with sensors and robot"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuCc_8kTS3dPyEyJYA52YGC7-oUc2VVC2SiCYgeM7FfstVAXJoBzqKO1zHxVqzJWXchJdZSdwnA6-ZGxNXd5UPAOw7X4thE7BmUT0bM038qmOwKGLN9uFle4eRTvu5SWfU2bJc5fRV2MMyM-kHdeXp9RmbfAnSs8hZ2UX0cELeAVLoaoglBPF2X3ZF6D1poo8HD1VDEtPemrYYJKdEML77wHiV4ES3eznf8_Y7B4prTw9vtZHuI3wdowCg9SP0N0zY_ZanCWQruTEq0N"
+              />
+              <div class="p-4 border-t border-outline-variant/10">
+                <p
+                  class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-on-surface-variant"
+                >
+                  Scenario: Spatial Mapping
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- 02. PROCESSED RESULTS -->
+        <div>
+          <div class="flex items-center gap-8 mb-12">
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-primary"
+              >02. PROCESSED RESULTS</span
+            >
+            <div class="h-px flex-grow bg-outline-variant/10"></div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div
+              class="bg-surface-container-lowest p-8 border border-outline-variant/10"
+            >
+              <div
+                class="aspect-video bg-on-surface mb-6 p-4 font-mono text-[10px] text-primary-fixed overflow-hidden leading-tight"
+              >
+                &gt; vision_input: detected_object_sphere<br />
+                &gt; cot_init: plan_approach_vector<br />
+                &gt; reasoning: calculate_torque_limits<br />
+                &gt; action_tokens: [0.12, -0.44, 0.89, 0.0]<br />
+                &gt; feedback: contact_established
+              </div>
+              <h4 class="inter text-sm font-semibold mb-2 text-primary">
+                Task: Precise Placement
+              </h4>
+              <p class="inter text-xs text-on-surface-variant leading-relaxed">
+                Model decomposes high-level instructions into executable
+                joint-space vectors with continuous feedback loops.
+              </p>
+            </div>
+            <div
+              class="bg-surface-container-lowest p-8 border border-outline-variant/10"
+            >
+              <div
+                class="aspect-video bg-on-surface mb-6 p-4 font-mono text-[10px] text-primary-fixed overflow-hidden leading-tight"
+              >
+                &gt; state: walking_gait_unstable<br />
+                &gt; loc_aware: adjust_center_of_mass<br />
+                &gt; reasoning: shift_left_pedal_pressure<br />
+                &gt; action_tokens: [0.05, 0.22, -0.11, 0.9]<br />
+                &gt; status: balance_restored
+              </div>
+              <h4 class="inter text-sm font-semibold mb-2 text-primary">
+                Task: Terrain Recovery
+              </h4>
+              <p class="inter text-xs text-on-surface-variant leading-relaxed">
+                Integration of IMU data into the transformer context window
+                allows for immediate postural correction.
+              </p>
+            </div>
+            <div
+              class="bg-surface-container-lowest p-8 border border-outline-variant/10"
+            >
+              <div
+                class="aspect-video bg-on-surface mb-6 p-4 font-mono text-[10px] text-primary-fixed overflow-hidden leading-tight"
+              >
+                &gt; user_input: "fetch the blue beaker"<br />
+                &gt; visual_search: active_scan<br />
+                &gt; cot: identify_beaker_depth_map<br />
+                &gt; reasoning: grasp_point_optimization<br />
+                &gt; action_tokens: [0.88, 0.12, -0.34, 0.5]
+              </div>
+              <h4 class="inter text-sm font-semibold mb-2 text-primary">
+                Task: Zero-Shot Fetch
+              </h4>
+              <p class="inter text-xs text-on-surface-variant leading-relaxed">
+                Natural language instruction to complex action mapping via
+                internal semantic reasoning chain.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Research Results & Performance Section -->
+      <section class="mt-48 grid grid-cols-1 md:grid-cols-2 gap-24">
+        <div class="">
+          <div class="flex items-center gap-4 mb-12">
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline"
+              >Analysis 01</span
+            >
+            <h2 class="plus-jakarta-sans text-3xl font-light text-primary">
+              <br />
+            </h2>
+          </div>
+          <div
+            class="relative h-64 w-full bg-surface-container-low p-8 border border-outline-variant/10 overflow-hidden"
+          >
+            <!-- Data Veil Background -->
+            <div
+              class="absolute inset-0 bg-gradient-to-br from-primary-fixed/20 to-transparent"
+            ></div>
+            <!-- Minimalist Line Graph Simulation -->
+            <svg class="w-full h-full" viewbox="0 0 400 150">
+              <path
+                d="M0,130 Q100,120 200,80 T400,20"
+                fill="none"
+                stroke="#004f82"
+                stroke-width="1"
+              ></path>
+              <circle cx="200" cy="80" fill="#004f82" r="3"></circle>
+              <circle cx="400" cy="20" fill="#004f82" r="3"></circle>
+              <!-- Labels -->
+              <text
+                class="inter text-[8px] fill-outline font-medium"
+                x="5"
+                y="145"
+              >
+                L1: BASIC
+              </text>
+              <text
+                class="inter text-[8px] fill-outline font-medium"
+                x="180"
+                y="145"
+              >
+                L5: DYNAMIC
+              </text>
+              <text
+                class="inter text-[8px] fill-outline font-medium"
+                x="360"
+                y="145"
+              >
+                L10: ADAPTIVE
+              </text>
+            </svg>
+            <div class="absolute top-4 right-4 text-right">
+              <span class="inter text-xs font-semibold text-primary"
+                >94.2% Peak Efficiency</span
+              >
+            </div>
+          </div>
+          <p
+            class="inter text-xs text-on-surface-variant mt-6 leading-relaxed max-w-sm"
+          >
+            Performance remains logarithmic even as spatial complexity
+            increases, demonstrating the robustness of LA-CoT reasoning.
+          </p>
+        </div>
+        <div>
+          <div class="flex items-center gap-4 mb-12">
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline"
+              >Analysis 02</span
+            >
+            <h2 class="plus-jakarta-sans text-3xl font-light text-primary">
+              <br />
+            </h2>
+          </div>
+          <div
+            class="relative h-64 w-full bg-surface-container-low p-8 border border-outline-variant/10"
+          >
+            <div class="flex items-end justify-between h-full gap-4 pb-8">
+              <div class="flex flex-col items-center flex-1">
+                <div class="w-full bg-primary/20 h-48 relative overflow-hidden">
+                  <div
+                    class="absolute bottom-0 w-full bg-primary h-[85%]"
+                  ></div>
+                </div>
+                <span class="inter text-[8px] mt-4 text-on-surface-variant"
+                  >SOTA-VLA</span
+                >
+              </div>
+              <div class="flex flex-col items-center flex-1">
+                <div class="w-full bg-primary/20 h-48 relative overflow-hidden">
+                  <div
+                    class="absolute bottom-0 w-full bg-primary h-[45%]"
+                  ></div>
+                </div>
+                <span class="inter text-[8px] mt-4 text-primary font-bold"
+                  >PRAGYAVLA</span
+                >
+              </div>
+              <div class="flex flex-col items-center flex-1">
+                <div class="w-full bg-primary/20 h-48 relative overflow-hidden">
+                  <div
+                    class="absolute bottom-0 w-full bg-primary h-[95%]"
+                  ></div>
+                </div>
+                <span class="inter text-[8px] mt-4 text-on-surface-variant"
+                  >BASE-TRANSFORMER</span
+                >
+              </div>
+            </div>
+            <div class="absolute top-4 right-4 text-right">
+              <span class="inter text-xs font-semibold text-primary"
+                >~42ms Optimized Path</span
+              >
+            </div>
+          </div>
+          <p
+            class="inter text-xs text-on-surface-variant mt-6 leading-relaxed max-w-sm"
+          >
+            PragyaVLA achieves a 2.4x latency reduction compared to existing
+            vision-action architectures by offloading non-critical reasoning to
+            background threads.
+          </p>
+        </div>
+      </section>
+    </main>
+    <div id="site-footer"></div>
+
+    <script src="../js/navbar.js" defer></script>
+    <script src="../js/footer.js" defer></script>
+    <script src="../js/main.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,406 @@
+﻿<!doctype html>
+<html class="light" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>Kalam Protocol | Pragya AI</title>
+    <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+
+    <!-- Material Symbols -->
+
+    <!-- â•â•â• Fonts & Icons â•â•â• -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;1,300&family=Inter:wght@300;400;500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+    <!-- â•â•â• Tailwind CDN â•â•â• -->
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- â•â•â• Universal Tailwind Config â•â•â• -->
+    <script src="../js/tailwind-config.js"></script>
+    <!-- â•â•â• Universal Design System â•â•â• -->
+    <link rel="stylesheet" href="../css/design-system.css" />
+  </head>
+  <body
+    class="bg-surface text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed"
+    data-mode="connect"
+  >
+    <div id="site-navbar"></div>
+    <main class="pt-48 pb-24 px-12 max-w-[1920px] mx-auto">
+      <header class="mb-32 max-w-5xl">
+        <h1
+          class="text-7xl md:text-[8rem] plus-jakarta-sans font-extralight tracking-tighter leading-none mb-12 text-primary"
+        >
+          Kalam Protocol
+        </h1>
+        <div class="flex flex-col md:flex-row gap-12 items-start">
+          <div class="md:w-3/5">
+            <p
+              class="text-xl md:text-2xl inter font-light leading-relaxed text-on-surface/80"
+            >
+              A formal architectural framework for the alignment and safety of
+              high-autonomy agents. By synthesizing causal modeling with
+              verifiable policy constraints, Kalam Protocol ensures that
+              advanced AI systems remain within specified safety boundaries
+              during open-ended exploration and execution.
+            </p>
+          </div>
+          <div
+            class="md:w-2/5 border-l border-outline-variant/20 pl-12 space-y-4"
+          >
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline"
+              >Project Status</span
+            >
+            <p class="inter text-sm font-medium">Version: V.2.4-ALPHA-STABLE</p>
+            <div class="flex items-center gap-2">
+              <span
+                class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"
+              ></span>
+              <span
+                class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-on-surface-variant"
+                >Active Inference Engine</span
+              >
+            </div>
+          </div>
+        </div>
+      </header>
+      <section class="mb-48">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-1">
+          <div
+            class="bg-surface-container-lowest p-12 border-l-2 border-primary group hover:bg-primary transition-colors duration-500"
+          >
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline group-hover:text-primary-fixed mb-4 block"
+              >Alignment Convergence</span
+            >
+            <h3
+              class="plus-jakarta-sans text-5xl font-light tracking-tighter group-hover:text-on-primary"
+            >
+              0.99
+            </h3>
+            <p
+              class="inter text-xs text-on-surface-variant mt-2 group-hover:text-on-primary/70"
+            >
+              Metric stabilized across 10k epochs.
+            </p>
+          </div>
+          <div
+            class="bg-surface-container-lowest p-12 border-l-2 border-primary group hover:bg-primary transition-colors duration-500"
+          >
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline group-hover:text-primary-fixed mb-4 block"
+              >Policy Violation</span
+            >
+            <h3
+              class="plus-jakarta-sans text-5xl font-light tracking-tighter group-hover:text-on-primary"
+            >
+              &lt;0.1%
+            </h3>
+            <p
+              class="inter text-xs text-on-surface-variant mt-2 group-hover:text-on-primary/70"
+            >
+              Critical boundary breaches inhibited.
+            </p>
+          </div>
+          <div
+            class="bg-surface-container-lowest p-12 border-l-2 border-primary group hover:bg-primary transition-colors duration-500"
+          >
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline group-hover:text-primary-fixed mb-4 block"
+              >Verification Latency</span
+            >
+            <h3
+              class="plus-jakarta-sans text-5xl font-light tracking-tighter group-hover:text-on-primary"
+            >
+              0.4ms
+            </h3>
+            <p
+              class="inter text-xs text-on-surface-variant mt-2 group-hover:text-on-primary/70"
+            >
+              Real-time overhead per inference cycle.
+            </p>
+          </div>
+          <div
+            class="bg-surface-container-lowest p-12 border-l-2 border-primary group hover:bg-primary transition-colors duration-500"
+          >
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline group-hover:text-primary-fixed mb-4 block"
+              >Reliability Index</span
+            >
+            <h3
+              class="plus-jakarta-sans text-5xl font-light tracking-tighter group-hover:text-on-primary"
+            >
+              99.8%
+            </h3>
+            <p
+              class="inter text-xs text-on-surface-variant mt-2 group-hover:text-on-primary/70"
+            >
+              Sustained performance in adversarial envs.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="space-y-32">
+        <div>
+          <div class="flex items-center gap-8 mb-12">
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-primary"
+              >01. RAW INPUT DATA</span
+            >
+            <div class="h-px flex-grow bg-outline-variant/10"></div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div
+              class="aspect-video bg-surface-container-low overflow-hidden group"
+            >
+              <img
+                alt="Abstract technical background with digital circuit patterns"
+                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9Y2amRxYRuYF_a_jHwwoSC4IJPPoLf5I9eYVN1ddOazYWQqbpfSllX5B-okdNc-d1ZG0eqcx-sKwYkOL-055Sp0Vgp-u5GUghoichMi8svJ7t565kbDdH6eYCIvCh3iFpMhlqn9ktKgLWYb95d0lzq9gap-R8jx_04Np3LD7Kfup7L2X29jzfUq6PMB3RoSNogBGB0z-ra46dTieegUzM8MfPa9_K5u1MCZKMaiFURM7dNNWxxNkwHCsD0DH1P9bmrEmDiambpUBB"
+              />
+              <div class="p-4 border-t border-outline-variant/10">
+                <p
+                  class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-on-surface-variant"
+                >
+                  Stream: Spatial Env Alpha
+                </p>
+              </div>
+            </div>
+            <div
+              class="aspect-video bg-surface-container-low overflow-hidden group"
+            >
+              <img
+                alt="Futuristic data stream visualization on dark surface"
+                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBJKF77Ax_qCJhANb8nCIHtQ4E4XYCP6LuQuiCiHQH6-wDS1vK9K-99apYuzmH7YwZXU3L1ySQ7lcF4sqbzMC0rPVRf1lm7vEOU8h26gf3DdW1o327leMVzCBHSK6v__Fc40XGTP5dueXo0lh75Z7TmNl0_3AAJYy8R0ah7yGxfaB-hIGkHkVrcaGjDyE1oHo2UpBaqBiyO0A7b4taz1tPTC40SkhRiseyS9-or8xnmJRRPtmpFiBljhyxBYVyIU4HctT7SlJ4FmuB"
+              />
+              <div class="p-4 border-t border-outline-variant/10">
+                <p
+                  class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-on-surface-variant"
+                >
+                  Stream: Cross-Modal Input
+                </p>
+              </div>
+            </div>
+            <div
+              class="aspect-video bg-surface-container-low overflow-hidden group"
+            >
+              <img
+                alt="Macro photo of electronic hardware components"
+                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0QDDhR3pJIipvUYe3Vzh0PcuC529_WONu0bjnfnOXLrISJrxczPa4EnMncZJzT0AZNm2pT3cpFYMtbuzFaOTbiD89YTwG48iut_iIVAU3JUIaYIAwO8LU0z9DGFPnHgcm4tqexipmxJZmhdIyjdS0WsJ5QgiulWHGkAiSaUd0UprReGok7ai14JqzfGMsu6J0qNSft9Lwz_-_TkqDHxihhW1m7C6UPJAuJjzFDA2pHaGyRVtIyYekFay6MKCL2rXWifj3-WO6GJPz"
+              />
+              <div class="p-4 border-t border-outline-variant/10">
+                <p
+                  class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-on-surface-variant"
+                >
+                  Stream: Temporal Sequence 09
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="flex items-center gap-8 mb-12">
+            <span
+              class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-primary"
+              >02. PROCESSED RESULTS</span
+            >
+            <div class="h-px flex-grow bg-outline-variant/10"></div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+            <div
+              class="bg-surface-container-lowest p-8 border border-outline-variant/10"
+            >
+              <div
+                class="aspect-video bg-on-surface mb-6 p-4 font-mono text-[10px] text-primary-fixed overflow-hidden leading-tight"
+              >
+                &gt; policy_graph: loaded<br />
+                &gt; causal_edges: validated<br />
+                &gt; boundary_check: pass<br />
+                &gt; deviation_score: 0.01<br />
+                &gt; verdict: verified
+              </div>
+              <h4 class="inter text-sm font-semibold mb-2 text-primary">
+                Task: Constraint Verification
+              </h4>
+              <p class="inter text-xs text-on-surface-variant leading-relaxed">
+                Rule and policy constraints are evaluated before every action
+                path is executed.
+              </p>
+            </div>
+            <div
+              class="bg-surface-container-lowest p-8 border border-outline-variant/10"
+            >
+              <div
+                class="aspect-video bg-on-surface mb-6 p-4 font-mono text-[10px] text-primary-fixed overflow-hidden leading-tight"
+              >
+                &gt; token_trace: monitored<br />
+                &gt; threat_model: active<br />
+                &gt; sandbox_route: isolated<br />
+                &gt; rollback_guard: ready<br />
+                &gt; status: stable
+              </div>
+              <h4 class="inter text-sm font-semibold mb-2 text-primary">
+                Task: Runtime Guardrails
+              </h4>
+              <p class="inter text-xs text-on-surface-variant leading-relaxed">
+                Execution-time checks keep autonomous behavior bounded in
+                uncertain environments.
+              </p>
+            </div>
+            <div
+              class="bg-surface-container-lowest p-8 border border-outline-variant/10"
+            >
+              <div
+                class="aspect-video bg-on-surface mb-6 p-4 font-mono text-[10px] text-primary-fixed overflow-hidden leading-tight"
+              >
+                &gt; network_mesh: synchronized<br />
+                &gt; consensus_rounds: 128<br />
+                &gt; anomaly_filter: running<br />
+                &gt; alignment_index: 99.8<br />
+                &gt; state: aligned
+              </div>
+              <h4 class="inter text-sm font-semibold mb-2 text-primary">
+                Task: Mesh Alignment Control
+              </h4>
+              <p class="inter text-xs text-on-surface-variant leading-relaxed">
+                Distributed systems remain synchronized under policy constraints
+                through deterministic consensus checks.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="mt-48 grid grid-cols-1 md:grid-cols-2 gap-24">
+          <div>
+            <div class="flex items-center gap-4 mb-12">
+              <span
+                class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline"
+                >Analysis 01</span
+              >
+              <h2 class="plus-jakarta-sans text-3xl font-light text-primary">
+                <br />
+              </h2>
+            </div>
+            <div
+              class="relative h-64 w-full bg-surface-container-low p-8 border border-outline-variant/10 overflow-hidden"
+            >
+              <div
+                class="absolute inset-0 bg-gradient-to-br from-primary-fixed/20 to-transparent"
+              ></div>
+              <svg
+                class="w-full h-full"
+                viewBox="0 0 400 150"
+              >
+                <path
+                  d="M0,130 Q100,115 200,76 T400,12"
+                  fill="none"
+                  stroke="#004f82"
+                  stroke-width="1"
+                ></path>
+                <circle cx="200" cy="76" fill="#004f82" r="3"></circle>
+                <circle cx="400" cy="12" fill="#004f82" r="3"></circle>
+                <text
+                  class="inter text-[8px] fill-outline font-medium"
+                  x="5"
+                  y="145"
+                >
+                  T-0
+                </text>
+                <text
+                  class="inter text-[8px] fill-outline font-medium"
+                  x="180"
+                  y="145"
+                >
+                  T-500
+                </text>
+                <text
+                  class="inter text-[8px] fill-outline font-medium"
+                  x="360"
+                  y="145"
+                >
+                  T-1000
+                </text>
+              </svg>
+              <div class="absolute top-4 right-4 text-right">
+                <span class="inter text-xs font-semibold text-primary"
+                  >Temporal Alignment Convergence</span
+                >
+              </div>
+            </div>
+            <p class="inter text-xs text-on-surface-variant mt-6 leading-relaxed max-w-sm">
+              Alignment constraints converge rapidly even under distribution
+              shift, reducing policy drift over long execution windows.
+            </p>
+          </div>
+
+          <div>
+            <div class="flex items-center gap-4 mb-12">
+              <span
+                class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline"
+                >Analysis 02</span
+              >
+              <h2 class="plus-jakarta-sans text-3xl font-light text-primary">
+                <br />
+              </h2>
+            </div>
+            <div
+              class="relative h-64 w-full bg-surface-container-low p-8 border border-outline-variant/10"
+            >
+              <div class="flex items-end justify-between h-full gap-4 pb-8">
+                <div class="flex flex-col items-center flex-1">
+                  <div class="w-full bg-primary/20 h-48 relative overflow-hidden">
+                    <div
+                      class="absolute bottom-0 w-full bg-primary h-[98%]"
+                    ></div>
+                  </div>
+                  <span class="inter text-[8px] mt-4 text-on-surface-variant">ENV_A</span>
+                </div>
+                <div class="flex flex-col items-center flex-1">
+                  <div class="w-full bg-primary/20 h-48 relative overflow-hidden">
+                    <div
+                      class="absolute bottom-0 w-full bg-primary h-[92%]"
+                    ></div>
+                  </div>
+                  <span class="inter text-[8px] mt-4 text-on-surface-variant">ENV_B</span>
+                </div>
+                <div class="flex flex-col items-center flex-1">
+                  <div class="w-full bg-primary/20 h-48 relative overflow-hidden">
+                    <div
+                      class="absolute bottom-0 w-full bg-primary h-[95%]"
+                    ></div>
+                  </div>
+                  <span class="inter text-[8px] mt-4 text-primary font-bold"
+                    >ENV_C</span
+                  >
+                </div>
+              </div>
+              <div class="absolute top-4 right-4 text-right">
+                <span class="inter text-xs font-semibold text-primary"
+                  >Cross-Env Reliability</span
+                >
+              </div>
+            </div>
+            <p class="inter text-xs text-on-surface-variant mt-6 leading-relaxed max-w-sm">
+              Reliability remains above 90% across heterogeneous deployments,
+              validating policy consistency at scale.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="site-footer"></div>
+
+    <script src="../js/navbar.js" defer></script>
+    <script src="../js/footer.js" defer></script>
+    <script src="../js/main.js" defer></script>
+  </body>
+</html>
+
