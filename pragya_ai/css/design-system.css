@@ -7,65 +7,65 @@
 /* ─── 1. DESIGN TOKENS (CSS Custom Properties) ─────────────── */
 :root {
   /* Surface Hierarchy */
-  --surface: #f9f9f9;
-  --surface-bright: #f9f9f9;
+  --surface: #faf8f7;
+  --surface-bright: #faf8f7;
   --surface-container-lowest: #ffffff;
-  --surface-container-low: #f3f3f4;
-  --surface-container: #eeeeee;
-  --surface-container-high: #e8e8e8;
-  --surface-container-highest: #e2e2e2;
-  --surface-dim: #dadada;
-  --surface-variant: #e2e2e2;
-  --surface-tint: #236296;
+  --surface-container-low: #f9f7f6;
+  --surface-container: #f3f0ed;
+  --surface-container-high: #ece8e5;
+  --surface-container-highest: #e5e0db;
+  --surface-dim: #d9d4ce;
+  --surface-variant: #e5e0db;
+  --surface-tint: #481b4c;
 
   /* Background */
-  --background: #f9f9f9;
+  --background: #faf8f7;
 
-  /* Primary — Intellectual Blue */
-  --primary: #004f82;
-  --primary-container: #2a679c;
-  --primary-fixed: #d0e4ff;
-  --primary-fixed-dim: #9bcbff;
-  --inverse-primary: #9bcbff;
+  /* Primary — Deep Purple from Logo */
+  --primary: #481b4c;
+  --primary-container: #6a3a6b;
+  --primary-fixed: #f5e6d3;
+  --primary-fixed-dim: #e6d4ba;
+  --inverse-primary: #f5e6d3;
 
   /* On-Primary */
-  --on-primary: #ffffff;
-  --on-primary-container: #cde3ff;
-  --on-primary-fixed: #001d34;
-  --on-primary-fixed-variant: #004a7a;
+  --on-primary: #f5e6d3;
+  --on-primary-container: #f5e6d3;
+  --on-primary-fixed: #2d1533;
+  --on-primary-fixed-variant: #5a2d5f;
 
   /* Secondary */
-  --secondary: #5f5e5e;
-  --secondary-container: #e5e2e1;
-  --secondary-fixed: #e5e2e1;
-  --secondary-fixed-dim: #c8c6c5;
-  --on-secondary: #ffffff;
-  --on-secondary-container: #656464;
+  --secondary: #6a4a5c;
+  --secondary-container: #e6d4c8;
+  --secondary-fixed: #e6d4c8;
+  --secondary-fixed-dim: #d0beaf;
+  --on-secondary: #f5e6d3;
+  --on-secondary-container: #522d47;
   --on-secondary-fixed: #1c1b1b;
-  --on-secondary-fixed-variant: #474646;
+  --on-secondary-fixed-variant: #574657;
 
   /* Tertiary */
-  --tertiary: #4a4c4f;
-  --tertiary-container: #626467;
-  --tertiary-fixed: #e2e2e5;
-  --tertiary-fixed-dim: #c6c6c9;
-  --on-tertiary: #ffffff;
-  --on-tertiary-container: #e1e1e4;
+  --tertiary: #5a4a6b;
+  --tertiary-container: #7a6a8b;
+  --tertiary-fixed: #ead5ed;
+  --tertiary-fixed-dim: #d0bdd5;
+  --on-tertiary: #f5e6d3;
+  --on-tertiary-container: #e3d3e8;
   --on-tertiary-fixed: #1a1c1e;
-  --on-tertiary-fixed-variant: #454749;
+  --on-tertiary-fixed-variant: #5a4a6b;
 
   /* Surface Text */
-  --on-surface: #1a1c1c;
-  --on-surface-variant: #41474f;
-  --on-background: #1a1c1c;
+  --on-surface: #2d1533;
+  --on-surface-variant: #5a5159;
+  --on-background: #2d1533;
 
   /* Inverse */
-  --inverse-surface: #2f3131;
-  --inverse-on-surface: #f0f1f1;
+  --inverse-surface: #3d2844;
+  --inverse-on-surface: #f5e6d3;
 
   /* Outline */
-  --outline: #727780;
-  --outline-variant: #c1c7d1;
+  --outline: #8a7a92;
+  --outline-variant: #d9cde5;
 
   /* Error */
   --error: #ba1a1a;
@@ -112,11 +112,11 @@
   --radius-full: 9999px;
 
   /* ─── Elevation / Shadow ───────────────────────────────── */
-  --shadow-ambient: 0 0 40px 0 rgba(26, 28, 28, 0.05);
-  --ghost-border: rgba(193, 199, 209, 0.15);
+  --shadow-ambient: 0 0 40px 0 rgba(45, 21, 51, 0.08);
+  --ghost-border: rgba(72, 27, 76, 0.15);
 
   /* ─── Glassmorphism ────────────────────────────────────── */
-  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-bg: rgba(245, 230, 211, 0.7);
   --glass-blur: 20px;
 
   /* ─── Transitions ──────────────────────────────────────── */
@@ -937,5 +937,286 @@ a {
 .inter {
   font-family: "Inter", sans-serif;
 }
+/* ─── 20. SUBMENU SYSTEM (Dropdown Navigation) ──────────── */
 
+/* Submenu backdrop — click to close */
+#submenu-backdrop {
+  z-index: 39;
+  transition: opacity 0.3s ease;
+}
+
+#submenu-backdrop:not(.hidden) {
+  opacity: 0.4;
+  background: rgba(45, 21, 51, 0.3) !important;
+}
+
+/* Submenu container — glassmorphic card */
+#submenu-container {
+  top: 6.5rem;
+  animation: submenu-fade-in 0.3s ease-out forwards;
+}
+
+#submenu-container.hidden {
+  pointer-events: none;
+}
+
+@keyframes submenu-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Submenu content grid — items + featured card */
+#submenu-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  padding: 2rem;
+  min-height: 400px;
+  border-radius: 1rem;
+  box-shadow: var(--shadow-ambient);
+  background: var(--surface-container-lowest);
+}
+
+/* Left side: APIS and RESOURCES columns */
+.submenu-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.submenu-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.submenu-section-title {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--on-surface-variant);
+  margin: 0 0 1.5rem 0;
+  font-family: "Inter", sans-serif;
+}
+
+.submenu-items-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.submenu-item-wrapper {
+  display: flex;
+}
+
+.submenu-item {
+  flex: 1;
+  padding: 1.25rem;
+  border-radius: 0.75rem;
+  background: var(--surface-container);
+  border: 1px solid var(--surface-container-high);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  text-decoration: none;
+  color: var(--on-surface);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.submenu-item:hover {
+  background: var(--surface-container-high);
+  border-color: var(--primary);
+  color: var(--primary);
+}
+
+.submenu-item .material-symbols-outlined {
+  font-size: 1.75rem;
+  height: 1.75rem;
+  width: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: currentColor;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+}
+
+.submenu-item:hover .material-symbols-outlined {
+  color: var(--primary);
+  transform: scale(1.15);
+}
+
+.submenu-item-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: currentColor;
+}
+
+/* Right side: Featured card */
+.submenu-featured {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.submenu-featured-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2rem;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+  border-radius: 1rem;
+  color: var(--on-primary);
+  text-decoration: none;
+  height: 100%;
+  min-height: 350px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.submenu-featured-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 48px rgba(72, 27, 76, 0.2);
+}
+
+.submenu-featured-card h3 {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 2rem;
+  font-weight: 300;
+  margin: 0 0 1rem 0;
+  color: var(--on-primary);
+  letter-spacing: -0.01em;
+}
+
+.submenu-featured-card p {
+  font-size: 0.95rem;
+  opacity: 0.95;
+  margin: 0 0 auto 0;
+  color: var(--on-primary);
+  font-family: "Inter", sans-serif;
+  font-weight: 300;
+}
+
+.submenu-featured-card > div {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  color: var(--on-primary);
+  transition: gap 0.3s ease;
+}
+
+.submenu-featured-card:hover > div {
+  gap: 1rem;
+}
+
+.submenu-featured-card > div span:first-child {
+  font-family: "Inter", sans-serif;
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+}
+
+.submenu-featured-card .material-symbols-outlined {
+  font-size: 1.25rem;
+  transition: transform 0.3s ease;
+}
+
+.submenu-featured-card:hover .material-symbols-outlined {
+  transform: translateX(2px);
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  #submenu-container {
+    left: 2rem !important;
+    right: 2rem !important;
+  }
+
+  #submenu-content {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    min-height: auto;
+  }
+
+  .submenu-columns {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    order: 1;
+  }
+
+  .submenu-featured {
+    grid-column: 1;
+    grid-row: 2;
+    order: 2;
+  }
+
+  .submenu-featured-card {
+    min-height: 280px;
+  }
+}
+
+@media (max-width: 640px) {
+  #submenu-container {
+    left: 1rem !important;
+    right: 1rem !important;
+  }
+
+  #submenu-content {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+    gap: 1rem;
+  }
+
+  .submenu-columns {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .submenu-section-title {
+    margin: 0 0 1rem 0;
+  }
+
+  .submenu-items-grid {
+    gap: 0.75rem;
+  }
+
+  .submenu-item {
+    padding: 1rem;
+  }
+
+  .submenu-item .material-symbols-outlined {
+    font-size: 1.5rem;
+    height: 1.5rem;
+    width: 1.5rem;
+  }
+
+  .submenu-item-label {
+    font-size: 0.8125rem;
+  }
+
+  .submenu-featured-card {
+    min-height: 240px;
+    padding: 1.5rem;
+  }
+
+  .submenu-featured-card h3 {
+    font-size: 1.5rem;
+  }
+
+  .submenu-featured-card p {
+    font-size: 0.875rem;
+  }
+}
 /* ─── End of Design System ──────────────────────────────── */

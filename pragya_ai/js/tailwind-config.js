@@ -9,63 +9,63 @@ tailwind.config = {
     extend: {
       colors: {
         /* Surface Hierarchy */
-        surface: "#F9F9F9",
-        "surface-bright": "#F9F9F9",
+        surface: "#FAF8F7",
+        "surface-bright": "#FAF8F7",
         "surface-container-lowest": "#FFFFFF",
-        "surface-container-low": "#F3F3F4",
-        "surface-container": "#EEEEEE",
-        "surface-container-high": "#E8E8E8",
-        "surface-container-highest": "#E2E2E2",
-        "surface-dim": "#DADADA",
-        "surface-variant": "#E2E2E2",
-        "surface-tint": "#236296",
-        background: "#F9F9F9",
+        "surface-container-low": "#F9F7F6",
+        "surface-container": "#F3F0ED",
+        "surface-container-high": "#ECE8E5",
+        "surface-container-highest": "#E5E0DB",
+        "surface-dim": "#D9D4CE",
+        "surface-variant": "#E5E0DB",
+        "surface-tint": "#481B4C",
+        background: "#FAF8F7",
 
         /* Primary */
-        primary: "#004F82",
-        "primary-container": "#2A679C",
-        "primary-fixed": "#D0E4FF",
-        "primary-fixed-dim": "#9BCBFF",
-        "inverse-primary": "#9BCBFF",
+        primary: "#481B4C",
+        "primary-container": "#6A3A6B",
+        "primary-fixed": "#F5E6D3",
+        "primary-fixed-dim": "#E6D4BA",
+        "inverse-primary": "#F5E6D3",
 
         /* On-Primary */
-        "on-primary": "#FFFFFF",
-        "on-primary-container": "#CDE3FF",
-        "on-primary-fixed": "#001D34",
-        "on-primary-fixed-variant": "#004A7A",
+        "on-primary": "#F5E6D3",
+        "on-primary-container": "#F5E6D3",
+        "on-primary-fixed": "#2D1533",
+        "on-primary-fixed-variant": "#5A2D5F",
 
         /* Secondary */
-        secondary: "#5F5E5E",
-        "secondary-container": "#E5E2E1",
-        "secondary-fixed": "#E5E2E1",
-        "secondary-fixed-dim": "#C8C6C5",
-        "on-secondary": "#FFFFFF",
-        "on-secondary-container": "#656464",
+        secondary: "#6A4A5C",
+        "secondary-container": "#E6D4C8",
+        "secondary-fixed": "#E6D4C8",
+        "secondary-fixed-dim": "#D0BEAF",
+        "on-secondary": "#F5E6D3",
+        "on-secondary-container": "#522D47",
         "on-secondary-fixed": "#1C1B1B",
-        "on-secondary-fixed-variant": "#474646",
+        "on-secondary-fixed-variant": "#574657",
 
         /* Tertiary */
-        tertiary: "#4A4C4F",
-        "tertiary-container": "#626467",
-        "tertiary-fixed": "#E2E2E5",
-        "tertiary-fixed-dim": "#C6C6C9",
-        "on-tertiary": "#FFFFFF",
-        "on-tertiary-container": "#E1E1E4",
+        tertiary: "#5A4A6B",
+        "tertiary-container": "#7A6A8B",
+        "tertiary-fixed": "#EAD5ED",
+        "tertiary-fixed-dim": "#D0BDD5",
+        "on-tertiary": "#F5E6D3",
+        "on-tertiary-container": "#E3D3E8",
         "on-tertiary-fixed": "#1A1C1E",
-        "on-tertiary-fixed-variant": "#454749",
+        "on-tertiary-fixed-variant": "#5A4A6B",
 
         /* Surface Text */
-        "on-surface": "#1A1C1C",
-        "on-surface-variant": "#41474F",
-        "on-background": "#1A1C1C",
+        "on-surface": "#2D1533",
+        "on-surface-variant": "#5A5159",
+        "on-background": "#2D1533",
 
         /* Inverse */
-        "inverse-surface": "#2F3131",
-        "inverse-on-surface": "#F0F1F1",
+        "inverse-surface": "#3D2844",
+        "inverse-on-surface": "#F5E6D3",
 
         /* Outline */
-        outline: "#727780",
-        "outline-variant": "#C1C7D1",
+        outline: "#8A7A92",
+        "outline-variant": "#D9CDE5",
 
         /* Error */
         error: "#BA1A1A",
