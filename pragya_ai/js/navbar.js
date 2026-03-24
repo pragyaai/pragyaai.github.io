@@ -39,18 +39,13 @@
       title: "Dense World",
       columns: {
         apis: [
-          { label: "Scene API", href: "#", icon: "language" },
-          { label: "Inference API", href: "#", icon: "api" },
-          { label: "Stream API", href: "#", icon: "dataset" },
-        ],
-        resources: [
-          { label: "Documentation", href: "#", icon: "description" },
-          { label: "API Pricing", href: "#", icon: "attach_money" },
-          { label: "Join Discord", href: "#", icon: "forum" },
+          { label: "What is it?", href: "#", icon: "info" },
+          { label: "What's the necessity?", href: "#", icon: "insights" },
+          { label: "What's the Leap?", href: "#", icon: "rocket_launch" },
         ],
       },
       featuredCard: {
-        title: "Urban Simulation",
+        title: "DENSEWORLD",
         description: "Real-time crowd dynamics",
         href: `${appRoot}/pages/denseworld.html`,
       },
@@ -59,18 +54,13 @@
       title: "FactorJEPA",
       columns: {
         apis: [
-          { label: "Model Architecture", href: "#", icon: "architecture" },
-          { label: "Training API", href: "#", icon: "code" },
-          { label: "Inference API", href: "#", icon: "api" },
-        ],
-        resources: [
-          { label: "Research Paper", href: "https://kapilw25.github.io/factorjepa/", icon: "description" },
-          { label: "Benchmarks", href: "#", icon: "bar_chart" },
-          { label: "Join Discord", href: "#", icon: "forum" },
+          { label: "What is it?", href: "#", icon: "info" },
+          { label: "What's the necessity?", href: "#", icon: "insights" },
+          { label: "What's the Leap?", href: "#", icon: "rocket_launch" },
         ],
       },
       featuredCard: {
-        title: "JEPA Framework",
+        title: "FactorJEPA",
         description: "Joint-Embedding Predictive Architecture",
         href: `${appRoot}/pages/factorjepa.html`,
       },
@@ -79,18 +69,13 @@
       title: "PragyaVLA",
       columns: {
         apis: [
-          { label: "Vision API", href: "#", icon: "camera" },
-          { label: "Language API", href: "#", icon: "language" },
-          { label: "Control API", href: "#", icon: "settings" },
-        ],
-        resources: [
-          { label: "Technical Specs", href: "#", icon: "description" },
-          { label: "Robot Integration", href: "#", icon: "smart_toy" },
-          { label: "Training Guide", href: "#", icon: "school" },
+          { label: "What is it?", href: "#", icon: "info" },
+          { label: "What's the necessity?", href: "#", icon: "insights" },
+          { label: "What's the Leap?", href: "#", icon: "rocket_launch" },
         ],
       },
       featuredCard: {
-        title: "Vision Language Action",
+        title: "PragyaVLA",
         description: "Embodied AI for Robotics",
         href: `${appRoot}/pages/pragyavla.html`,
       },
@@ -99,18 +84,13 @@
       title: "Kalam Protocol",
       columns: {
         apis: [
-          { label: "Protocol Spec", href: "#", icon: "description" },
-          { label: "Message API", href: "#", icon: "api" },
-          { label: "Stream API", href: "#", icon: "dataset" },
-        ],
-        resources: [
-          { label: "Implementation", href: "#", icon: "code" },
-          { label: "Examples", href: "#", icon: "preview" },
-          { label: "Community", href: "#", icon: "group" },
+          { label: "What is it?", href: "#", icon: "info" },
+          { label: "What's the necessity?", href: "#", icon: "insights" },
+          { label: "What's the Leap?", href: "#", icon: "rocket_launch" },
         ],
       },
       featuredCard: {
-        title: "Kalam Protocol",
+        title: "KalamProtocol",
         description: "Open communication standard",
         href: `${appRoot}/pages/kalamprotocol.html`,
       },
@@ -119,18 +99,13 @@
       title: "KalariSena",
       columns: {
         apis: [
-          { label: "Combat API", href: "#", icon: "target" },
-          { label: "Decision API", href: "#", icon: "psychology" },
-          { label: "Action API", href: "#", icon: "bolt" },
-        ],
-        resources: [
-          { label: "Training Data", href: "#", icon: "dataset" },
-          { label: "Evaluation", href: "#", icon: "assessment" },
-          { label: "Deployment", href: "#", icon: "cloud_upload" },
+          { label: "What is it?", href: "#", icon: "info" },
+          { label: "What's the necessity?", href: "#", icon: "insights" },
+          { label: "What's the Leap?", href: "#", icon: "rocket_launch" },
         ],
       },
       featuredCard: {
-        title: "Autonomous Defense",
+        title: "KalariSena",
         description: "Strategic response generation",
         href: `${appRoot}/pages/kalarisena.html`,
       },
@@ -234,19 +209,6 @@
       )
       .join("\n");
 
-    // Build RESOURCES column
-    const resourcesHTML = config.columns.resources
-      .map(
-        (item) =>
-          `<div class="submenu-item-wrapper">
-            <a href="${item.href}" class="submenu-item">
-              <span class="material-symbols-outlined">${item.icon}</span>
-              <span class="submenu-item-label">${item.label}</span>
-            </a>
-          </div>`
-      )
-      .join("\n");
-
     // Featured card
     const featuredCard = config.featuredCard;
     const cardHTML = `<a href="${featuredCard.href}" class="submenu-featured-card">
@@ -259,18 +221,9 @@
     </a>`;
 
     submenuContent.innerHTML = `
-      <div class="submenu-columns">
-        <div class="submenu-column">
-          <h4 class="submenu-section-title">APIS</h4>
-          <div class="submenu-items-grid">
-            ${apisHTML}
-          </div>
-        </div>
-        <div class="submenu-column">
-          <h4 class="submenu-section-title">RESOURCES</h4>
-          <div class="submenu-items-grid">
-            ${resourcesHTML}
-          </div>
+      <div class="submenu-column">
+        <div class="submenu-items-grid">
+          ${apisHTML}
         </div>
       </div>
       <div class="submenu-featured">
