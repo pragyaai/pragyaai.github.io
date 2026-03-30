@@ -45,12 +45,12 @@ groups:
 
   - title: Collaborators
     members:
-      - name: Gauranga Kumar Baishya
-        image: gauranga.png
+      - name: Jyoti Patel
+        image: jyoti.jpeg
         align: left
         content: |
-          **Gauranga Kumar Baishya**
-          ex-Visiting Researcher @ Harvard | Khorana Scholar 24’ | M.Sc. Data Science @ CMI 23’-25’ | ex-IIT KGP | Probabilistic Machine Learning, Reinforcement Learning, Generative AI and ML theory
+          **Jyoti Patel**  
+          Financial & Risk Modelling | GenAI | LLM | Statistics & Optimization
 
       - name: Aniruddha Roy
         image: aniruddha.jpeg
