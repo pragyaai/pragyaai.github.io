@@ -48,6 +48,7 @@
         title: "DENSEWORLD",
         description: "Real-time crowd dynamics",
         href: `${appRoot}/pages/denseworld.html`,
+        image: `${appRoot}/public/denseWorld_new.png`,
       },
     },
     "factorjepa.html": {
@@ -63,6 +64,7 @@
         title: "FactorJEPA",
         description: "Joint-Embedding Predictive Architecture",
         href: `${appRoot}/pages/factorjepa.html`,
+        image: `${appRoot}/public/factorjepa.png`,
       },
     },
     "pragyavla.html": {
@@ -78,6 +80,7 @@
         title: "PragyaVLA",
         description: "Embodied AI for Robotics",
         href: `${appRoot}/pages/pragyavla.html`,
+        image: `${appRoot}/public/pragyaVla_new.png`,
       },
     },
     "kalamprotocol.html": {
@@ -93,6 +96,7 @@
         title: "KalamProtocol",
         description: "Open communication standard",
         href: `${appRoot}/pages/kalamprotocol.html`,
+        image: `${appRoot}/public/kalamProtocol_new.png`,
       },
     },
     "kalarisena.html": {
@@ -108,6 +112,7 @@
         title: "KalariSena",
         description: "Strategic response generation",
         href: `${appRoot}/pages/kalarisena.html`,
+        image: `${appRoot}/public/kalarisena.png`,
       },
     },
   };
@@ -211,7 +216,10 @@
 
     // Featured card
     const featuredCard = config.featuredCard;
-    const cardHTML = `<a href="${featuredCard.href}" class="submenu-featured-card">
+    const cardStyle = featuredCard.image
+      ? `background-color: black; background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('${featuredCard.image}'); background-size: cover; background-position: center; background-repeat: no-repeat;`
+      : "background-color: black;";
+    const cardHTML = `<a href="${featuredCard.href}" class="submenu-featured-card" style="${cardStyle}">
       <h3>${featuredCard.title}</h3>
       <p>${featuredCard.description}</p>
       <div class="flex items-center gap-2 mt-auto">
