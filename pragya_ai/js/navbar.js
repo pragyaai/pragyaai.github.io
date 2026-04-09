@@ -44,6 +44,11 @@
           { label: "What's the Leap?", href: "#", icon: "rocket_launch" },
         ],
       },
+      answers: {
+        "What is it?": "World Models for Populous, Crowded, and Chaotic Global South",
+        "What's the necessity?": "Current “world model” progress is largely validated on clean, structured, low-density Western environments, and it often breaks down for the chaotic Global South scenes—where dense occlusion, mixed traffic, informal right-of-way negotiation, extreme lighting and weather, and long-tail objects and signage dominate.",
+        "What's the Leap?": "Because current world-model progress is built on clean, low-density settings and often breaks in the DENSEWORLD regime; this demands systematic, large-scale study rather than incremental benchmark gains.",
+      },
       featuredCard: {
         title: "DENSEWORLD",
         description: "Real-time crowd dynamics",
@@ -60,11 +65,16 @@
           { label: "What's the Leap?", href: "#", icon: "rocket_launch" },
         ],
       },
+      answers: {
+        "What is it?": "A factorized Joint-Embedding Predictive Architecture that decomposes predictive embeddings into layout, entities, interactions, and visibility-aware reliability.",
+        "What's the necessity?": "Because standard JEPA objectives can achieve strong predictive performance while leaving the latent world structure implicitly entangled, especially under dense occlusion, heterogeneous agents, and partial observability.",
+        "What's the Leap?": "From monolithic embedding prediction to structured, factorized world modeling—where compositionality, interaction structure, and observability are treated as first-class modeling primitives.",
+      },
       featuredCard: {
         title: "FactorJEPA",
         description: "Joint-Embedding Predictive Architecture",
         href: `${appRoot}/pages/factorjepa.html`,
-        image: `${appRoot}/public/factorjepa.png`,
+        image: `${appRoot}/public/factorjepa_new.png`,
       },
     },
     "pragyavla.html": {
@@ -75,6 +85,11 @@
           { label: "What's the necessity?", href: "#", icon: "insights" },
           { label: "What's the Leap?", href: "#", icon: "rocket_launch" },
         ],
+      },
+      answers: {
+        "What is it?": "India’s first sovereign VLA model for robot navigation—an instruction-finetuned framework that unifies multilingual grounding, locomotion-aware reasoning, and safety-conditioned control.",
+        "What's the necessity?": "Because current VLA systems are still optimized largely for manipulation-centric, clean indoor benchmarks, leaving locomotion feasibility, partial observability, terrain uncertainty, and safety-aware abstention under-modeled.",
+        "What's the Leap?": "From direct instruction-to-action policies to structured embodied deliberation, where traversability, body-feasibility, hidden-state inference, and risk-aware abstention become explicit components of navigation control.",
       },
       featuredCard: {
         title: "PragyaVLA",
@@ -92,6 +107,11 @@
           { label: "What's the Leap?", href: "#", icon: "rocket_launch" },
         ],
       },
+      answers: {
+        "What is it?": "A safety, alignment, and governance protocol for robots operating in real-world environments.",
+        "What's the necessity?": "Because deployment in public infrastructure, industry, defense, and high-footfall civilian spaces demands robotic systems that are not only capable, but also safe, interpretable, and protocol-governed.",
+        "What's the Leap?": "From model-level capability to deployment-ready assurance—where alignment, safety constraints, and operational conduct are built into the robotic stack.",
+      },
       featuredCard: {
         title: "KalamProtocol",
         description: "Open communication standard",
@@ -108,11 +128,16 @@
           { label: "What's the Leap?", href: "#", icon: "rocket_launch" },
         ],
       },
+      answers: {
+        "What is it?": "A movement-intelligence framework for humanoid robots, inspired by Kalaripayattu and grounded in strategic embodied response.",
+        "What's the necessity?": "Because India-facing deployment demands humanoids that can move and respond in crowded public spaces, disaster zones, industrial corridors, high-footfall transit hubs, and security-sensitive environments.",
+        "What's the Leap?": "From generic humanoid control to Kalaripayattu-inspired movement intelligence for strategic, context-aware real-world deployment.",
+      },
       featuredCard: {
         title: "KalariSena",
         description: "Strategic response generation",
         href: `${appRoot}/pages/kalarisena.html`,
-        image: `${appRoot}/public/kalarisena.png`,
+        image: `${appRoot}/public/kalarisena_new.png`,
       },
     },
   };
@@ -166,7 +191,7 @@
         <a class="inline-flex items-center" href="${homeHref}" aria-label="Pragya AI Home">
           <img class="h-9 md:h-10 w-auto object-contain" src="${logoSrc}" alt="Pragya AI" />
         </a>
-        <div class="hidden md:flex items-center gap-10 font-['Plus_Jakarta_Sans'] font-light tracking-tight text-sm">
+        <div class="hidden md:flex items-center gap-10 font-['Plus_Jakarta_Sans'] font-light tracking-tight text-base">
           ${navLinks}
         </div>
         <div class="flex items-center gap-6">
@@ -202,16 +227,32 @@
     if (!config) return;
 
     // Build APIS column
+    const hasExpandableAnswers = Boolean(config.answers);
     const apisHTML = config.columns.apis
-      .map(
-        (item) =>
-          `<div class="submenu-item-wrapper">
+      .map((item, index) => {
+        if (!hasExpandableAnswers) {
+          return `<div class="submenu-item-wrapper">
             <a href="${item.href}" class="submenu-item">
               <span class="material-symbols-outlined">${item.icon}</span>
               <span class="submenu-item-label">${item.label}</span>
             </a>
-          </div>`
-      )
+          </div>`;
+        }
+
+        const answer = config.answers[item.label] || "";
+        return `<div class="submenu-item-wrapper" style="display: block; width: 100%;">
+          <button type="button" class="submenu-item submenu-item-toggle" data-qa-index="${index}" aria-expanded="false" style="width: 100%; text-align: left; display: flex; flex-direction: column; align-items: flex-start; gap: 0.65rem;">
+            <span class="material-symbols-outlined">${item.icon}</span>
+            <span style="display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 0.75rem;">
+              <span class="submenu-item-label" style="font-size: 1rem;">${item.label}</span>
+              <span class="material-symbols-outlined" data-qa-chevron="${index}" style="font-size: 1.2rem; flex-shrink: 0;">expand_more</span>
+            </span>
+          </button>
+          <div data-qa-answer="${index}" aria-hidden="true" style="max-height: 0; opacity: 0; overflow: hidden; margin-top: 0.5rem; padding: 0 1rem; border: 1px solid transparent; border-radius: 0.6rem; background: var(--surface-container); color: var(--on-surface-variant); font-size: 1rem; line-height: 1.55; font-family: 'Inter', sans-serif; transition: max-height 320ms ease, opacity 240ms ease, padding 260ms ease, border-color 260ms ease;">
+            ${answer}
+          </div>
+        </div>`;
+      })
       .join("\n");
 
     // Featured card
@@ -296,6 +337,49 @@
 
   // Close submenu when clicking backdrop
   submenuBackdrop.addEventListener("click", closeSubmenu);
+
+  // DenseWorld-only Q&A toggle handler (delegated for submenu content)
+  submenuContent.addEventListener("click", (e) => {
+    const toggle = e.target.closest(".submenu-item-toggle");
+    if (!toggle) return;
+
+    const index = toggle.getAttribute("data-qa-index");
+    const answer = submenuContent.querySelector(`[data-qa-answer="${index}"]`);
+    const wasExpanded = toggle.getAttribute("aria-expanded") === "true";
+
+    submenuContent.querySelectorAll(".submenu-item-toggle").forEach((btn) => {
+      const btnIndex = btn.getAttribute("data-qa-index");
+      const btnAnswer = submenuContent.querySelector(`[data-qa-answer="${btnIndex}"]`);
+      const chevron = submenuContent.querySelector(`[data-qa-chevron="${btnIndex}"]`);
+
+      btn.setAttribute("aria-expanded", "false");
+      if (btnAnswer) {
+        btnAnswer.style.maxHeight = "0";
+        btnAnswer.style.opacity = "0";
+        btnAnswer.style.paddingTop = "0";
+        btnAnswer.style.paddingBottom = "0";
+        btnAnswer.style.borderColor = "transparent";
+        btnAnswer.setAttribute("aria-hidden", "true");
+      }
+      if (chevron) {
+        chevron.textContent = "expand_more";
+      }
+    });
+
+    if (!wasExpanded && answer) {
+      toggle.setAttribute("aria-expanded", "true");
+      answer.style.maxHeight = `${answer.scrollHeight + 32}px`;
+      answer.style.opacity = "1";
+      answer.style.paddingTop = "0.9rem";
+      answer.style.paddingBottom = "0.9rem";
+      answer.style.borderColor = "var(--surface-container-high)";
+      answer.setAttribute("aria-hidden", "false");
+      const activeChevron = submenuContent.querySelector(`[data-qa-chevron="${index}"]`);
+      if (activeChevron) {
+        activeChevron.textContent = "expand_less";
+      }
+    }
+  });
 
   // Close submenu when clicking outside
   document.addEventListener("click", (e) => {

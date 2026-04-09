@@ -40,6 +40,11 @@
 
   const nav = document.querySelector("nav, .ds-nav, [data-nav]");
   if (nav) {
+    const updateNavHeight = () => {
+      const navHeight = Math.ceil(nav.getBoundingClientRect().height);
+      document.documentElement.style.setProperty("--nav-height", `${navHeight}px`);
+    };
+
     const onScroll = () => {
       if (window.scrollY > 24) {
         nav.classList.add("is-scrolled");
@@ -47,7 +52,10 @@
         nav.classList.remove("is-scrolled");
       }
     };
+
+    window.addEventListener("resize", updateNavHeight, { passive: true });
     window.addEventListener("scroll", onScroll, { passive: true });
+    updateNavHeight(); // set nav height for hero/layout calculations
     onScroll(); // run on load
   }
 
