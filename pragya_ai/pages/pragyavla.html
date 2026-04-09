@@ -21,28 +21,30 @@
   </head>
   <body class="bg-surface text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed" data-mode="connect">
     <div id="site-navbar"></div>
-    <main class="pt-48 pb-24 px-12 max-w-[1920px] mx-auto">
-      <!-- Header Section -->
-      <header class="mb-32 max-w-5xl">
-        <h1 class="text-7xl md:text-[8rem] plus-jakarta-sans font-extralight tracking-tighter leading-none mb-12 text-primary">PragyaVLA</h1>
-        <div class="flex flex-col md:flex-row gap-12 items-start">
-          <div class="md:w-3/5">
-            <p class="text-xl md:text-2xl inter font-light leading-relaxed text-on-surface/80">
-              An Instruction-Finetuned Vision-Language-Action Model engineered for high-fidelity humanoid control. PragyaVLA introduces
-              Locomotion-Aware Chain-of-Thought (LA-CoT), bridging the gap between high-level reasoning and millisecond-level motor primitive
-              execution.
-            </p>
+    <main class="pb-24 px-12 max-w-[1920px] mx-auto" style="padding-top: var(--nav-height, 84px)">
+      <header
+        class="relative -mx-12 mb-32 flex items-center overflow-hidden bg-surface-container-lowest border border-surface-container-high"
+        style="aspect-ratio: 16 / 9"
+      >
+        <div class="absolute inset-0 z-0">
+          <div class="absolute inset-0 bg-[radial-gradient(#e5e0db_1px,transparent_1px)] bg-size-[40px_40px] opacity-20"></div>
+          <div class="absolute inset-0 w-full h-full opacity-20">
+            <img alt="PragyaVLA hero visualization" class="w-full h-full object-contain object-center" src="../public/pragyavla_hero.png" />
           </div>
-          <div class="md:w-2/5 border-l border-outline-variant/20 pl-12 space-y-4">
-            <span class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline">Project Status</span>
-            <p class="inter text-sm font-medium">Research Phase: V3.2 Deployment</p>
-            <div class="flex items-center gap-2">
-              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-on-surface-variant">Active Inference Engine</span>
+          <div class="absolute inset-0 bg-linear-to-r from-surface-container-lowest/35 via-surface-container-lowest/12 to-transparent"></div>
+        </div>
+        <div class="relative z-10 w-full max-w-5xl p-10 md:p-14">
+          <h1 class="text-7xl md:text-[8rem] plus-jakarta-sans font-extralight tracking-tighter leading-none mb-12 text-primary">PragyaVLA</h1>
+          <div class="flex flex-col md:flex-row gap-12 items-start">
+            <div class="md:w-3/5">
+              <p class="text-xl md:text-2xl inter font-light leading-relaxed text-on-surface/80">
+                India’s first sovereign VLA model for robot navigation—an instruction-finetuned framework that unifies multilingual grounding, locomotion-aware reasoning, and safety-conditioned control.
+              </p>
             </div>
           </div>
         </div>
       </header>
+
       <!-- Key Results Section -->
       <section class="mb-48">
         <div class="grid grid-cols-1 md:grid-cols-4 gap-1">
