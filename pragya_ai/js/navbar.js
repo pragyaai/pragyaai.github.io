@@ -227,10 +227,10 @@
     if (!config) return;
 
     // Build APIS column
-    const hasExpandableAnswers = Boolean(config.answers);
+    const hasAnswers = Boolean(config.answers);
     const apisHTML = config.columns.apis
-      .map((item, index) => {
-        if (!hasExpandableAnswers) {
+      .map((item) => {
+        if (!hasAnswers) {
           return `<div class="submenu-item-wrapper">
             <a href="${item.href}" class="submenu-item">
               <span class="material-symbols-outlined">${item.icon}</span>
@@ -240,16 +240,13 @@
         }
 
         const answer = config.answers[item.label] || "";
-        return `<div class="submenu-item-wrapper" style="display: block; width: 100%;">
-          <button type="button" class="submenu-item submenu-item-toggle" data-qa-index="${index}" aria-expanded="false" style="width: 100%; text-align: left; display: flex; flex-direction: column; align-items: flex-start; gap: 0.65rem;">
-            <span class="material-symbols-outlined">${item.icon}</span>
-            <span style="display: flex; width: 100%; align-items: center; justify-content: space-between; gap: 0.75rem;">
-              <span class="submenu-item-label" style="font-size: 1rem;">${item.label}</span>
-              <span class="material-symbols-outlined" data-qa-chevron="${index}" style="font-size: 1.2rem; flex-shrink: 0;">expand_more</span>
-            </span>
-          </button>
-          <div data-qa-answer="${index}" aria-hidden="true" style="max-height: 0; opacity: 0; overflow: hidden; margin-top: 0.5rem; padding: 0 1rem; border: 1px solid transparent; border-radius: 0.6rem; background: var(--surface-container); color: var(--on-surface-variant); font-size: 1rem; line-height: 1.55; font-family: 'Inter', sans-serif; transition: max-height 320ms ease, opacity 240ms ease, padding 260ms ease, border-color 260ms ease;">
-            ${answer}
+        return `<div class="submenu-item-wrapper submenu-item-wrapper-static">
+          <div class="submenu-item submenu-item-static">
+            <div class="submenu-item-row">
+              <span class="material-symbols-outlined submenu-item-icon">${item.icon}</span>
+              <span class="submenu-item-label submenu-item-question">${item.label}</span>
+            </div>
+            <div class="submenu-item-answer">${answer}</div>
           </div>
         </div>`;
       })
@@ -261,8 +258,6 @@
       ? `background-color: black; background-image: linear-gradient(rgba(0, 0, 0, 0.35), rgba(0, 0, 0, 0.35)), url('${featuredCard.image}'); background-size: cover; background-position: center; background-repeat: no-repeat;`
       : "background-color: black;";
     const cardHTML = `<a href="${featuredCard.href}" class="submenu-featured-card" style="${cardStyle}">
-      <h3>${featuredCard.title}</h3>
-      <p>${featuredCard.description}</p>
       <div class="flex items-center gap-2 mt-auto">
         <span class="text-xs font-medium uppercase tracking-widest">Explore</span>
         <span class="material-symbols-outlined">arrow_outward</span>
@@ -337,49 +332,6 @@
 
   // Close submenu when clicking backdrop
   submenuBackdrop.addEventListener("click", closeSubmenu);
-
-  // DenseWorld-only Q&A toggle handler (delegated for submenu content)
-  submenuContent.addEventListener("click", (e) => {
-    const toggle = e.target.closest(".submenu-item-toggle");
-    if (!toggle) return;
-
-    const index = toggle.getAttribute("data-qa-index");
-    const answer = submenuContent.querySelector(`[data-qa-answer="${index}"]`);
-    const wasExpanded = toggle.getAttribute("aria-expanded") === "true";
-
-    submenuContent.querySelectorAll(".submenu-item-toggle").forEach((btn) => {
-      const btnIndex = btn.getAttribute("data-qa-index");
-      const btnAnswer = submenuContent.querySelector(`[data-qa-answer="${btnIndex}"]`);
-      const chevron = submenuContent.querySelector(`[data-qa-chevron="${btnIndex}"]`);
-
-      btn.setAttribute("aria-expanded", "false");
-      if (btnAnswer) {
-        btnAnswer.style.maxHeight = "0";
-        btnAnswer.style.opacity = "0";
-        btnAnswer.style.paddingTop = "0";
-        btnAnswer.style.paddingBottom = "0";
-        btnAnswer.style.borderColor = "transparent";
-        btnAnswer.setAttribute("aria-hidden", "true");
-      }
-      if (chevron) {
-        chevron.textContent = "expand_more";
-      }
-    });
-
-    if (!wasExpanded && answer) {
-      toggle.setAttribute("aria-expanded", "true");
-      answer.style.maxHeight = `${answer.scrollHeight + 32}px`;
-      answer.style.opacity = "1";
-      answer.style.paddingTop = "0.9rem";
-      answer.style.paddingBottom = "0.9rem";
-      answer.style.borderColor = "var(--surface-container-high)";
-      answer.setAttribute("aria-hidden", "false");
-      const activeChevron = submenuContent.querySelector(`[data-qa-chevron="${index}"]`);
-      if (activeChevron) {
-        activeChevron.textContent = "expand_less";
-      }
-    }
-  });
 
   // Close submenu when clicking outside
   document.addEventListener("click", (e) => {
