@@ -46,8 +46,10 @@
       },
       answers: {
         "What is it?": "World Models for Populous, Crowded, and Chaotic Global South",
-        "What's the necessity?": "Current “world model” progress is largely validated on clean, structured, low-density Western environments, and it often breaks down for the chaotic Global South scenes—where dense occlusion, mixed traffic, informal right-of-way negotiation, extreme lighting and weather, and long-tail objects and signage dominate.",
-        "What's the Leap?": "Because current world-model progress is built on clean, low-density settings and often breaks in the DENSEWORLD regime; this demands systematic, large-scale study rather than incremental benchmark gains.",
+        "What's the necessity?":
+          "Current “world model” progress is largely validated on clean, structured, low-density Western environments, and it often breaks down for the chaotic Global South scenes—where dense occlusion, mixed traffic, informal right-of-way negotiation, extreme lighting and weather, and long-tail objects and signage dominate.",
+        "What's the Leap?":
+          "Because current world-model progress is built on clean, low-density settings and often breaks in the DENSEWORLD regime; this demands systematic, large-scale study rather than incremental benchmark gains.",
       },
       featuredCard: {
         title: "DENSEWORLD",
@@ -66,9 +68,12 @@
         ],
       },
       answers: {
-        "What is it?": "A factorized Joint-Embedding Predictive Architecture that decomposes predictive embeddings into layout, entities, interactions, and visibility-aware reliability.",
-        "What's the necessity?": "Because standard JEPA objectives can achieve strong predictive performance while leaving the latent world structure implicitly entangled, especially under dense occlusion, heterogeneous agents, and partial observability.",
-        "What's the Leap?": "From monolithic embedding prediction to structured, factorized world modeling—where compositionality, interaction structure, and observability are treated as first-class modeling primitives.",
+        "What is it?":
+          "A factorized Joint-Embedding Predictive Architecture that decomposes predictive embeddings into layout, entities, interactions, and visibility-aware reliability.",
+        "What's the necessity?":
+          "Because standard JEPA objectives can achieve strong predictive performance while leaving the latent world structure implicitly entangled, especially under dense occlusion, heterogeneous agents, and partial observability.",
+        "What's the Leap?":
+          "From monolithic embedding prediction to structured, factorized world modeling—where compositionality, interaction structure, and observability are treated as first-class modeling primitives.",
       },
       featuredCard: {
         title: "FactorJEPA",
@@ -87,9 +92,12 @@
         ],
       },
       answers: {
-        "What is it?": "India’s first sovereign VLA model for robot navigation—an instruction-finetuned framework that unifies multilingual grounding, locomotion-aware reasoning, and safety-conditioned control.",
-        "What's the necessity?": "Because current VLA systems are still optimized largely for manipulation-centric, clean indoor benchmarks, leaving locomotion feasibility, partial observability, terrain uncertainty, and safety-aware abstention under-modeled.",
-        "What's the Leap?": "From direct instruction-to-action policies to structured embodied deliberation, where traversability, body-feasibility, hidden-state inference, and risk-aware abstention become explicit components of navigation control.",
+        "What is it?":
+          "India’s first sovereign VLA model for robot navigation—an instruction-finetuned framework that unifies multilingual grounding, locomotion-aware reasoning, and safety-conditioned control.",
+        "What's the necessity?":
+          "Because current VLA systems are still optimized largely for manipulation-centric, clean indoor benchmarks, leaving locomotion feasibility, partial observability, terrain uncertainty, and safety-aware abstention under-modeled.",
+        "What's the Leap?":
+          "From direct instruction-to-action policies to structured embodied deliberation, where traversability, body-feasibility, hidden-state inference, and risk-aware abstention become explicit components of navigation control.",
       },
       featuredCard: {
         title: "PragyaVLA",
@@ -109,8 +117,10 @@
       },
       answers: {
         "What is it?": "A safety, alignment, and governance protocol for robots operating in real-world environments.",
-        "What's the necessity?": "Because deployment in public infrastructure, industry, defense, and high-footfall civilian spaces demands robotic systems that are not only capable, but also safe, interpretable, and protocol-governed.",
-        "What's the Leap?": "From model-level capability to deployment-ready assurance—where alignment, safety constraints, and operational conduct are built into the robotic stack.",
+        "What's the necessity?":
+          "Because deployment in public infrastructure, industry, defense, and high-footfall civilian spaces demands robotic systems that are not only capable, but also safe, interpretable, and protocol-governed.",
+        "What's the Leap?":
+          "From model-level capability to deployment-ready assurance—where alignment, safety constraints, and operational conduct are built into the robotic stack.",
       },
       featuredCard: {
         title: "KalamProtocol",
@@ -129,9 +139,12 @@
         ],
       },
       answers: {
-        "What is it?": "A movement-intelligence framework for humanoid robots, inspired by Kalaripayattu and grounded in strategic embodied response.",
-        "What's the necessity?": "Because India-facing deployment demands humanoids that can move and respond in crowded public spaces, disaster zones, industrial corridors, high-footfall transit hubs, and security-sensitive environments.",
-        "What's the Leap?": "From generic humanoid control to Kalaripayattu-inspired movement intelligence for strategic, context-aware real-world deployment.",
+        "What is it?":
+          "A movement-intelligence framework for humanoid robots, inspired by Kalaripayattu and grounded in strategic embodied response.",
+        "What's the necessity?":
+          "Because India-facing deployment demands humanoids that can move and respond in crowded public spaces, disaster zones, industrial corridors, high-footfall transit hubs, and security-sensitive environments.",
+        "What's the Leap?":
+          "From generic humanoid control to Kalaripayattu-inspired movement intelligence for strategic, context-aware real-world deployment.",
       },
       featuredCard: {
         title: "KalariSena",
