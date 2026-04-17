@@ -20,27 +20,8 @@
     <div id="site-navbar"></div>
 
     <main class="pb-24 px-12 max-w-[1920px] mx-auto" style="padding-top: var(--nav-height, 84px)">
-      <header
-        class="relative -mx-12 mb-32 flex items-center overflow-hidden bg-surface-container-lowest border border-surface-container-high"
-        style="aspect-ratio: 16 / 9"
-      >
-        <div class="absolute inset-0 z-0">
-          <div class="absolute inset-0 bg-[radial-gradient(#e5e0db_1px,transparent_1px)] bg-size-[40px_40px] opacity-20"></div>
-          <div class="absolute inset-0 w-full h-full opacity-20">
-            <img alt="Dense World hero visualization" class="w-full h-full object-contain object-center" src="../public/denseworld_hero.png" />
-          </div>
-          <div class="absolute inset-0 bg-linear-to-r from-surface-container-lowest/35 via-surface-container-lowest/12 to-transparent"></div>
-        </div>
-        <div class="relative z-10 w-full max-w-5xl p-10 md:p-14">
-          <h1 class="text-7xl md:text-[8rem] plus-jakarta-sans font-extralight tracking-tighter leading-none mb-12 text-primary">DENSEWORLD</h1>
-          <div class="flex flex-col md:flex-row gap-12 items-start">
-            <div class="md:w-3/5">
-              <p class="text-xl md:text-2xl inter font-light leading-relaxed text-on-surface/80">
-                World Models for Populous, Crowded, and Chaotic Global South
-              </p>
-            </div>
-          </div>
-        </div>
+      <header class="relative left-1/2 mb-32 h-[calc(100vh-var(--nav-height,84px))] w-screen -translate-x-1/2 overflow-hidden bg-surface-container-lowest border border-surface-container-high">
+        <img alt="Dense World hero visualization" class="h-full w-full object-cover object-center" src="../public/denseworld_hero.png" />
       </header>
 
       <section class="mb-48">
@@ -49,7 +30,7 @@
             <span class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline group-hover:text-primary-fixed mb-4 block"
               >Total Clips</span
             >
-            <h3 class="plus-jakarta-sans text-5xl font-light tracking-tighter group-hover:text-on-primary">115,687</h3>
+            <h3 class="plus-jakarta-sans text-5xl font-light tracking-tighter group-hover:text-on-primary">115k+</h3>
             <p class="inter text-xs text-on-surface-variant mt-2 group-hover:text-on-primary/70">From 714 source videos</p>
           </div>
           <div class="bg-surface-container-lowest p-12 border-l-2 border-primary group hover:bg-primary transition-colors duration-500">
@@ -63,7 +44,7 @@
             <span class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-outline group-hover:text-primary-fixed mb-4 block"
               >Dataset Scale</span
             >
-            <h3 class="plus-jakarta-sans text-5xl font-light tracking-tighter group-hover:text-on-primary">276 hr</h3>
+            <h3 class="plus-jakarta-sans text-5xl font-light tracking-tighter group-hover:text-on-primary">300 hr+</h3>
             <p class="inter text-xs text-on-surface-variant mt-2 group-hover:text-on-primary/70">121 GB total data volume</p>
           </div>
           <div class="bg-surface-container-lowest p-12 border-l-2 border-primary group hover:bg-primary transition-colors duration-500">
@@ -76,92 +57,29 @@
         </div>
       </section>
 
-      <section class="space-y-32">
-        <div>
-          <div class="flex items-center gap-8 mb-12">
-            <span class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-primary">01. RAW INPUT DATA</span>
-            <div class="h-px flex-grow bg-outline-variant/10"></div>
+      <section class="space-y-24">
+        <div class="bg-surface-container-lowest border border-outline-variant/10 p-6 md:p-8">
+          <div class="mb-6 flex flex-wrap items-baseline gap-3">
+            <h2 class="plus-jakarta-sans text-3xl md:text-4xl font-light tracking-tight text-on-surface">Tier 1 Cities</h2>
+            <p class="inter text-sm md:text-base text-on-surface-variant">- 6 metros, 68k+ clips</p>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div class="aspect-video bg-surface-container-low overflow-hidden group">
-              <img
-                alt="High-density market corridor in South Asia"
-                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
-                src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=1400&q=80"
-              />
-              <div class="p-4 border-t border-outline-variant/10">
-                <p class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-on-surface-variant">Scenario: Market Congestion</p>
-              </div>
-            </div>
-            <div class="aspect-video bg-surface-container-low overflow-hidden group">
-              <img
-                alt="Dense traffic and mixed transport at an urban junction"
-                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
-                src="https://images.unsplash.com/photo-1480714378408-67cf0d13bc1f?auto=format&fit=crop&w=1400&q=80"
-              />
-              <div class="p-4 border-t border-outline-variant/10">
-                <p class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-on-surface-variant">Scenario: Multi-Modal Traffic</p>
-              </div>
-            </div>
-            <div class="aspect-video bg-surface-container-low overflow-hidden group">
-              <img
-                alt="Narrow lane with high pedestrian density"
-                class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
-                src="https://images.unsplash.com/photo-1494526585095-c41746248156?auto=format&fit=crop&w=1400&q=80"
-              />
-              <div class="p-4 border-t border-outline-variant/10">
-                <p class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-on-surface-variant">Scenario: Lane-Level Flow</p>
-              </div>
-            </div>
-          </div>
+          <div id="tier1-city-grid" class="space-y-4"></div>
         </div>
 
-        <div>
-          <div class="flex items-center gap-8 mb-12">
-            <span class="inter text-[0.6875rem] font-medium uppercase tracking-widest text-primary">02. PROCESSED RESULTS</span>
-            <div class="h-px flex-grow bg-outline-variant/10"></div>
+        <div class="bg-surface-container-lowest border border-outline-variant/10 p-6 md:p-8">
+          <div class="mb-6 flex flex-wrap items-baseline gap-3">
+            <h2 class="plus-jakarta-sans text-3xl md:text-4xl font-light tracking-tight text-on-surface">Tier 2 Cities</h2>
+            <p class="inter text-sm md:text-base text-on-surface-variant">- 15 cities, 40k+ clips</p>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div class="bg-surface-container-lowest p-8 border border-outline-variant/10">
-              <div class="aspect-video bg-on-surface mb-6 p-4 font-mono text-[10px] text-primary-fixed overflow-hidden leading-tight">
-                &gt; stream_id: dense_zone_a17<br />
-                &gt; pedestrian_clusters: 29<br />
-                &gt; occlusion_ratio: 0.71<br />
-                &gt; temporal_linking: enabled<br />
-                &gt; confidence: 0.93
-              </div>
-              <h4 class="inter text-sm font-semibold mb-2 text-primary">Task: Crowd Reconstruction</h4>
-              <p class="inter text-xs text-on-surface-variant leading-relaxed">
-                Trajectory stitching remains stable even when large portions of the scene are intermittently hidden.
-              </p>
-            </div>
-            <div class="bg-surface-container-lowest p-8 border border-outline-variant/10">
-              <div class="aspect-video bg-on-surface mb-6 p-4 font-mono text-[10px] text-primary-fixed overflow-hidden leading-tight">
-                &gt; modal_mix: bus, bike, auto, walk<br />
-                &gt; signal_entropy: high<br />
-                &gt; transition_matrix: updated<br />
-                &gt; horizon: 4.5s<br />
-                &gt; collision_alert: suppressed
-              </div>
-              <h4 class="inter text-sm font-semibold mb-2 text-primary">Task: Mobility Forecasting</h4>
-              <p class="inter text-xs text-on-surface-variant leading-relaxed">
-                Dense World predicts near-term movement transitions across mixed mobility channels with low-latency updates.
-              </p>
-            </div>
-            <div class="bg-surface-container-lowest p-8 border border-outline-variant/10">
-              <div class="aspect-video bg-on-surface mb-6 p-4 font-mono text-[10px] text-primary-fixed overflow-hidden leading-tight">
-                &gt; map_refresh: active<br />
-                &gt; free_space_est: 18%<br />
-                &gt; bottleneck_score: 0.82<br />
-                &gt; reroute_candidates: 6<br />
-                &gt; selected_plan: #4
-              </div>
-              <h4 class="inter text-sm font-semibold mb-2 text-primary">Task: Bottleneck Routing</h4>
-              <p class="inter text-xs text-on-surface-variant leading-relaxed">
-                Path planning adapts to high-friction junctions and narrow passage bottlenecks using dynamic occupancy cues.
-              </p>
-            </div>
+          <div id="tier2-city-grid" class="space-y-4"></div>
+        </div>
+
+        <div class="bg-surface-container-lowest border border-outline-variant/10 p-6 md:p-8">
+          <div class="mb-6 flex flex-wrap items-baseline gap-3">
+            <h2 class="plus-jakarta-sans text-3xl md:text-4xl font-light tracking-tight text-on-surface">Full Taxonomy Coverage</h2>
+            <p class="inter text-sm md:text-base text-on-surface-variant">- 15 fields, 65+ values, v3 structured tags</p>
           </div>
+          <div id="taxonomy-grid" class="space-y-6"></div>
         </div>
       </section>
 
@@ -235,6 +153,7 @@
 
     <script src="../js/navbar.js" defer></script>
     <script src="../js/footer.js" defer></script>
+    <script src="../js/denseworld-grid.js" defer></script>
     <script src="../js/main.js" defer></script>
   </body>
 </html>
