@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="SahaBose-KFAC: Making KFAC Stable and Fast via Spectral Annealing and Curvature Condensation.">
+  <meta name="keywords" content="KFAC, Optimization, Spectral Annealing, Curvature Condensation, Deep Learning">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SahaBose-KFAC: Making KFAC Stable and Fast via Spectral Annealing and Curvature Condensation</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
+</head>
+<body>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://github.com/SahaBose-KFAC">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://github.com/SahaBose-KFAC">
+            SahaBose-KFAC
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">SahaBose-KFAC: Making KFAC Stable and Fast via Spectral Annealing and Curvature Condensation</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="#">Anish Sathyanarayanan</a><sup>1*</sup>,</span>
+            <span class="author-block">
+              <a href="#">Rishikesh Mallagundla</a><sup>1*</sup>,</span>
+            <span class="author-block">
+              <a href="#">Visheshe Narang</a><sup>1*</sup>,
+            </span>
+            <span class="author-block">
+              <a href="#">Aman Chadha</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="#">Vinija Jain</a><sup>3</sup>,
+            </span>
+            <span class="author-block">
+              <a href="#">Amitava Das</a><sup>1</sup>
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>PragyaLab, BITS Pilani Goa;</span>
+            <span class="author-block"><sup>2</sup>Apple;</span>
+            <span class="author-block"><sup>3</sup>Google</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span></div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <img src="./static/images/fig2.png" alt="Optimization diagnostic for SABER stabilization" />
+      <h2 class="subtitle has-text-centered">
+        Figure 2: Optimization diagnostic on a complex loss landscape. SABER-Full enters a stable descent channel earlier than Vanilla KFAC or SGD, avoiding tail-driven excursions in rugged regions.
+      </h2>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Kronecker-factored Approximate Curvature (KFAC) offers a powerful second-order optimization framework, yet it often suffers from instability and high computational overhead in large-scale deep learning. We present <strong>SahaBose-KFAC</strong>, a novel approach that decouples stability from efficiency through two core operators: <strong>Saha Spectral Annealing</strong> and <strong>Bose Curvature Condensation</strong>.
+          </p>
+          <p>
+            Saha Spectral Annealing introduces a time-varying spectral transformation \(\tilde{\sigma}_i(t) = (\sigma_i + \epsilon)^{\alpha_t}\) that flattens the curvature spectrum early in training, suppressing spurious spikes that lead to divergence. Bose Curvature Condensation identifies the smallest robust "head" subspace capturing the majority of curvature mass and caps the tail inverse-gain, significantly reducing the cost of inversion without sacrificing performance.
+          </p>
+          <p>
+            Our methodology provides a theoretical bridge between first-order smoothness and second-order convergence, ensuring stable descent even in highly non-convex landscapes. We evaluate SahaBose-KFAC across diverse benchmarks including AG_NEWS, SQuAD, and SNLI, demonstrating that it achieves competitive accuracy with significantly improved stability metrics, such as a reduction in Mean Kappa from 3129.89 (Vanilla) to 1075.24 (SABER) on AG_NEWS.
+          </p>
+        </div>
+      </div>
+    </div>
+    <!--/ Abstract. -->
+
+
+  </div>
+</section>
+
+
+<section class="section">
+  <div class="container is-max-desktop">
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Methodology: SABER-KFAC Operators</h2>
+
+        <div class="has-text-centered">
+          <img src="./static/images/fig1.png" alt="SahaBose composition flowchart" style="width: 80%;" />
+          <p class="subtitle is-6">
+            Figure 1: SahaBose composition flowchart. Saha reshapes the factor spectrum while Bose caps the inverse tail, composing the layer preconditioner via Kronecker product.
+          </p>
+        </div>
+        <br>
+
+        <h3 class="title is-4">Saha Spectral Annealing</h3>
+        <div class="content has-text-justified">
+          <p>
+            The Saha operator introduces a time-varying spectral transformation that allows for a smooth transition from first-order exploration to second-order convergence. By applying:
+            \[ \tilde{\sigma}_i(t) = (\sigma_i + \epsilon)^{\alpha_t} \]
+            where \(\alpha_t\) is an annealing schedule, we flatten the curvature spectrum early in training. This suppresses the spurious eigenvalues that often cause KFAC to become unstable during the initial phase of optimization.
+          </p>
+        </div>
+
+        <h3 class="title is-4">Bose Curvature Condensation</h3>
+        <div class="content has-text-justified">
+          <p>
+            Bose Condensation identifies the smallest robust subspace that captures the dominant curvature information. We determine the optimal rank \(k^*\) such that:
+            \[ k^* = \min\left\{k : \sum_{i=1}^k p_i \ge m\right\} \]
+            where \(p_i\) represents the contribution of the \(i\)-th eigenpair to the overall curvature mass. By capping the tail inverse-gain, we ensure that the preconditioner \( \mathbf{P} \approx \mathbf{A} \otimes \mathbf{G} \) remains well-conditioned while significantly reducing computational overhead.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Quantitative Results</h2>
+
+        <h3 class="title is-4">AG_NEWS Benchmarks</h3>
+        <div class="content">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th>Optimizer</th>
+                <th>Accuracy</th>
+                <th>Eval Loss</th>
+                <th>Train Loss</th>
+                <th>Mean \(k^*\)</th>
+                <th>Time (s)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="background-color: #e6ffed;">
+                <td><strong>SahaBose (saber)</strong></td>
+                <td>0.9993</td>
+                <td>2.2526</td>
+                <td>2.4511</td>
+                <td>1249.01</td>
+                <td>2608.9</td>
+              </tr>
+              <tr>
+                <td>AdamW</td>
+                <td>0.9995</td>
+                <td>2.0409</td>
+                <td>2.1045</td>
+                <td>0.00</td>
+                <td>3316</td>
+              </tr>
+              <tr>
+                <td>Vanilla KFAC</td>
+                <td>0.9978</td>
+                <td>3.4076</td>
+                <td>3.6899</td>
+                <td>1231.88</td>
+                <td>2598.0</td>
+              </tr>
+              <tr>
+                <td>SGD</td>
+                <td>0.9981</td>
+                <td>3.1339</td>
+                <td>3.1371</td>
+                <td>0.00</td>
+                <td>3285</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="title is-4">SQuAD Benchmarks</h3>
+        <div class="content">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th>Optimizer</th>
+                <th>Train Loss</th>
+                <th>Eval Loss</th>
+                <th>Time (s)</th>
+                <th>Peak Mem (MB)</th>
+                <th>Mean \(k^*\)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AdamW</td>
+                <td>2.1753</td>
+                <td>2.1289</td>
+                <td>2648.62</td>
+                <td>44264</td>
+                <td>0.00</td>
+              </tr>
+              <tr style="background-color: #e6ffed;">
+                <td><strong>SABER-KFAC</strong></td>
+                <td>2.1035</td>
+                <td>2.1802</td>
+                <td>3602.33</td>
+                <td>44655</td>
+                <td>1029.66</td>
+              </tr>
+              <tr>
+                <td>Vanilla KFAC</td>
+                <td>2.0864</td>
+                <td>2.1517</td>
+                <td>3420.16</td>
+                <td>44660</td>
+                <td>1112.32</td>
+              </tr>
+              <tr>
+                <td>SGD</td>
+                <td>3.1371</td>
+                <td>3.1339</td>
+                <td>3285.00</td>
+                <td>-</td>
+                <td>0.00</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3 class="title is-4">SNLI Benchmarks</h3>
+        <div class="content">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th>Optimizer</th>
+                <th>Time (s)</th>
+                <th>Peak Mem (MB)</th>
+                <th>Train Loss</th>
+                <th>Eval Loss</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>AdamW</td>
+                <td>141.13</td>
+                <td>18503.53</td>
+                <td>1.5160</td>
+                <td>1.9852</td>
+              </tr>
+              <tr>
+                <td>SGD</td>
+                <td>135.15</td>
+                <td>18469.40</td>
+                <td>4.5142</td>
+                <td>4.3085</td>
+              </tr>
+              <tr>
+                <td>Vanilla KFAC</td>
+                <td>176.50</td>
+                <td>18590.40</td>
+                <td>1.7485</td>
+                <td>1.9083</td>
+              </tr>
+              <tr style="background-color: #e6ffed;">
+                <td><strong>SABER-KFAC</strong></td>
+                <td>190.16</td>
+                <td>18590.40</td>
+                <td>1.9371</td>
+                <td>1.8965</td>
+              </tr>
+            </tbody>
+          </table>
+        <h3 class="title is-4">VLMS Image Captioning</h3>
+        <div class="content">
+          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+            <thead>
+              <tr>
+                <th>Config</th>
+                <th>Optimizer</th>
+                <th>BLEU-4</th>
+                <th>BLEU-1</th>
+                <th>Mean Kappa</th>
+                <th>Mean \(k^*\)</th>
+                <th>Time (s)</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td rowspan="3">Baseline (full data, damping=2.1)</td>
+                <td>AdamW</td>
+                <td>22.1%</td>
+                <td>58.8%</td>
+                <td>-</td>
+                <td>-</td>
+                <td>2589s</td>
+              </tr>
+              <tr style="background-color: #e6ffed;">
+                <td><strong>SABER (no BOSE)</strong></td>
+                <td>16.5%</td>
+                <td>49.2%</td>
+                <td>8.1</td>
+                <td>428</td>
+                <td>2796s</td>
+              </tr>
+              <tr>
+                <td>KFAC</td>
+                <td>16.5%</td>
+                <td>49.2%</td>
+                <td>8.1</td>
+                <td>656</td>
+                <td>2799s</td>
+              </tr>
+              <tr>
+                <td rowspan="3">Damping fix + BOSE on (5k, damping=0.01)</td>
+                <td>AdamW</td>
+                <td>27.2%</td>
+                <td>67.9%</td>
+                <td>-</td>
+                <td>-</td>
+                <td>561s</td>
+              </tr>
+              <tr style="background-color: #e6ffed;">
+                <td><strong>SABER (BOSE)</strong></td>
+                <td>29.6%</td>
+                <td>74.7%</td>
+                <td>1498</td>
+                <td>485</td>
+                <td>667s</td>
+              </tr>
+              <tr>
+                <td>KFAC</td>
+                <td>32.2%</td>
+                <td>76.4%</td>
+                <td>1481</td>
+                <td>663</td>
+                <td>667s</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@inproceedings{sathyanarayanan2026sahabose,
+  author    = {Sathyanarayanan, Anish and Mallagundla, Rishikesh and Narang, Visheshe and Chadha, Aman and Jain, Vinija and Das, Amitava},
+  title     = {SahaBose-KFAC: Making KFAC Stable and Fast via Spectral Annealing and Curvature Condensation},
+  booktitle = {NeurIPS},
+  year      = {2026},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="#">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/SahaBose-KFAC" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            You are free to borrow the source code of this website from the <a
+              href="https://github.com/nerfies/nerfies.github.io">Nerfies repository</a>. We just ask that you link back to this page in the footer.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
