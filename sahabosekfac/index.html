@@ -1,634 +1,418 @@
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="description"
-        content="SahaBose-KFAC: Making KFAC Stable and Fast via Spectral Annealing and Curvature Condensation.">
-  <meta name="keywords" content="KFAC, Optimization, Spectral Annealing, Curvature Condensation, Deep Learning">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SahaBose-KFAC: Making KFAC Stable and Fast via Spectral Annealing and Curvature Condensation</title>
-
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
-  <style>
-    body { font-family: 'Noto Sans', sans-serif; }
-    .publication-title { font-family: 'Google Sans', sans-serif; }
-    .publication-authors { margin-top: 1rem; }
-    .author-block { margin-right: 0.5rem; }
-
-    /* ── algorithm box ── */
-    .algorithm-box {
-      background: #f8f9fa;
-      border: 1px solid #dee2e6;
-      border-left: 4px solid #3273dc;
-      border-radius: 4px;
-      padding: 1.25rem 1.5rem;
-      margin: 1.25rem 0;
-      font-family: 'Noto Sans', sans-serif;
-    }
-    .algorithm-box .algo-title {
-      font-weight: 700;
-      font-size: 1rem;
-      margin-bottom: 0.75rem;
-      color: #363636;
-      border-bottom: 1px solid #dee2e6;
-      padding-bottom: 0.5rem;
-    }
-    .algorithm-box ol {
-      margin: 0.5rem 0 0 1.25rem;
-      padding: 0;
-    }
-    .algorithm-box ol li { margin-bottom: 0.4rem; line-height: 1.6; }
-
-    /* ── failure-mode callout ── */
-    .pathology-box {
-      background: #fff8f0;
-      border: 1px solid #ffddaa;
-      border-left: 4px solid #e67e22;
-      border-radius: 4px;
-      padding: 1rem 1.25rem;
-      margin: 1rem 0;
-    }
-    .pathology-box .pathology-title {
-      font-weight: 700;
-      color: #d35400;
-      margin-bottom: 0.5rem;
-    }
-
-    /* ── insight callout ── */
-    .insight-box {
-      background: #f0f7ff;
-      border: 1px solid #aacfee;
-      border-left: 4px solid #3273dc;
-      border-radius: 4px;
-      padding: 1rem 1.25rem;
-      margin: 1rem 0;
-    }
-
-    .section-divider {
-      border: none;
-      border-top: 1px solid #e0e0e0;
-      margin: 2rem 0;
-    }
-
-    .method-tag {
-      display: inline-block;
-      background: #3273dc;
-      color: white;
-      border-radius: 3px;
-      padding: 1px 7px;
-      font-size: 0.82rem;
-      font-weight: 600;
-      margin-right: 4px;
-      vertical-align: middle;
-    }
-    .method-tag.orange { background: #e67e22; }
-    .method-tag.green  { background: #27ae60; }
-
-    table.results-table th { background: #f5f5f5; }
-    .highlight-row { background-color: #e6ffed !important; }
-
-    .composition-flow {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.75rem;
-      margin: 1.25rem 0;
-      flex-wrap: wrap;
-    }
-    .flow-box {
-      background: #f0f7ff;
-      border: 1px solid #aacfee;
-      border-radius: 6px;
-      padding: 0.5rem 1rem;
-      font-size: 0.92rem;
-      text-align: center;
-    }
-    .flow-arrow { font-size: 1.3rem; color: #888; }
-    .flow-label { font-size: 0.72rem; color: #888; margin-top: 2px; }
-  </style>
-
-  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
-        rel="stylesheet">
-
+  <title>SahaBose-KFAC</title>
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.css">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/katex.min.js"></script>
-  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js" onload="renderMathInElement(document.body);"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.13.11/dist/contrib/auto-render.min.js"
+    onload="renderMathInElement(document.body,{delimiters:[{left:'\\[',right:'\\]',display:true},{left:'\\(',right:'\\)',display:false}]});"></script>
+  <style>
+    :root {
+      --border:#d9dee7; --text:#1f2937; --muted:#5b6472;
+      --accent:#3273dc; --accent-soft:#f5f8fc;
+      --success-soft:#edf8ef; --warn-soft:#fff6ea; --surface:#fafbfc;
+    }
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin:0; padding:0; background:#fff; color:var(--text);
+           font-family:'Noto Sans',sans-serif; line-height:1.68; font-size:16px; }
 
-  <link rel="stylesheet" href="./static/css/bulma.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
-  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-  <link rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
-  <link rel="stylesheet" href="./static/css/index.css">
-  <link rel="icon" href="./static/images/favicon.svg">
+    /* ── nav ── */
+    nav { background:#fff; border-bottom:1px solid var(--border);
+          padding:.55rem 1.5rem; font-size:.88rem; font-family:'Google Sans',sans-serif; }
+    nav a { color:var(--accent); text-decoration:none; margin-right:1.1rem; }
+    nav a:hover { text-decoration:underline; }
 
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script defer src="./static/js/fontawesome.all.min.js"></script>
-  <script src="./static/js/bulma-carousel.min.js"></script>
-  <script src="./static/js/bulma-slider.min.js"></script>
-  <script src="./static/js/index.js"></script>
+    /* ── page wrap ── */
+    .wrap { max-width:1080px; margin:0 auto; padding:0 1.5rem 5rem; }
+
+    /* ── hero ── */
+    .hero { text-align:center; padding:2.8rem 1rem 1.8rem; border-bottom:1px solid var(--border); margin-bottom:2rem; }
+    .hero h1 { font-family:'Google Sans',sans-serif; font-size:2rem; line-height:1.2;
+               letter-spacing:-.02em; color:#111827; max-width:820px; margin:0 auto .9rem; }
+    .authors { color:var(--muted); font-size:.95rem; margin:.2rem 0 .3rem; }
+    .authors a { color:var(--accent); text-decoration:none; }
+    .affiliations { color:#9ca3af; font-size:.82rem; margin-bottom:1.1rem; }
+    .btn-row { display:flex; gap:.55rem; justify-content:center; flex-wrap:wrap; margin-top:.9rem; }
+    .btn { display:inline-flex; align-items:center; gap:.3rem; background:#1f2937; color:#fff;
+           border-radius:999px; padding:.38rem .95rem; font-size:.84rem; text-decoration:none;
+           font-family:'Google Sans',sans-serif; transition:background .15s; }
+    .btn:hover { background:#374151; }
+
+    /* ── teaser ── */
+    .teaser { text-align:center; margin:1.5rem 0 2rem; }
+    .teaser img { max-width:100%; border-radius:10px; border:1px solid var(--border); }
+    .teaser figcaption { font-size:.84rem; color:var(--muted); margin-top:.6rem;
+                         max-width:680px; margin-left:auto; margin-right:auto; }
+
+    /* ── section headings ── */
+    h2 { font-family:'Google Sans',sans-serif; font-size:1.52rem; color:#111827;
+         margin:2.8rem 0 1rem; padding-bottom:.45rem; border-bottom:2px solid var(--border); }
+    h3 { font-size:1.16rem; color:#111827; margin:1.8rem 0 .6rem; font-weight:700; }
+    h4 { font-size:1rem; color:#374151; margin:1.3rem 0 .3rem; font-weight:700; }
+    p  { margin:0 0 .9rem; }
+
+    /* ── callout boxes ── */
+    .box { border-radius:10px; border:1px solid var(--border); padding:1.05rem 1.35rem; margin:1.1rem 0; }
+    .box-algo  { background:linear-gradient(180deg,#fff,var(--surface)); border-left:4px solid var(--accent); }
+    .box-warn  { background:var(--warn-soft); border-left:4px solid #e67e22; }
+    .box-info  { background:var(--accent-soft); border-left:4px solid var(--accent); }
+    .box-title { font-weight:700; margin-bottom:.4rem; }
+    .box-algo .box-title { font-size:.96rem; color:#1f2937; border-bottom:1px solid var(--border);
+                           padding-bottom:.42rem; margin-bottom:.65rem; }
+    .box-warn .box-title { color:#c2410c; }
+    .box-algo ol { margin:.35rem 0 0 1.15rem; padding:0; }
+    .box-algo ol li { margin-bottom:.38rem; line-height:1.6; }
+    .box-note { font-size:.83rem; color:var(--muted); margin-top:.65rem; margin-bottom:0; }
+
+    /* ── method tags ── */
+    .tag { display:inline-block; color:#fff; border-radius:999px;
+           padding:2px 9px; font-size:.75rem; font-weight:700; margin-right:3px; vertical-align:middle; }
+    .t-blue   { background:var(--accent); }
+    .t-orange { background:#e67e22; }
+    .t-green  { background:#27ae60; }
+
+    /* ── composition flow ── */
+    .flow { display:flex; align-items:center; justify-content:center;
+            gap:.6rem; margin:1.2rem 0; flex-wrap:wrap; }
+    .flow-box { background:var(--accent-soft); border:1px solid #c7d8ef; border-radius:9px;
+                padding:.48rem .95rem; font-size:.89rem; text-align:center; }
+    .flow-lbl { font-size:.69rem; color:#9ca3af; display:block; margin-top:1px; }
+    .flow-arr { font-size:1.15rem; color:#9ca3af; }
+
+    /* ── divider ── */
+    hr { border:none; border-top:1px solid var(--border); margin:2rem 0; }
+
+    /* ── tables ── */
+    .tbl-wrap { overflow-x:auto; margin:.5rem 0 1.4rem; border-radius:8px;
+                border:1px solid var(--border); }
+    table { width:100%; border-collapse:collapse; font-size:.875rem; background:#fff; }
+    th,td { padding:.48rem .7rem; border:1px solid var(--border); vertical-align:top; }
+    th { background:#f7f8fa; font-weight:700; color:#111827; white-space:nowrap; }
+    tr:nth-child(even) td { background:#fafbfc; }
+    tr.hl td { background:var(--success-soft) !important; font-weight:600; }
+    .model-note { font-size:.75rem; color:var(--muted); font-style:italic;
+                  font-weight:400; margin-left:.3rem; }
+    .tbl-note { font-size:.76rem; color:#9ca3af; margin:.2rem 0 1rem; }
+
+    /* ── bibtex ── */
+    pre { background:var(--surface); border:1px solid var(--border); border-radius:9px;
+          padding:1rem 1.2rem; font-size:.84rem; overflow-x:auto; line-height:1.55; }
+
+    /* ── footer ── */
+    footer { text-align:center; font-size:.81rem; color:#9ca3af;
+             border-top:1px solid var(--border); margin-top:3rem; padding-top:1.1rem; }
+    footer a { color:var(--accent); text-decoration:none; }
+
+    @media (max-width:640px) {
+      .hero h1 { font-size:1.45rem; }
+      .wrap { padding:0 1rem 3rem; }
+      table { font-size:.8rem; }
+    }
+  </style>
 </head>
 <body>
 
-<nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
-    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-    </a>
-  </div>
-  <div class="navbar-menu">
-    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
-      <a class="navbar-item" href="https://github.com/SahaBose-KFAC">
-      <span class="icon">
-          <i class="fas fa-home"></i>
-      </span>
-      </a>
-
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link">
-          More Research
-        </a>
-        <div class="navbar-dropdown">
-          <a class="navbar-item" href="https://github.com/SahaBose-KFAC">
-            SahaBose-KFAC
-          </a>
-        </div>
-      </div>
-    </div>
-
-  </div>
+<nav>
+  <a href="https://github.com/SahaBose-KFAC">🏠 Home</a>
+  <a href="#">More Research ▾</a>
 </nav>
 
+<div class="wrap">
 
-<section class="hero">
-  <div class="hero-body">
-    <div class="container is-max-desktop">
-      <div class="columns is-centered">
-        <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">SahaBose-KFAC: Making KFAC Stable via Spectral Annealing and Curvature Condensation</h1>
-          <div class="is-size-5 publication-authors">
-            <span class="author-block">
-              <a href="#">Anish Sathyanarayanan</a><sup>1*</sup>,</span>
-            <span class="author-block">
-              <a href="#">Rishikesh Mallagundla</a><sup>4*</sup>,</span>
-            <span class="author-block">
-              <a href="#">Visheshe Narang</a><sup>1*</sup>,
-            </span>
-            <span class="author-block">
-              <a href="#">Aman Chadha</a><sup>2</sup>,
-            </span>
-            <span class="author-block">
-              <a href="#">Vinija Jain</a><sup>3</sup>,
-            </span>
-            <span class="author-block">
-              <a href="#">Amitava Das</a><sup>1</sup>
-            </span>
-          </div>
-
-          <div class="is-size-5 publication-authors">
-            <span class="author-block"><sup>1</sup>PragyaLab, BITS Pilani Goa;</span>
-            <span class="author-block"><sup>2</sup>Apple;</span>
-            <span class="author-block"><sup>3</sup>Google</span>
-            <span class="author-block"><sup>4</sup>Independent Researcher</span>
-          </div>
-
-          <div class="column has-text-centered">
-            <div class="publication-links">
-              <!-- PDF Link. -->
-              <span class="link-block">
-                <a href="#"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fas fa-file-pdf"></i>
-                  </span>
-                  <span>Paper</span>
-                </a>
-              </span>
-              <span class="link-block">
-                <a href="#"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv</span>
-                </a>
-              </span>
-              <span class="link-block">
-                <a href="#"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="fab fa-github"></i>
-                  </span>
-                  <span>Code</span>
-                  </a>
-              </span></div>
-
-          </div>
-        </div>
-      </div>
-    </div>
+<!-- ═══ HERO ═══ -->
+<div class="hero">
+  <h1>SahaBose-KFAC: Making KFAC Stable via Spectral Annealing and Curvature Condensation</h1>
+  <p class="authors">
+    <a href="#">Anish Sathyanarayanan</a><sup>1*</sup>,&ensp;
+    <a href="#">Rishikesh Mallagundla</a><sup>4*</sup>,&ensp;
+    <a href="#">Visheshe Narang</a><sup>1*</sup>,&ensp;
+    <a href="#">Aman Chadha</a><sup>2</sup>,&ensp;
+    <a href="#">Vinija Jain</a><sup>3</sup>,&ensp;
+    <a href="#">Amitava Das</a><sup>1</sup>
+  </p>
+  <p class="affiliations">
+    <sup>1</sup>PragyaLab, BITS Pilani Goa &nbsp;·&nbsp;
+    <sup>2</sup>Apple &nbsp;·&nbsp;
+    <sup>3</sup>Google &nbsp;·&nbsp;
+    <sup>4</sup>Independent Researcher
+  </p>
+  <div class="btn-row">
+    <a class="btn" href="#">📄 Paper</a>
+    <a class="btn" href="#">arXiv</a>
+    <a class="btn" href="#">💻 Code</a>
   </div>
-</section>
+</div>
 
-<section class="hero teaser">
-  <div class="container is-max-desktop">
-    <div class="hero-body">
-      <img src="./static/images/fig2.png" alt="Optimization diagnostic for SABER stabilization" />
-      <h2 class="subtitle has-text-centered">
-        Figure 2: Optimization diagnostic on a complex loss landscape. SABER-Full enters a stable descent channel earlier than Vanilla KFAC or SGD, avoiding tail-driven excursions in rugged regions.
-      </h2>
-    </div>
+<!-- ═══ TEASER ═══ -->
+<figure class="teaser">
+  <img src="./static/images/fig2.png" alt="Optimization diagnostic for SABER stabilization">
+  <figcaption>Figure 2: Optimization diagnostic on a complex loss landscape. SABER-Full enters a stable descent channel earlier than Vanilla KFAC or SGD, avoiding tail-driven excursions in rugged regions.</figcaption>
+</figure>
+
+<!-- ═══ ABSTRACT ═══ -->
+<h2>Abstract</h2>
+<p>Kronecker-factored Approximate Curvature (KFAC) offers a powerful second-order optimization framework, yet it often suffers from instability and high computational overhead in large-scale deep learning. We present <strong>SahaBose-KFAC</strong>, a novel approach that decouples stability from efficiency through two core operators: <strong>Saha Spectral Annealing</strong> and <strong>Bose Curvature Condensation</strong>.</p>
+<p>Saha Spectral Annealing introduces a time-varying spectral transformation \(\tilde{\sigma}_i(t) = (\sigma_i + \epsilon)^{\alpha_t}\) that flattens the curvature spectrum early in training, suppressing spurious spikes that lead to divergence. Bose Curvature Condensation identifies the smallest robust "head" subspace capturing the majority of curvature mass and caps the tail inverse-gain, significantly reducing the cost of inversion without sacrificing performance.</p>
+<p>Our methodology provides a theoretical bridge between first-order smoothness and second-order convergence, ensuring stable descent even in highly non-convex landscapes. We evaluate SahaBose-KFAC across diverse benchmarks spanning LLMs, VLMs, and VLAs, demonstrating competitive accuracy with significantly improved stability metrics — e.g. Mean Kappa reduced from 3129.89 (Vanilla KFAC) to 1075.24 (SABER) on AG_NEWS.</p>
+
+<!-- ═══ METHODOLOGY ═══ -->
+<h2>Methodology: SahaBose-KFAC Operators</h2>
+<p>SahaBose-KFAC does not change the KFAC factorization, the objective, or the outer optimizer. It modifies only the spectral behavior of the factor inverses at refresh time. The layer preconditioner retains the standard Kronecker form
+\[\mathbf{P}^\text{SB}_{\ell,t} = \hat{A}^{-1}_{\ell,t} \otimes \hat{G}^{-1}_{\ell,t}, \quad \Delta W_\ell = -\hat{G}^{-1}_{\ell,t}(\nabla_{W_\ell}\mathcal{L})\hat{A}^{-1}_{\ell,t},\]
+but the inverses \(\hat{A}^{-1}\) and \(\hat{G}^{-1}\) are produced by the two operators described below rather than by naïve Tikhonov damping.</p>
+
+<div class="flow">
+  <div class="flow-box"><strong>\(C\)</strong><span class="flow-lbl">raw factor</span></div>
+  <span class="flow-arr">→</span>
+  <div class="flow-box" style="border-color:#e67e22;background:#fff8f0;">
+    <span class="tag t-orange">Saha</span>&nbsp;<strong>\(\tilde{C}_t\)</strong>
+    <span class="flow-lbl">anneal / flatten</span>
   </div>
-</section>
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-    <!-- Abstract. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified">
-          <p>
-            Kronecker-factored Approximate Curvature (KFAC) offers a powerful second-order optimization framework, yet it often suffers from instability and high computational overhead in large-scale deep learning. We present <strong>SahaBose-KFAC</strong>, a novel approach that decouples stability from efficiency through two core operators: <strong>Saha Spectral Annealing</strong> and <strong>Bose Curvature Condensation</strong>.
-          </p>
-          <p>
-            Saha Spectral Annealing introduces a time-varying spectral transformation \(\tilde{\sigma}_i(t) = (\sigma_i + \epsilon)^{\alpha_t}\) that flattens the curvature spectrum early in training, suppressing spurious spikes that lead to divergence. Bose Curvature Condensation identifies the smallest robust "head" subspace capturing the majority of curvature mass and caps the tail inverse-gain, significantly reducing the cost of inversion without sacrificing performance.
-          </p>
-          <p>
-            Our methodology provides a theoretical bridge between first-order smoothness and second-order convergence, ensuring stable descent even in highly non-convex landscapes. We evaluate SahaBose-KFAC across diverse benchmarks including AG_NEWS, SQuAD, and SNLI, demonstrating that it achieves competitive accuracy with significantly improved stability metrics, such as a reduction in Mean Kappa from 3129.89 (Vanilla) to 1075.24 (SABER) on AG_NEWS.
-          </p>
-        </div>
-      </div>
-    </div>
-    <!--/ Abstract. -->
-
-
+  <span class="flow-arr">→</span>
+  <div class="flow-box" style="border-color:#27ae60;background:#f0fff4;">
+    <span class="tag t-green">Bose</span>&nbsp;<strong>\(\hat{C}^{-1}_t\)</strong>
+    <span class="flow-lbl">tail cap + invert</span>
   </div>
-</section>
-
-
-<section class="section">
-  <div class="container is-max-desktop">
-
-    <!-- ═══════════════════════ METHODOLOGY ═══════════════════════ -->
-<section class="section">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-
-        <h2 class="title is-3">Methodology: SahaBose-KFAC Operators</h2>
-
-        <div class="content has-text-justified">
-          <p>
-            SahaBose-KFAC does not change the KFAC factorization, the objective, or the outer optimizer. It modifies only one thing: the spectral behavior of the factor inverses at refresh time. The layer preconditioner retains the standard Kronecker form
-            \[ \mathbf{P}^\text{SB}_{\ell,t} = \hat{A}^{-1}_{\ell,t} \otimes \hat{G}^{-1}_{\ell,t}, \quad \Delta W_\ell = -\hat{G}^{-1}_{\ell,t}(\nabla_{W_\ell}\mathcal{L})\hat{A}^{-1}_{\ell,t}, \]
-            but the inverses \(\hat{A}^{-1}\) and \(\hat{G}^{-1}\) are produced by the two operators described below rather than by naïve Tikhonov damping.
-          </p>
-        </div>
-
-        <!-- ── Composition flowchart ── -->
-        <div class="composition-flow">
-          <div class="flow-box">
-            <strong>\(C\)</strong><br><span class="flow-label">raw factor</span>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-box" style="border-color:#e67e22;background:#fff8f0;">
-            <span class="method-tag orange">Saha</span><br>
-            <strong>\(\tilde{C}_t\)</strong><br>
-            <span class="flow-label">anneal / flatten</span>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-box" style="border-color:#27ae60;background:#f0fff4;">
-            <span class="method-tag green">Bose</span><br>
-            <strong>\(\hat{C}^{-1}_t\)</strong><br>
-            <span class="flow-label">tail cap + invert</span>
-          </div>
-          <div class="flow-arrow">→</div>
-          <div class="flow-box" style="border-color:#3273dc;">
-            <strong>\(\mathbf{P}^\text{SB}_\ell = \hat{A}^{-1}_\ell \otimes \hat{G}^{-1}_\ell\)</strong><br>
-            <span class="flow-label">layer preconditioner</span>
-          </div>
-        </div>
-        <p class="has-text-centered is-size-7" style="margin-bottom:1.5rem;color:#888;">
-          Figure 1: SahaBose composition flowchart. Saha reshapes the factor spectrum while Bose caps the inverse tail. The ordering matters: Bose must act on the <em>annealed</em> spectrum, not the raw one.
-        </p>
-
-        <hr class="section-divider">
-
-        <!-- ════════════ 1. FAILURE MODE ════════════ -->
-        <h3 class="title is-4">1 · The Failure Mode: Inverse-Spectrum Tail Amplification</h3>
-        <div class="content has-text-justified">
-          <p>
-            For a KFAC factor \(C \in \{A_\ell, G_\ell\}\) with eigendecomposition \(C = U\,\mathrm{diag}(\sigma)\,U^\top\), standard Tikhonov-damped inversion gives
-            \[ (C + \lambda I)^{-1} = U\,\mathrm{diag}\!\left(({\sigma_i + \lambda})^{-1}\right)U^\top. \]
-            Each eigendirection is therefore scaled by <em>inverse gain</em> \(g_i(\lambda) = (\sigma_i + \lambda)^{-1}\). The preconditioned component along eigenvector \(u_i\) is
-            \[ \langle \Delta, u_i \rangle \;\propto\; -\frac{\langle g, u_i \rangle}{\sigma_i + \lambda}. \]
-          </p>
-          <div class="pathology-box">
-            <div class="pathology-title">⚠ The Over-Damping Paradox</div>
-            <p style="margin:0;">
-              Small \(\sigma_i\) (tail modes) induce <em>large</em> inverse gain exactly where stochastic estimation noise is largest. Increasing \(\lambda\) suppresses these modes but introduces a second problem: when \(\lambda \gg \sigma_1\), we get \((C + \lambda I)^{-1} \approx \lambda^{-1} I\), collapsing curvature preconditioning into a scaled first-order update. The same scalar \(\lambda\) that tames the tail also destroys the useful head curvature.
-            </p>
-          </div>
-          <p>
-            The problem is sharpest under noisy factor estimates. Writing \(\hat{\sigma}_i = \sigma_i + \epsilon_i\) and expanding to first order:
-            \[ f(\hat{\sigma}_i) - f(\sigma_i) \approx -\frac{\epsilon_i}{(\sigma_i + \lambda)^2}. \]
-            Inverse error scales <em>quadratically</em> with tail gain. Even modest eigenvalue noise in small-\(\sigma_i\) modes can produce large update variance — the source of loss spikes, oscillation, and divergence under stochastic curvature noise.
-          </p>
-          <p>
-            This motivates two distinct repairs: <strong>(i)</strong> inverse gain should depend on mode reliability, not a single global scalar; <strong>(ii)</strong> full-rank inversion should not be wasted uniformly on long noisy tails. These are exactly the roles of Saha and Bose.
-          </p>
-        </div>
-
-        <hr class="section-divider">
-
-        <!-- ════════════ 2. SAHA ════════════ -->
-        <h3 class="title is-4">2 · Saha Spectral Annealing <span class="method-tag orange">Saha</span></h3>
-        <div class="content has-text-justified">
-          <p>
-            The Saha operator is a time-dependent annealing map applied to factor eigenvalues <em>before</em> inversion. Given \(C = U\,\mathrm{diag}(\sigma)\,U^\top\) with \(\sigma_1 \ge \cdots \ge \sigma_d \ge 0\), define annealed eigenvalues
-            \[ \tilde{\sigma}_i(t) = (\sigma_i + \varepsilon)^{\alpha_t}, \quad 0 < \alpha_t \le 1, \]
-            with \(\alpha_t\) increasing toward 1 over the course of training. The annealed factor is \(\tilde{C}_t = U\,\mathrm{diag}(\tilde{\sigma}(t))\,U^\top\).
-          </p>
-
-          <p><strong>Condition-number compression.</strong> The key property follows immediately:</p>
-          \[ \kappa(\tilde{C}_t) = \frac{\tilde{\sigma}_1(t)}{\tilde{\sigma}_d(t)} \;\le\; \left(\frac{\sigma_1 + \varepsilon}{\sigma_d + \varepsilon}\right)^{\alpha_t}. \]
-          <p>
-            When \(\alpha_t < 1\), Saha compresses the condition number — sometimes dramatically. A raw spectrum with \(\kappa \approx 4.3 \times 10^4\) can be reduced to \(\kappa \approx 25\) with \(\alpha_t = 0.30\). As training proceeds and factor estimates stabilize, \(\alpha_t \to 1\) recovers the native KFAC geometry.
-          </p>
-
-          <div class="insight-box">
-            <strong>Homotopy interpretation.</strong> Saha defines a smooth homotopy from a safer, flatter metric (small \(\alpha_t\), early training) to the native KFAC metric (\(\alpha_t = 1\), late training). Early updates use conservative curvature; later updates recover full second-order discrimination once factor estimates are trustworthy. Crucially, Saha does <em>not discard</em> directions — it only changes how aggressively their curvature is trusted at a given time.
-          </div>
-
-          <p>
-            Saha targets the <em>early-time</em> instability regime: noisy factor estimates, rapidly changing spectra, and the first few thousand steps where scalar damping is most brittle. After annealing, the spectrum is handed off to Bose.
-          </p>
-        </div>
-
-        <hr class="section-divider">
-
-        <!-- ════════════ 3. BOSE ════════════ -->
-        <h3 class="title is-4">3 · Bose Curvature Condensation <span class="method-tag green">Bose</span></h3>
-        <div class="content has-text-justified">
-          <p>
-            Even after early instability subsides, KFAC factors remain structurally heavy-tailed: a small head captures most curvature mass while a long tail contains weak or noisy modes. Because inversion assigns gain \(\propto (\sigma_i + \lambda)^{-1}\), the tail is a <em>persistent</em> source of instability — not just an early-training problem.
-          </p>
-
-          <p><strong>Condensation rank.</strong> Define normalized spectral mass and its cumulative sum:</p>
-          \[ p_i = \frac{\tilde{\sigma}_i(t)}{\sum_j \tilde{\sigma}_j(t)}, \qquad C_k = \sum_{i=1}^k p_i. \]
-          <p>Given a target mass fraction \(m \in (0,1]\), the condensation rank is</p>
-          \[ k^* = \min\left\{ k : C_k \ge m \right\}. \]
-
-          <p><strong>Head-and-tail inverse weights.</strong> Bose keeps the top-\(k^*\) head modes under standard damped inversion, but routes the tail through a bounded inverse weight:</p>
-          \[
-          w_i(t) = \begin{cases}
-            \bigl(\tilde{\sigma}_i(t) + \lambda_t\bigr)^{-1} & i \le k^*, \\[4pt]
-            \lambda_\text{tail}^{-1} & i > k^*,
-          \end{cases}
-          \]
-          <p>
-            yielding \(\hat{C}^{-1}_t = U\,\mathrm{diag}(w(t))\,U^\top\) with the hard guarantee \(w_i(t) \le \lambda_\text{tail}^{-1}\) for all tail modes. The head remains fully curvature-aware; the tail remains mobile (it can still contribute to updates) but cannot dominate them.
-          </p>
-
-          <div class="insight-box">
-            <strong>What Bose is not.</strong> Bose is not truncated SVD — tail directions are not discarded. It is also not global over-damping — the head inverse is unchanged. It is a <em>selective cap</em>: full-rank spectral effort is concentrated where it carries reliable curvature signal, while the noisy tail is routed through a safe, bounded fallback.
-          </div>
-        </div>
-
-        <hr class="section-divider">
-
-        <!-- ════════════ 4. FULL ALGORITHM ════════════ -->
-        <h3 class="title is-4">4 · Full SahaBose-KFAC: Composition, Ordering, and Algorithm</h3>
-        <div class="content has-text-justified">
-          <p>
-            For each refreshed factor \(C \in \{A_{\ell,t},\, G_{\ell,t}\}\), the full method applies the ordered composition
-            \[ C \xrightarrow{\;\text{Saha}\;} \tilde{C}_t \xrightarrow{\;\text{Bose}\;} \hat{C}^{-1}_t. \]
-          </p>
-
-        </div>
-
-        <!-- Algorithm box -->
-        <div class="algorithm-box">
-          <div class="algo-title">Algorithm 1: SahaBose-KFAC — Per-Factor Inverse (at each eigensolve refresh)</div>
-          <p style="margin:0 0 0.5rem 0;font-size:0.9rem;color:#555;"><strong>Input:</strong> factor \(C\), annealing exponent \(\alpha_t\), mass target \(m\), damping \(\lambda_t\), tail floor \(\lambda_\text{tail}\), stabilizer \(\varepsilon > 0\)</p>
-          <ol>
-            <li>
-              <strong>Eigendecompose:</strong> compute \(C = U\,\mathrm{diag}(\sigma)\,U^\top\) with \(\sigma_1 \ge \cdots \ge \sigma_d \ge 0\).
-            </li>
-            <li>
-              <strong>Saha annealing:</strong> compute annealed eigenvalues \(\tilde{\sigma}_i(t) \leftarrow (\sigma_i + \varepsilon)^{\alpha_t}\).
-            </li>
-            <li>
-              <strong>Bose condensation rank:</strong> normalize \(p_i = \tilde{\sigma}_i(t) / \sum_j \tilde{\sigma}_j(t)\), then find \(k^* = \min\!\left\{k : \sum_{i=1}^k p_i \ge m\right\}\).
-            </li>
-            <li>
-              <strong>Bose inverse weights:</strong> set
-              \[
-                w_i(t) = \begin{cases} (\tilde{\sigma}_i(t) + \lambda_t)^{-1} & i \le k^*, \\ \lambda_\text{tail}^{-1} & i > k^*. \end{cases}
-              \]
-            </li>
-            <li>
-              <strong>Return:</strong> \(\hat{C}^{-1}_t = U\,\mathrm{diag}(w(t))\,U^\top\).
-            </li>
-          </ol>
-          <p style="margin:0.75rem 0 0 0;font-size:0.85rem;color:#555;">
-            <strong>Complexity note.</strong> Relative to standard KFAC, only the spectral inversion routine changes. If a full eigendecomposition is used, asymptotic cost is unchanged. With a partial eigensolve (top-\(k^*\) head plus a constant-cost tail rule), the dominant cost becomes the head solve — substantially cheaper when \(k^* \ll d\).
-          </p>
-        </div>
-
-      </div><!-- /column -->
-    </div><!-- /columns -->
-
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">Results</h2>
-
-        <div class="content has-text-justified">
-          <p>
-            We evaluate SahaBose-KFAC as an optimization primitive across a deliberately broad benchmark suite spanning three families of tasks: <strong>large language models</strong> (LLMs: text classification on AG News, reading comprehension on SQuAD, and natural language inference on SNLI), <strong>vision-language models</strong> (VLMs: image captioning on COCO, visual question answering on VQAv2, and image-text retrieval on Flickr30k), and <strong>vision-language-action models</strong> (VLAs: robotic manipulation on RTX, task-conditioned planning on SayCan, and embodied rearrangement on Habitats). All methods are evaluated under the same training and evaluation budgets. 
-          </p>
-        </div>
-
-        <!-- ══ LLMs ══ -->
-        <h3 class="title is-4" style="margin-bottom:0.25rem;">Large Language Models (LLMs)</h3>
-
-        <h4 class="title is-5">AG News</h4>
-        <div class="content">
-          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
-            <thead>
-              <tr><th>Optimizer</th><th>Accuracy</th><th>Eval Loss</th><th>Train Loss</th><th>Mean \(k^*\)</th><th>Time (s)</th></tr>
-            </thead>
-            <tbody>
-              <tr class="highlight-row"><td><strong>SahaBose (SABER)</strong></td><td>0.9993</td><td>2.2526</td><td>2.4511</td><td>1249.01</td><td>2608.9</td></tr>
-              <tr><td>AdamW</td><td>0.9995</td><td>2.0409</td><td>2.1045</td><td>0.00</td><td>3316</td></tr>
-              <tr><td>Vanilla KFAC</td><td>0.9978</td><td>3.4076</td><td>3.6899</td><td>1231.88</td><td>2598.0</td></tr>
-              <tr><td>SGD</td><td>0.9981</td><td>3.1339</td><td>3.1371</td><td>0.00</td><td>3285</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h4 class="title is-5">SQuAD</h4>
-        <div class="content">
-          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
-            <thead>
-              <tr><th>Optimizer</th><th>Train Loss</th><th>Eval Loss</th><th>Time (s)</th><th>Peak Mem (MB)</th><th>Mean \(k^*\)</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>AdamW</td><td>2.1753</td><td>2.1289</td><td>2648.62</td><td>44264</td><td>0.00</td></tr>
-              <tr class="highlight-row"><td><strong>SahaBose-KFAC</strong></td><td>2.1035</td><td>2.1802</td><td>3602.33</td><td>44655</td><td>1029.66</td></tr>
-              <tr><td>Vanilla KFAC</td><td>2.0864</td><td>2.1517</td><td>3420.16</td><td>44660</td><td>1112.32</td></tr>
-              <tr><td>SGD</td><td>3.1371</td><td>3.1339</td><td>3285.00</td><td>—</td><td>0.00</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h4 class="title is-5">SNLI</h4>
-        <div class="content">
-          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
-            <thead>
-              <tr><th>Optimizer</th><th>Time (s)</th><th>Peak Mem (MB)</th><th>Train Loss</th><th>Eval Loss</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>AdamW</td><td>141.13</td><td>18503.53</td><td>1.5160</td><td>1.9852</td></tr>
-              <tr><td>SGD</td><td>135.15</td><td>18469.40</td><td>4.5142</td><td>4.3085</td></tr>
-              <tr><td>Vanilla KFAC</td><td>176.50</td><td>18590.40</td><td>1.7485</td><td>1.9083</td></tr>
-              <tr class="highlight-row"><td><strong>SahaBose-KFAC</strong></td><td>190.16</td><td>18590.40</td><td>1.9371</td><td>1.8965</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <hr class="section-divider">
-
-        <!-- ══ VLMs ══ -->
-        <h3 class="title is-4" style="margin-bottom:0.25rem;">Vision-Language Models (VLMs)</h3>
-
-        <h4 class="title is-5">COCO Image Captioning</h4>
-        <div class="content">
-          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
-            <thead>
-              <tr><th>Config</th><th>Optimizer</th><th>BLEU-4</th><th>BLEU-1</th><th>Mean Kappa</th><th>Mean \(k^*\)</th><th>Time (s)</th></tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td rowspan="3">Baseline (full data, damping=2.1)</td>
-                <td>AdamW</td><td>22.1%</td><td>58.8%</td><td>—</td><td>—</td><td>2589s</td>
-              </tr>
-              <tr class="highlight-row"><td><strong>SABER (no BOSE)</strong></td><td>16.5%</td><td>49.2%</td><td>8.1</td><td>428</td><td>2796s</td></tr>
-              <tr><td>KFAC</td><td>16.5%</td><td>49.2%</td><td>8.1</td><td>656</td><td>2799s</td></tr>
-              <tr>
-                <td rowspan="3">Damping fix + BOSE on (5k, damping=0.01)</td>
-                <td>AdamW</td><td>27.2%</td><td>67.9%</td><td>—</td><td>—</td><td>561s</td>
-              </tr>
-              <tr class="highlight-row"><td><strong>SABER (BOSE)</strong></td><td>29.6%</td><td>74.7%</td><td>1498</td><td>485</td><td>667s</td></tr>
-              <tr><td>KFAC</td><td>32.2%</td><td>76.4%</td><td>1481</td><td>663</td><td>667s</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h4 class="title is-5">VQAv2</h4>
-        <div class="content">
-          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
-            <thead>
-              <tr><th>Optimizer</th><th>Accuracy</th><th>Steps to Target</th><th>Time (hrs)</th><th>Mean \(k^*\)</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>AdamW</td><td colspan="4" style="color:#aaa;font-style:italic;">— results pending —</td></tr>
-              <tr class="highlight-row"><td><strong>SahaBose-KFAC</strong></td><td colspan="4" style="color:#aaa;font-style:italic;">— results pending —</td></tr>
-              <tr><td>Vanilla KFAC</td><td colspan="4" style="color:#aaa;font-style:italic;">— results pending —</td></tr>
-              <tr><td>SGD</td><td colspan="4" style="color:#aaa;font-style:italic;">— results pending —</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h4 class="title is-5">Flickr30k Retrieval</h4>
-        <div class="content">
-          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
-            <thead>
-              <tr><th>Optimizer</th><th>R@1</th><th>R@5</th><th>Steps to Target</th><th>Time (hrs)</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>AdamW</td><td colspan="4" style="color:#aaa;font-style:italic;">— results pending —</td></tr>
-              <tr class="highlight-row"><td><strong>SahaBose-KFAC</strong></td><td colspan="4" style="color:#aaa;font-style:italic;">— results pending —</td></tr>
-              <tr><td>Vanilla KFAC</td><td colspan="4" style="color:#aaa;font-style:italic;">— results pending —</td></tr>
-              <tr><td>SGD</td><td colspan="4" style="color:#aaa;font-style:italic;">— results pending —</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <hr class="section-divider">
-
-        <!-- ══ VLAs ══ -->
-        <h3 class="title is-4" style="margin-bottom:0.25rem;">Vision-Language-Action Models (VLAs)</h3>
-
-        <h4 class="title is-5">RTX</h4>
-        <div class="content">
-          <table class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth">
-            <thead>
-              <tr><th>Optimizer</th><th>Success Rate</th><th>Steps to Target</th><th>Time (hrs)</th><th>Mean \(k^*\)</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>AdamW</td><td colspan="4" style="color:#aaa;font-style:italic;">— results pending —</td></tr>
-              <tr class="highlight-row"><td><strong>SahaBose-KFAC</strong></td><td colspan="4" style="color:#aaa;font-style:italic;">— results pending —</td></tr>
-              <tr><td>Vanilla KFAC</td><td colspan="4" style="color:#aaa;font-style:italic;">— results pending —</td></tr>
-              <tr><td>Shampoo</td><td colspan="4" style="color:#aaa;font-style:italic;">— results pending —</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-      </div>
-    </div>
-
+  <span class="flow-arr">→</span>
+  <div class="flow-box">
+    <strong>\(\mathbf{P}^\text{SB}_\ell = \hat{A}^{-1}_\ell \otimes \hat{G}^{-1}_\ell\)</strong>
+    <span class="flow-lbl">layer preconditioner</span>
   </div>
-</section>
+</div>
+<p style="text-align:center;font-size:.8rem;color:var(--muted);margin-bottom:1.5rem;">
+  Figure 1: SahaBose composition flowchart. Saha reshapes the factor spectrum; Bose caps the inverse tail. Ordering matters: Bose must act on the <em>annealed</em> spectrum, not the raw one.
+</p>
 
+<hr>
 
-<section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
-    <pre><code>@inproceedings{sathyanarayanan2026sahabose,
-  author    = {Sathyanarayanan, Anish and Mallagundla, Rishikesh and Narang, Visheshe and Chadha, Aman and Jain, Vinija and Das, Amitava},
-  title     = {SahaBose-KFAC: Making KFAC Stable and Fast via Spectral Annealing and Curvature Condensation},
+<h3>1 · The Failure Mode: Inverse-Spectrum Tail Amplification</h3>
+<p>For a KFAC factor \(C \in \{A_\ell, G_\ell\}\) with eigendecomposition \(C = U\,\mathrm{diag}(\sigma)\,U^\top\), standard Tikhonov-damped inversion gives
+\[(C + \lambda I)^{-1} = U\,\mathrm{diag}\!\left((\sigma_i + \lambda)^{-1}\right)U^\top.\]
+Each eigendirection is scaled by inverse gain \(g_i(\lambda) = (\sigma_i + \lambda)^{-1}\).</p>
+
+<div class="box box-warn">
+  <div class="box-title">⚠ The Over-Damping Paradox</div>
+  <p style="margin:0;">Small \(\sigma_i\) (tail modes) induce <em>large</em> inverse gain exactly where stochastic estimation noise is largest. Increasing \(\lambda\) suppresses these modes but when \(\lambda \gg \sigma_1\) we get \((C + \lambda I)^{-1} \approx \lambda^{-1} I\), collapsing curvature preconditioning into a scaled first-order update. The same scalar \(\lambda\) that tames the tail also destroys the useful head curvature.</p>
+</div>
+
+<p>The problem sharpens under noisy factor estimates. Writing \(\hat{\sigma}_i = \sigma_i + \epsilon_i\) and expanding to first order:
+\[f(\hat{\sigma}_i) - f(\sigma_i) \approx -\frac{\epsilon_i}{(\sigma_i + \lambda)^2}.\]
+Inverse error scales <em>quadratically</em> with tail gain. This motivates two distinct repairs: <strong>(i)</strong> inverse gain should depend on mode reliability, not a single global scalar; <strong>(ii)</strong> full-rank inversion should not be wasted uniformly on long noisy tails. These are exactly the roles of Saha and Bose.</p>
+
+<hr>
+
+<h3>2 · Saha Spectral Annealing <span class="tag t-orange">Saha</span></h3>
+<p>The Saha operator is a time-dependent annealing map applied to factor eigenvalues <em>before</em> inversion. Given \(C = U\,\mathrm{diag}(\sigma)\,U^\top\) with \(\sigma_1 \ge \cdots \ge \sigma_d \ge 0\), define annealed eigenvalues
+\[\tilde{\sigma}_i(t) = (\sigma_i + \varepsilon)^{\alpha_t}, \quad 0 < \alpha_t \le 1,\]
+with \(\alpha_t\) increasing toward 1 over the course of training.</p>
+<p><strong>Condition-number compression.</strong> The key property follows immediately:
+\[\kappa(\tilde{C}_t) = \frac{\tilde{\sigma}_1(t)}{\tilde{\sigma}_d(t)} \;\le\; \left(\frac{\sigma_1 + \varepsilon}{\sigma_d + \varepsilon}\right)^{\alpha_t}.\]
+When \(\alpha_t < 1\), Saha compresses the condition number — sometimes dramatically. A raw spectrum with \(\kappa \approx 4.3 \times 10^4\) can be reduced to \(\kappa \approx 25\) with \(\alpha_t = 0.30\). As training proceeds and factor estimates stabilize, \(\alpha_t \to 1\) recovers the native KFAC geometry.</p>
+<div class="box box-info">
+  <strong>Homotopy interpretation.</strong> Saha defines a smooth homotopy from a safer, flatter metric (small \(\alpha_t\), early training) to the native KFAC metric (\(\alpha_t = 1\), late training). Early updates use conservative curvature; later updates recover full second-order discrimination once factor estimates are trustworthy. Crucially, Saha does <em>not discard</em> directions — it only changes how aggressively their curvature is trusted at a given time.
+</div>
+
+<hr>
+
+<h3>3 · Bose Curvature Condensation <span class="tag t-green">Bose</span></h3>
+<p>Even after early instability subsides, KFAC factors remain structurally heavy-tailed: a small head captures most curvature mass while a long tail contains weak or noisy modes.</p>
+<p><strong>Condensation rank.</strong> Define normalized spectral mass and its cumulative sum:
+\[p_i = \frac{\tilde{\sigma}_i(t)}{\sum_j \tilde{\sigma}_j(t)}, \qquad C_k = \sum_{i=1}^k p_i.\]
+Given a target mass fraction \(m \in (0,1]\), the condensation rank is
+\[k^* = \min\left\{ k : C_k \ge m \right\}.\]</p>
+<p><strong>Head-and-tail inverse weights.</strong>
+\[w_i(t) = \begin{cases}\bigl(\tilde{\sigma}_i(t) + \lambda_t\bigr)^{-1} & i \le k^*, \\[4pt]\lambda_\text{tail}^{-1} & i > k^*,\end{cases}\]
+yielding \(\hat{C}^{-1}_t = U\,\mathrm{diag}(w(t))\,U^\top\) with the hard guarantee \(w_i(t) \le \lambda_\text{tail}^{-1}\) for all tail modes.</p>
+<div class="box box-info">
+  <strong>What Bose is not.</strong> Bose is not truncated SVD — tail directions are not discarded. It is also not global over-damping — the head inverse is unchanged. It is a <em>selective cap</em>: full-rank spectral effort is concentrated where it carries reliable curvature signal, while the noisy tail is routed through a safe, bounded fallback.
+</div>
+
+<hr>
+
+<h3>4 · Full SahaBose-KFAC: Composition, Ordering, and Algorithm</h3>
+<p>For each refreshed factor \(C \in \{A_{\ell,t},\, G_{\ell,t}\}\), the full method applies the ordered composition
+\[C \xrightarrow{\;\text{Saha}\;} \tilde{C}_t \xrightarrow{\;\text{Bose}\;} \hat{C}^{-1}_t.\]</p>
+<div class="box box-algo">
+  <div class="box-title">Algorithm 1: SahaBose-KFAC — Per-Factor Inverse (at each eigensolve refresh)</div>
+  <p style="margin:0 0 .5rem;font-size:.88rem;color:var(--muted);">
+    <strong>Input:</strong> factor \(C\), annealing exponent \(\alpha_t\), mass target \(m\), damping \(\lambda_t\), tail floor \(\lambda_\text{tail}\), stabilizer \(\varepsilon > 0\)
+  </p>
+  <ol>
+    <li><strong>Eigendecompose:</strong> compute \(C = U\,\mathrm{diag}(\sigma)\,U^\top\) with \(\sigma_1 \ge \cdots \ge \sigma_d \ge 0\).</li>
+    <li><strong>Saha annealing:</strong> compute annealed eigenvalues \(\tilde{\sigma}_i(t) \leftarrow (\sigma_i + \varepsilon)^{\alpha_t}\).</li>
+    <li><strong>Bose condensation rank:</strong> normalize \(p_i = \tilde{\sigma}_i(t) / \sum_j \tilde{\sigma}_j(t)\), then find \(k^* = \min\!\left\{k : \sum_{i=1}^k p_i \ge m\right\}\).</li>
+    <li><strong>Bose inverse weights:</strong> set \(w_i(t) = (\tilde{\sigma}_i(t) + \lambda_t)^{-1}\) for \(i \le k^*\); \(w_i(t) = \lambda_\text{tail}^{-1}\) for \(i > k^*\).</li>
+    <li><strong>Return:</strong> \(\hat{C}^{-1}_t = U\,\mathrm{diag}(w(t))\,U^\top\).</li>
+  </ol>
+  <p class="box-note"><strong>Complexity note.</strong> Relative to standard KFAC, only the spectral inversion routine changes. With a partial eigensolve (top-\(k^*\) head plus a constant-cost tail rule), the dominant cost becomes the head solve — substantially cheaper when \(k^* \ll d\). Realizing this speedup in practice requires a partial eigensolve implementation (e.g. Lanczos or randomized SVD); the present work uses full eigendecomposition and leaves kernel-level optimization to future work.</p>
+</div>
+
+<!-- ═══ RESULTS ═══ -->
+<h2>Results</h2>
+<p>We evaluate SahaBose-KFAC as an optimization primitive across three benchmark families: <strong>LLMs</strong> (AG_NEWS, SQuAD, SNLI, text classification), <strong>VLMs</strong> (COCO captioning, VQAv2, Flickr30k retrieval), and <strong>VLAs</strong> (robotic manipulation). All methods share identical training and evaluation budgets. We report both task metrics and spectral diagnostics (κ, k*, r_eff, LogDet) that directly test the proposed stability mechanism.</p>
+
+<!-- LLMs -->
+<h3>Large Language Models (LLMs)</h3>
+
+<h4>AG_NEWS <span class="model-note">(Llama-3.2-1B-Instruct)</span></h4>
+<div class="tbl-wrap"><table>
+  <thead><tr>
+    <th>Optimizer</th><th>Accuracy</th><th>Eval Loss</th><th>Train Loss</th>
+    <th>Max LogDet</th><th>Mean κ</th><th>Mean k*</th><th>Mean r_eff</th><th>Time (s)</th>
+  </tr></thead>
+  <tbody>
+    <tr><td>AdamW</td><td>0.9995</td><td>2.0409</td><td>2.1045</td><td>—</td><td>—</td><td>0.00</td><td>—</td><td>3,316</td></tr>
+    <tr class="hl"><td>SahaBose (SABER)</td><td>0.9993</td><td>2.2526</td><td>2.4511</td><td>3733.99</td><td>1075.24</td><td>1249.01</td><td>919.48</td><td>2,608.9</td></tr>
+    <tr><td>Vanilla KFAC</td><td>0.9978</td><td>3.4076</td><td>3.6899</td><td>3738.40</td><td>3129.89</td><td>1231.88</td><td>984.19</td><td>2,598.0</td></tr>
+    <tr><td>SGD</td><td>0.9981</td><td>3.1339</td><td>3.1371</td><td>—</td><td>—</td><td>0.00</td><td>—</td><td>3,285</td></tr>
+  </tbody>
+</table></div>
+
+<h4>SQuAD</h4>
+<p style="font-size:.82rem;color:var(--muted);margin:.2rem 0 .5rem;">Full four-way comparison (AdamW / SABER-KFAC / Vanilla KFAC / SGD) plus KFAC-family diagnostics.</p>
+<div class="tbl-wrap"><table>
+  <thead><tr>
+    <th>Optimizer</th><th>Train Loss</th><th>Eval Loss</th>
+    <th>Max LogDet</th><th>Mean κ</th><th>Mean k*</th><th>Mean r_eff</th>
+    <th>Peak Mem (MB)</th><th>Time (s)</th>
+  </tr></thead>
+  <tbody>
+    <tr><td>AdamW</td><td>2.1753</td><td>2.1289</td><td>—</td><td>—</td><td>0.00</td><td>—</td><td>44,264</td><td>2,648.62</td></tr>
+    <tr class="hl"><td>SahaBose-KFAC</td><td>2.1683</td><td>2.1817</td><td>3596.75</td><td>129,516.72</td><td>1,029.66</td><td>498.38</td><td>79,487.55</td><td>2,128.92</td></tr>
+    <tr><td>Vanilla KFAC</td><td>2.0395</td><td>2.4297</td><td>3666.38</td><td>129,242.79</td><td>1,112.32</td><td>599.57</td><td>79,480.33</td><td>2,095.14</td></tr>
+    <tr><td>SGD</td><td>3.1371</td><td>3.1339</td><td>—</td><td>—</td><td>0.00</td><td>—</td><td>—</td><td>3,285.00</td></tr>
+  </tbody>
+</table></div>
+<p class="tbl-note">* KFAC-family rows from a dedicated head-to-head run; AdamW/SGD from combined four-way run. Peak memory differences reflect the additional curvature factor storage required by KFAC-family methods — a known and expected overhead inherent to second-order optimizers.</p>
+
+<h4>SNLI</h4>
+<div class="tbl-wrap"><table>
+  <thead><tr>
+    <th>Optimizer</th><th>Time (s)</th><th>Peak Mem (MB)</th><th>Train Loss</th><th>Eval Loss</th>
+  </tr></thead>
+  <tbody>
+    <tr><td>AdamW</td><td>141.13</td><td>18,503.53</td><td>1.5160</td><td>1.9852</td></tr>
+    <tr><td>SGD</td><td>135.15</td><td>18,469.40</td><td>4.5142</td><td>4.3085</td></tr>
+    <tr><td>Vanilla KFAC</td><td>176.50</td><td>18,590.40</td><td>1.7485</td><td>1.9083</td></tr>
+    <tr class="hl"><td>SahaBose-KFAC</td><td>190.16</td><td>18,590.40</td><td>1.9371</td><td>1.8965</td></tr>
+  </tbody>
+</table></div>
+
+<h4>Text Classification <span class="model-note">(Llama-3.2-1B-Instruct)</span></h4>
+<div class="tbl-wrap"><table>
+  <thead><tr><th>Optimizer</th><th>Val Acc</th><th>Val Loss</th><th>Time (s)</th></tr></thead>
+  <tbody>
+    <tr><td>AdamW</td><td>95.30%</td><td>0.1460</td><td>987.4</td></tr>
+    <tr><td>Vanilla KFAC</td><td>94.72%</td><td>0.1534</td><td>1,277.6</td></tr>
+    <tr class="hl"><td>SABER-KFAC</td><td>94.04%</td><td>0.1769</td><td>1,572.0</td></tr>
+  </tbody>
+</table></div>
+
+<hr>
+
+<!-- VLMs -->
+<h3>Vision-Language Models (VLMs)</h3>
+
+<h4>COCO Image Captioning</h4>
+<div class="tbl-wrap"><table>
+  <thead><tr>
+    <th>Config</th><th>Optimizer</th><th>BLEU-4</th><th>BLEU-1</th>
+    <th>Kappa</th><th>k*</th><th>LogDet</th><th>Time (s)</th>
+  </tr></thead>
+  <tbody>
+    <tr>
+      <td rowspan="3">Baseline<br><small>(full data, damping=2.1)</small></td>
+      <td>AdamW</td><td>22.1%</td><td>58.8%</td><td>—</td><td>—</td><td>—</td><td>2,589</td>
+    </tr>
+    <tr class="hl"><td>SABER (no BOSE)</td><td>16.5%</td><td>49.2%</td><td>8.1</td><td>428</td><td>+814</td><td>2,796</td></tr>
+    <tr><td>KFAC</td><td>16.5%</td><td>49.2%</td><td>8.1</td><td>656</td><td>+814</td><td>2,799</td></tr>
+
+    <tr>
+      <td rowspan="3">Damping fix + BOSE on<br><small>(5k, damping=0.01)</small></td>
+      <td>AdamW</td><td>27.2%</td><td>67.9%</td><td>—</td><td>—</td><td>—</td><td>561</td>
+    </tr>
+    <tr class="hl"><td>SABER (BOSE)</td><td>29.6%</td><td>74.7%</td><td>1,498</td><td>485</td><td>−4,572</td><td>667</td></tr>
+    <tr><td>KFAC</td><td>32.2%</td><td>76.4%</td><td>1,481</td><td>663</td><td>−4,565</td><td>667</td></tr>
+
+    <tr>
+      <td rowspan="3">Final<br><small>(5k, damping=0.01, BOSE off)</small></td>
+      <td>AdamW</td><td>27.2%</td><td>67.9%</td><td>—</td><td>—</td><td>—</td><td>571</td>
+    </tr>
+    <tr class="hl"><td>SABER (no BOSE)</td><td>32.2%</td><td>76.4%</td><td>1,481</td><td>436</td><td>−4,565</td><td>686</td></tr>
+    <tr><td>KFAC</td><td>32.2%</td><td>76.4%</td><td>1,481</td><td>663</td><td>−4,565</td><td>677</td></tr>
+  </tbody>
+</table></div>
+
+<h4>VQAv2 <span class="model-note">(PaliGemma)</span></h4>
+<div class="tbl-wrap"><table>
+  <thead><tr>
+    <th>Optimizer</th><th>Train Loss</th><th>Eval Loss</th>
+    <th>Max LogDet</th><th>Mean κ</th><th>Mean k*</th><th>Mean r_eff</th>
+    <th>Peak Mem (MB)</th><th>Time (s)</th>
+  </tr></thead>
+  <tbody>
+    <tr><td>AdamW</td><td>12.2301</td><td>11.8874</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>30,950.14</td><td>2,022.53</td></tr>
+    <tr class="hl"><td>SahaBose-KFAC</td><td>13.0869</td><td>12.8371</td><td>434.78</td><td>16,750.83</td><td>381.72</td><td>218.91</td><td>31,797.02</td><td>2,297.82</td></tr>
+    <tr><td>Vanilla KFAC</td><td>11.8458</td><td>11.8171</td><td>398.66</td><td>31,332.78</td><td>462.17</td><td>91.66</td><td>31,798.04</td><td>2,245.68</td></tr>
+    <tr><td>SGD</td><td>13.8796</td><td>13.8775</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>30,936.19</td><td>2,015.67</td></tr>
+  </tbody>
+</table></div>
+
+<h4>Flickr30k Retrieval</h4>
+<p style="font-size:.82rem;color:var(--muted);margin:.2rem 0 .5rem;">Two backbone variants: CLIP and SigLIP. Primary metric: T2I R@1 (text-to-image retrieval).</p>
+<div class="tbl-wrap"><table>
+  <thead><tr>
+    <th>Backbone</th><th>Optimizer</th><th>T2I R@1</th><th>Peak VRAM (MB)</th>
+    <th>Kappa</th><th>k*</th><th>Time (s)</th>
+  </tr></thead>
+  <tbody>
+    <tr><td rowspan="3">CLIP</td>
+        <td>AdamW</td><td>47.9%</td><td>—</td><td>—</td><td>—</td><td>312.0</td></tr>
+    <tr class="hl"><td>SABER-KFAC</td><td>73.3%</td><td>—</td><td>—</td><td>—</td><td>675.9</td></tr>
+    <tr><td>Vanilla KFAC</td><td>72.7%</td><td>—</td><td>—</td><td>—</td><td>674.5</td></tr>
+    <tr><td rowspan="3">SigLIP</td>
+        <td>AdamW</td><td>88.2%</td><td>8,018.6</td><td>—</td><td>—</td><td>1,577.2</td></tr>
+    <tr class="hl"><td>SABER-KFAC</td><td>89.6%</td><td>10,538.9</td><td>63.03</td><td>440.6</td><td>1,973.1</td></tr>
+    <tr><td>Vanilla KFAC</td><td>89.7%</td><td>10,563.2</td><td>63.02</td><td>644.1</td><td>1,968.3</td></tr>
+  </tbody>
+</table></div>
+
+<hr>
+
+<!-- VLAs -->
+<h3>Vision-Language-Action Models (VLAs)</h3>
+<div class="tbl-wrap"><table>
+  <thead><tr>
+    <th>Optimizer</th><th>Accuracy</th><th>Eval Loss</th><th>Train Loss</th><th>Mean κ</th><th>Time (s)</th>
+  </tr></thead>
+  <tbody>
+    <tr><td>SGD</td><td>0.9666</td><td>0.0990</td><td>0.2190</td><td>0.9666</td><td>786.2</td></tr>
+    <tr class="hl"><td>SABER-KFAC</td><td>0.9688</td><td>0.0779</td><td>0.1979</td><td>1.1626</td><td>1,191.2</td></tr>
+    <tr><td>Vanilla KFAC</td><td>0.9634</td><td>0.1126</td><td>0.2326</td><td>0.9634</td><td>1,198.9</td></tr>
+    <tr><td>AdamW</td><td>0.9506</td><td>0.0637</td><td>0.1837</td><td>0.9706</td><td>791.8</td></tr>
+  </tbody>
+</table></div>
+
+<!-- ═══ BIBTEX ═══ -->
+<h2>BibTeX</h2>
+<pre>@inproceedings{sathyanarayanan2026sahabose,
+  author    = {Sathyanarayanan, Anish and Mallagundla, Rishikesh and Narang, Visheshe
+               and Chadha, Aman and Jain, Vinija and Das, Amitava},
+  title     = {SahaBose-KFAC: Making KFAC Stable and Fast via Spectral Annealing
+               and Curvature Condensation},
   booktitle = {NeurIPS},
   year      = {2026},
-}</code></pre>
-  </div>
-</section>
+}</pre>
 
-
-<footer class="footer">
-  <div class="container">
-    <div class="content has-text-centered">
-      <a class="icon-link"
-         href="#">
-        <i class="fas fa-file-pdf"></i>
-      </a>
-      <a class="icon-link" href="https://github.com/SahaBose-KFAC" class="external-link" disabled>
-        <i class="fab fa-github"></i>
-      </a>
-    </div>
-    <div class="columns is-centered">
-      <div class="column is-8">
-        <div class="content">
-          <p>
-            This website is licensed under a <a rel="license"
-                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
-            Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
-          <p>
-            You are free to borrow the source code of this website from the <a
-              href="https://github.com/nerfies/nerfies.github.io">Nerfies repository</a>. We just ask that you link back to this page in the footer.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
+<footer>
+  Website template adapted from <a href="https://nerfies.github.io">Nerfies</a>.
+  Licensed under <a href="http://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>.
 </footer>
 
+</div><!-- /wrap -->
 </body>
 </html>
