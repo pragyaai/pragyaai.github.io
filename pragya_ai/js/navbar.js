@@ -186,11 +186,6 @@
       key: "denseworld.html",
     },
     {
-      label: "DENSEWALK",
-      href: `${appRoot}/pages/densewalk.html`,
-      key: "densewalk.html",
-    },
-    {
       label: "FactorJEPA",
       href: `${appRoot}/pages/factorjepa.html`,
       key: "factorjepa.html",
@@ -199,6 +194,11 @@
       label: "PragyaVLA",
       href: `${appRoot}/pages/pragyavla.html`,
       key: "pragyavla.html",
+    },
+    {
+      label: "DENSEWALK",
+      href: `${appRoot}/pages/densewalk.html`,
+      key: "densewalk.html",
     },
     {
       label: "KalamProtocol",
