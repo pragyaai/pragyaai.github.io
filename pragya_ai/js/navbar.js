@@ -58,6 +58,30 @@
         image: `${appRoot}/public/denseWorld_new.png`,
       },
     },
+    "densewalk.html": {
+      title: "DenseWalk",
+      columns: {
+        apis: [
+          { label: "What is it?", href: "#", icon: "info" },
+          { label: "What's the necessity?", href: "#", icon: "insights" },
+          { label: "What's the Leap?", href: "#", icon: "rocket_launch" },
+        ],
+      },
+      answers: {
+        "What is it?":
+          "A data-and-benchmark pipeline for short-horizon humanoid navigation in populous, crowded, and chaotic Global South urban environments.",
+        "What's the necessity?":
+          "Because navigation progress is still under-studied in India-like mixed-agent streets where weak lane structure, persistent occlusion, and shifting right-of-way demand continuous local decisions.",
+        "What's the Leap?":
+          "From 200 hours of egocentric walk-through video to motion-grounded action-and-language supervision, then benchmarked in dense mixed-agent Isaac Sim scenarios with safety and social-compliance metrics.",
+      },
+      featuredCard: {
+        title: "DENSEWALK",
+        description: "Humanoid navigation benchmark",
+        href: `${appRoot}/pages/densewalk.html`,
+        image: `${appRoot}/public/denseWalk_new.png`,
+      },
+    },
     "factorjepa.html": {
       title: "FactorJEPA",
       columns: {
@@ -160,6 +184,11 @@
       label: "DENSEWORLD",
       href: `${appRoot}/pages/denseworld.html`,
       key: "denseworld.html",
+    },
+    {
+      label: "DENSEWALK",
+      href: `${appRoot}/pages/densewalk.html`,
+      key: "densewalk.html",
     },
     {
       label: "FactorJEPA",

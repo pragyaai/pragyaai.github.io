@@ -92,15 +92,33 @@
               />
             </div>
           </div>
-          <!-- FactorJEPA -->
+          <!-- Dense Walk -->
           <div class="grid grid-cols-1 md:grid-cols-12 bg-surface-container-lowest group hover:z-10 relative">
             <div class="md:col-span-5 bg-surface-container-low overflow-hidden relative min-h-[400px]">
               <img
-                alt="Neural Architecture"
+                alt="Humanoid navigation in dense urban traffic"
                 class="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105"
-                src="../public/factorjepa_new.png"
+                src="../public/denseWalk_new.png"
               />
             </div>
+            <div class="md:col-span-7 p-12 md:p-20 flex flex-col justify-center">
+              <h3 class="text-4xl font-light font-headline mb-6">DenseWalk</h3>
+              <p class="text-md font-light text-on-surface-variant leading-relaxed mb-10 max-w-lg">
+                <b><i>DENSEWALK</i></b> is our <b><i>data-and-benchmark pipeline</i></b> for short-horizon humanoid navigation in <b><i>populous, crowded, and chaotic Global South urban environments</i></b>. From <b><i>200 hours of egocentric walk-through video</i></b>, it combines <b><i>monocular depth, agent detection and tracking, optical flow, and traversability-based gap inference</i></b> to derive navigation decisions such as <b><i>advance, yield, sidestep, slow, and wait</i></b>. We then pair these motion-grounded actions with language supervision and evaluate in a dense benchmark spanning <b><i>bottlenecks, crossings, occlusion, temporary gap openings, and dynamically narrowing free space</i></b> with metrics for safety, stability, and social compliance.
+              </p>
+              <div class="flex items-center gap-8">
+                <a
+                  class="text-[10px] font-bold uppercase tracking-widest text-on-surface flex items-center gap-2 group-hover:gap-4 transition-all"
+                  href="densewalk.html"
+                >
+                  Know More
+                  <span class="material-symbols-outlined text-sm">arrow_outward</span>
+                </a>
+              </div>
+            </div>
+          </div>
+          <!-- FactorJEPA -->
+          <div class="grid grid-cols-1 md:grid-cols-12 bg-surface-container-lowest group hover:z-10 relative">
             <div class="md:col-span-7 p-12 md:p-20 flex flex-col justify-center">
               <h3 class="text-4xl font-light font-headline mb-6">FactorJEPA</h3>
               <p class="text-md font-light text-on-surface-variant leading-relaxed mb-10 max-w-lg">
@@ -116,10 +134,24 @@
                 </a>
               </div>
             </div>
+            <div class="md:col-span-5 bg-surface-container-low overflow-hidden relative min-h-[400px]">
+              <img
+                alt="Neural Architecture"
+                class="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105"
+                src="../public/factorjepa_new.png"
+              />
+            </div>
           </div>
           <!-- PragyaVLA -->
           <div class="grid grid-cols-1 md:grid-cols-12 bg-surface-container-lowest group hover:z-10 relative">
-            <div class="md:col-span-7 p-12 md:p-20 flex flex-col justify-center order-1 md:order-1">
+            <div class="md:col-span-5 bg-surface-container-low overflow-hidden min-h-[400px]">
+              <img
+                alt="Embodied AI"
+                class="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105"
+                src="../public/pragyaVla_new.png"
+              />
+            </div>
+            <div class="md:col-span-7 p-12 md:p-20 flex flex-col justify-center">
               <h3 class="text-4xl font-light font-headline mb-6">PragyaVLA</h3>
               <p class="text-md font-light text-on-surface-variant leading-relaxed mb-10 max-w-lg">
                 <b><i>PRAGYA-VLA</i></b> is the <b><i>sovereign Vision-Language-Action model</i></b> at the core of our embodied AI stack, designed for grounded decision-making in <b><i>dense, dynamic Indian terrains</i></b>. It unifies <b><i>visual perception, Indian-language instruction understanding, embodied reasoning, and action generation</i></b> within a single framework, enabling robots to interpret commands, reason about their surroundings, and execute safe, context-aware behavior. By coupling <b><i>Indian-language grounding</i></b> with <b><i>terrain-aware actionability</i></b>, <b><i>PRAGYA-VLA</i></b> is designed to support robust embodied intelligence for real-world deployment in challenging public settings.
@@ -134,24 +166,10 @@
                 </a>
               </div>
             </div>
-            <div class="md:col-span-5 bg-surface-container-low overflow-hidden order-2 md:order-2 min-h-[400px]">
-              <img
-                alt="Embodied AI"
-                class="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105"
-                src="../public/pragyaVla_new.png"
-              />
-            </div>
           </div>
           <!-- Kalam Protocol -->
           <div class="grid grid-cols-1 md:grid-cols-12 bg-surface-container-lowest group hover:z-10 relative">
-            <div class="md:col-span-5 bg-surface-container-low overflow-hidden order-2 md:order-1 min-h-[400px]">
-              <img
-                alt="Network Mesh"
-                class="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105"
-                src="../public/kalamProtocol_new.png"
-              />
-            </div>
-            <div class="md:col-span-7 p-12 md:p-20 flex flex-col justify-center order-1 md:order-2">
+            <div class="md:col-span-7 p-12 md:p-20 flex flex-col justify-center">
               <h3 class="text-4xl font-light font-headline mb-6">Kalam Protocol</h3>
               <p class="text-md font-light text-on-surface-variant leading-relaxed mb-10 max-w-lg">
                 <b><i>KALAM Protocol</i></b> is our <b><i>behavioral alignment and governance framework</i></b> for embodied AI systems operating in sensitive real-world environments. It is designed to align robot perception, reasoning, and action with <b><i>safety, reliability, human oversight, and mission-aware constraints</i></b>, especially in dense public settings where errors can have real operational consequences. Rather than treating alignment as a post hoc filter, <b><i>KALAM Protocol</i></b> embeds <b><i>ethical control, deployment discipline, and decision accountability</i></b> into the action loop, enabling sovereign robotic systems to act with restraint, situational awareness, and trustworthiness.
@@ -166,10 +184,24 @@
                 </a>
               </div>
             </div>
+            <div class="md:col-span-5 bg-surface-container-low overflow-hidden min-h-[400px]">
+              <img
+                alt="Network Mesh"
+                class="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105"
+                src="../public/kalamProtocol_new.png"
+              />
+            </div>
           </div>
           <!-- KalariSena -->
           <div class="grid grid-cols-1 md:grid-cols-12 bg-surface-container-lowest group hover:z-10 relative">
-            <div class="md:col-span-7 p-12 md:p-20 flex flex-col justify-center order-1 md:order-1">
+            <div class="md:col-span-5 bg-surface-container-low overflow-hidden min-h-[400px]">
+              <img
+                alt="Motion Tracking"
+                class="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105"
+                src="../public/kalarisena_new.png"
+              />
+            </div>
+            <div class="md:col-span-7 p-12 md:p-20 flex flex-col justify-center">
               <h3 class="text-4xl font-light font-headline mb-6">KalariSena</h3>
               <p class="text-md font-light text-on-surface-variant leading-relaxed mb-10 max-w-lg">
                 <b><i>KalariSena</i></b> is our <b><i>movement-intelligence and embodied skills program</i></b> for humanoid robotics, centered on <b><i>teaching Indian martial art—Kalaripayattu—to robots</i></b>. It translates the principles of <b><i>agility, balance, reflexes, defensive movement, rapid response, and whole-body coordination</i></b> into machine embodiment, enabling humanoids to move with greater precision, control, and physical discipline in complex real-world environments. By grounding robotic motion in a structured tradition of combat-tested movement, <b><i>KalariSena</i></b> aims to build <b><i>faster, more resilient, and operationally capable</i></b> humanoid systems for deployment in <b><i>railways, airports, Kumbh Mela-scale gatherings, crowd-control scenarios, security at Indian monuments, and other dense public settings</i></b> where mobility, responsiveness, and embodied reliability are critical.
@@ -183,13 +215,6 @@
                   <span class="material-symbols-outlined text-sm">arrow_outward</span>
                 </a>
               </div>
-            </div>
-            <div class="md:col-span-5 bg-surface-container-low overflow-hidden min-h-[400px] order-2 md:order-2">
-              <img
-                alt="Motion Tracking"
-                class="w-full h-full object-cover transition-transform duration-500 ease-out hover:scale-105"
-                src="../public/kalarisena_new.png"
-              />
             </div>
           </div>
         </div>
