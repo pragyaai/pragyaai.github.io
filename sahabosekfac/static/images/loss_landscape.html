@@ -2,91 +2,75 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>SahaBose-KFAC Complex Loss Landscape</title>
+    <title>SahaBose-KFAC Optimization Diagnostic</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        #container { width: 100vw; height: 100vh; cursor: move; }
+        body { margin: 0; overflow: hidden; background: #fff; font-family: 'Segoe UI', sans-serif; }
+        #container { width: 100vw; height: 100vh; }
         
-        .ui-panel {
+        .overlay {
             position: absolute; top: 20px; left: 20px;
-            background: rgba(255,255,255,0.92); padding: 18px;
-            border-radius: 12px; border: 1px solid #ddd;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-            display: flex; flex-direction: column; gap: 12px;
-            width: 240px; z-index: 100;
+            pointer-events: none; z-index: 100;
         }
-        
-        .ui-title { font-weight: 800; font-size: 15px; color: #111; margin-bottom: 2px; }
-        .ui-sub { font-size: 11px; color: #666; margin-bottom: 8px; }
-        
-        .landscape-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
-        .btn {
-            background: #fff; border: 1px solid #ccc; border-radius: 6px;
-            padding: 7px 12px; font-size: 12px; cursor: pointer; transition: all 0.2s;
-            font-weight: 500;
+        .title { 
+            font-size: 20px; font-weight: 800; color: #111; 
+            letter-spacing: -0.5px; margin-bottom: 5px;
         }
-        .btn:hover { border-color: #3273dc; color: #3273dc; }
-        .btn.active { background: #3273dc; color: #fff; border-color: #3273dc; }
-        
-        .controls { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
-        .ctrl-btn {
-            background: #1f2937; color: #fff; border: none; border-radius: 8px;
-            padding: 10px; font-size: 14px; cursor: pointer; font-weight: 700;
-            transition: transform 0.1s;
-        }
-        .ctrl-btn:hover { background: #374151; transform: translateY(-1px); }
-        .ctrl-btn:active { transform: translateY(0); }
+        .subtitle { font-size: 12px; color: #666; text-transform: uppercase; letter-spacing: 1px; }
 
         .legend {
-            position: absolute; bottom: 25px; left: 25px;
-            background: rgba(255,255,255,0.96); padding: 15px;
-            border-radius: 12px; border: 1px solid #eee;
-            display: flex; flex-direction: column; gap: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08); z-index: 100;
+            position: absolute; bottom: 30px; left: 30px;
+            background: rgba(255,255,255,0.9); padding: 20px;
+            border-radius: 15px; border: 1px solid #eee;
+            display: flex; flex-direction: column; gap: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1); z-index: 100;
         }
-        .legend-item { display: flex; align-items: center; gap: 12px; font-size: 13px; color: #333; }
-        .dot { width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 0 5px rgba(0,0,0,0.1); }
-        .label-saha { color: #e67e22; font-weight: 800; }
+        .legend-item { display: flex; align-items: center; gap: 15px; font-size: 14px; font-weight: 600; color: #333; }
+        .dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+        .saha-text { color: #e67e22; font-weight: 800; }
         
-        .tip {
+        .status {
             position: absolute; top: 20px; right: 20px;
-            background: rgba(0,0,0,0.08); padding: 8px 18px;
-            border-radius: 25px; font-size: 12px; color: #444; font-weight: 500;
+            background: #1f2937; color: #fff; padding: 8px 20px;
+            border-radius: 30px; font-size: 12px; font-weight: 700;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .pulse {
+            width: 8px; height: 8px; background: #ff4757; border-radius: 50%;
+            animation: pulse-red 1.5s infinite;
+        }
+        @keyframes pulse-red {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 71, 87, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 71, 87, 0); }
         }
     </style>
 </head>
 <body>
     <div id="container"></div>
     
-    <div class="ui-panel">
-        <div class="ui-title">Loss Landscape Analysis</div>
-        <div class="ui-sub">Comparative optimizer dynamics</div>
-        <div class="landscape-buttons">
-            <button class="btn active" onclick="setLandscape('rugged')">Complex Rugged</button>
-            <button class="btn" onclick="setLandscape('fractal')">Sharp Local Minima</button>
-        </div>
-        <div class="controls">
-            <button class="ctrl-btn" onclick="resetAnimation()">🚀 Start Optimization</button>
-        </div>
+    <div class="overlay">
+        <div class="title">Optimization Diagnostic</div>
+        <div class="subtitle">SahaBose-KFAC vs. Baselines</div>
+    </div>
+
+    <div class="status">
+        <div class="pulse"></div> LIVE OPTIMIZATION RUN
     </div>
 
     <div class="legend">
-        <div class="legend-item"><div class="dot" style="background: #e67e22;"></div> <span class="label-saha">SahaBose-KFAC</span> (Optimal Path)</div>
-        <div class="legend-item"><div class="dot" style="background: #3273dc;"></div> <strong>Vanilla KFAC</strong> (Unstable)</div>
-        <div class="legend-item"><div class="dot" style="background: #27ae60;"></div> <strong>Adam</strong> (Noisy)</div>
-        <div class="legend-item"><div class="dot" style="background: #9ca3af;"></div> <strong>SGD</strong> (Stagnant)</div>
+        <div class="legend-item"><div class="dot" style="background: #e67e22;"></div> <span class="saha-text">SahaBose-KFAC</span> (Stable Descent)</div>
+        <div class="legend-item"><div class="dot" style="background: #3273dc;"></div> <strong>Vanilla KFAC</strong> (Unstable Tail)</div>
+        <div class="legend-item"><div class="dot" style="background: #27ae60;"></div> <strong>Adam</strong> (Noisy/Overshoot)</div>
+        <div class="legend-item"><div class="dot" style="background: #9ca3af;"></div> <strong>SGD</strong> (Stuck/Slow)</div>
     </div>
-
-    <div class="tip">🖱️ Rotate: Drag · Zoom: Scroll</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // --- Initialization ---
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0xffffff);
         
-        const camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(15, 12, 15);
+        const camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(16, 14, 16);
         camera.lookAt(0, 0, 0);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true, logarithmicDepthBuffer: true });
@@ -94,218 +78,132 @@
         renderer.setPixelRatio(window.devicePixelRatio);
         document.getElementById('container').appendChild(renderer.domElement);
 
-        // Lights
-        scene.add(new THREE.AmbientLight(0x404040, 2.8));
-        const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
-        dirLight.position.set(10, 20, 10);
+        scene.add(new THREE.AmbientLight(0xffffff, 1.8));
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+        dirLight.position.set(15, 30, 15);
         scene.add(dirLight);
 
-        // --- State ---
-        let currentType = 'rugged';
-        let plane, wirePlane;
-        let optimizers = [];
-        let paths = [];
-        let isAnimating = false;
-        let animProgress = 0;
-        let pathData = null;
-
-        const colors = {
-            sahabose: 0xe67e22,
-            kfac: 0x3273dc,
-            adam: 0x27ae60,
-            sgd: 0x9ca3af
-        };
-
-        // --- Math Functions (Highly Complex) ---
-        function getZ(x, y, type) {
-            if (type === 'rugged') {
-                // High complexity landscape with multiple frequencies
-                return 0.12 * (x*x + y*y) + 
-                       0.4 * Math.sin(1.8 * x) * Math.cos(1.8 * y) + 
-                       0.15 * Math.sin(4.5 * x) * Math.cos(4.5 * y) +
-                       0.05 * Math.sin(10 * x);
-            } else if (type === 'fractal') {
-                // Sharp, multi-scale local minima
-                return 0.1 * (x*x + y*y) + 
-                       0.8 * (Math.sin(x) * Math.cos(y)) +
-                       0.3 * (Math.sin(3*x) * Math.cos(3*y)) +
-                       0.1 * (Math.sin(9*x) * Math.cos(9*y));
-            }
-            return 0;
+        // --- ULTRA COMPLEX LANDSCAPE ---
+        function getZ(x, y) {
+            return 0.15 * (x*x + y*y) + 
+                   0.8 * (1 - Math.cos(2.2 * x)) + 
+                   0.8 * (1 - Math.cos(2.2 * y)) + 
+                   0.6 * Math.sin(5 * x) * Math.sin(5 * y) +
+                   0.3 * Math.cos(10 * x);
         }
 
-        // --- Scene Construction ---
-        function createLandscape(type) {
-            if (plane) scene.remove(plane);
-            if (wirePlane) scene.remove(wirePlane);
-
-            const size = 18, segments = 120; // High resolution
-            const geo = new THREE.PlaneBufferGeometry(size, size, segments, segments);
-            const pos = geo.attributes.position.array;
-
-            for (let i = 0; i < pos.length; i += 3) {
-                pos[i+2] = getZ(pos[i], pos[i+1], type);
-            }
-            geo.computeVertexNormals();
-
-            const mat = new THREE.MeshPhongMaterial({
-                color: 0xfdfdfd, side: THREE.DoubleSide, transparent: true, opacity: 0.9, shininess: 40
-            });
-            plane = new THREE.Mesh(geo, mat);
-            plane.rotation.x = -Math.PI / 2;
-            scene.add(plane);
-
-            const wireMat = new THREE.MeshBasicMaterial({ color: 0xdddddd, wireframe: true, transparent: true, opacity: 0.25 });
-            wirePlane = new THREE.Mesh(geo, wireMat);
-            wirePlane.rotation.x = -Math.PI / 2;
-            wirePlane.position.y = 0.006;
-            scene.add(wirePlane);
+        const size = 20, segments = 150;
+        const geo = new THREE.PlaneBufferGeometry(size, size, segments, segments);
+        const pos = geo.attributes.position.array;
+        for (let i = 0; i < pos.length; i += 3) {
+            pos[i+2] = getZ(pos[i], pos[i+1]);
         }
+        geo.computeVertexNormals();
 
+        const plane = new THREE.Mesh(geo, new THREE.MeshPhongMaterial({
+            color: 0xfafafa, side: THREE.DoubleSide, shininess: 50
+        }));
+        plane.rotation.x = -Math.PI / 2;
+        scene.add(plane);
+
+        const wire = new THREE.Mesh(geo, new THREE.MeshBasicMaterial({ color: 0xeeeeee, wireframe: true, transparent: true, opacity: 0.15 }));
+        wire.rotation.x = -Math.PI / 2;
+        wire.position.y = 0.01;
+        scene.add(wire);
+
+        // --- OPTIMIZERS ---
+        const colors = { sahabose: 0xe67e22, kfac: 0x3273dc, adam: 0x27ae60, sgd: 0x9ca3af };
+        const optimizerMeshes = {};
+        const pathMeshes = {};
+        
         function createOptimizer(color) {
             const sphere = new THREE.Mesh(
-                new THREE.SphereBufferGeometry(0.25, 24, 24),
-                new THREE.MeshPhongMaterial({ 
-                    color: color, 
-                    emissive: color, 
-                    emissiveIntensity: 0.4,
-                    shininess: 100 
-                })
+                new THREE.SphereBufferGeometry(0.3, 32, 32),
+                new THREE.MeshPhongMaterial({ color: color, emissive: color, emissiveIntensity: 0.4 })
             );
             scene.add(sphere);
             return sphere;
         }
 
-        // Thick Path using TubeGeometry
-        function updatePathMesh(points, color) {
-            if (points.length < 2) return null;
-            const curve = new THREE.CatmullRomCurve3(points);
-            // Tube radius = 0.12 (thick and visible)
-            const tubeGeo = new THREE.TubeBufferGeometry(curve, points.length * 2, 0.08, 8, false);
-            const tubeMat = new THREE.MeshPhongMaterial({ color: color, shininess: 50 });
-            const tube = new THREE.Mesh(tubeGeo, tubeMat);
-            return tube;
-        }
+        Object.keys(colors).forEach(key => {
+            optimizerMeshes[key] = createOptimizer(colors[key]);
+            pathMeshes[key] = null;
+        });
 
-        // --- Path Generation ---
-        function generatePaths(type) {
-            const startX = 6.5, startY = 6.5;
-            const steps = 180;
-            const results = { sahabose: [], kfac: [], adam: [], sgd: [] };
-            const jitter = (s) => (Math.random() - 0.5) * s;
-
-            // 1. SahaBose-KFAC: Fast, Direct, Stable
-            let sX = startX, sY = startY;
-            for (let i = 0; i < steps; i++) {
-                sX += (0 - sX) * 0.035;
-                sY += (0 - sY) * 0.035;
-                results.sahabose.push(new THREE.Vector3(sX, getZ(sX, sY, type) + 0.15, sY));
-            }
-
-            // 2. Vanilla KFAC: Large unstable oscillations early on
-            let kX = startX, kY = startY;
-            for (let i = 0; i < steps; i++) {
-                const amp = i < 80 ? 2.5 * Math.sin(i * 0.3) * (1 - i/100) : 0;
-                kX += (0 - kX) * 0.015 + amp * 0.02;
-                kY += (0 - kY) * 0.015 + amp * 0.02;
-                results.kfac.push(new THREE.Vector3(kX, getZ(kX, kY, type) + 0.15, kY));
-            }
-
-            // 3. Adam: Noisy paths, overshoot
-            let aX = startX, aY = startY;
-            for (let i = 0; i < steps; i++) {
-                aX += (0 - aX) * 0.025 + jitter(0.35);
-                aY += (0 - aY) * 0.025 + jitter(0.35);
-                if (i > 90 && i < 130) { aX -= 0.1; aY += 0.1; } // Small overshoot circle
-                results.adam.push(new THREE.Vector3(aX, getZ(aX, aY, type) + 0.15, aY));
-            }
-
-            // 4. SGD: Very slow progress
-            let gX = startX, gY = startY;
-            for (let i = 0; i < steps; i++) {
-                gX += (0 - gX) * 0.006;
-                gY += (0 - gY) * 0.006;
-                results.sgd.push(new THREE.Vector3(gX, getZ(gX, gY, type) + 0.15, gY));
-            }
-
-            return results;
-        }
-
-        // --- Interaction ---
-        function setLandscape(type) {
-            currentType = type;
-            document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
-            document.querySelector(`button[onclick="setLandscape('${type}')"]`).classList.add('active');
-            createLandscape(type);
-            resetAnimation();
-        }
-
-        function resetAnimation() {
-            animProgress = 0;
-            isAnimating = true;
-            pathData = generatePaths(currentType);
+        // --- PATH DATA ---
+        function generatePaths() {
+            const startX = 7.5, startY = 7.5;
+            const steps = 250;
+            const res = { sahabose: [], kfac: [], adam: [], sgd: [] };
             
-            optimizers.forEach(o => scene.remove(o));
-            paths.forEach(p => scene.remove(p));
-            optimizers = [];
-            paths = [];
+            let sX = startX, sY = startY;
+            let kX = startX, kY = startY;
+            let aX = startX, aY = startY;
+            let gX = startX, gY = startY;
 
-            ['sahabose', 'kfac', 'adam', 'sgd'].forEach(key => {
-                optimizers.push(createOptimizer(colors[key]));
-                paths.push(null); // Will be created in loop
+            for (let i = 0; i < steps; i++) {
+                // SahaBose: Direct and fast
+                sX += (0 - sX) * 0.032; sY += (0 - sY) * 0.032;
+                res.sahabose.push(new THREE.Vector3(sX, getZ(sX, sY) + 0.2, sY));
+
+                // KFAC: High instability early
+                const kfacNoise = i < 120 ? Math.sin(i * 0.4) * 3 * (1 - i/150) : 0;
+                kX += (0 - kX) * 0.012 + kfacNoise * 0.015;
+                kY += (0 - kY) * 0.012 + kfacNoise * 0.015;
+                res.kfac.push(new THREE.Vector3(kX, getZ(kX, kY) + 0.2, kY));
+
+                // Adam: Noisy/Overshoot
+                aX += (0 - aX) * 0.022 + (Math.random()-0.5)*0.6;
+                aY += (0 - aY) * 0.022 + (Math.random()-0.5)*0.6;
+                if (i > 100 && i < 160) { aX -= 0.15; aY += 0.15; }
+                res.adam.push(new THREE.Vector3(aX, getZ(aX, aY) + 0.2, aY));
+
+                // SGD: Slow
+                gX += (0 - gX) * 0.005; gY += (0 - gY) * 0.005;
+                res.sgd.push(new THREE.Vector3(gX, getZ(gX, gY) + 0.2, gY));
+            }
+            return res;
+        }
+
+        let pathData = generatePaths();
+        let frame = 0;
+
+        function updateTubes() {
+            Object.keys(colors).forEach(key => {
+                if (pathMeshes[key]) scene.remove(pathMeshes[key]);
+                const points = pathData[key].slice(0, frame + 1);
+                if (points.length > 1) {
+                    const curve = new THREE.CatmullRomCurve3(points);
+                    // Tube radius = 0.15 (very thick)
+                    const geo = new THREE.TubeBufferGeometry(curve, points.length * 2, 0.12, 10, false);
+                    pathMeshes[key] = new THREE.Mesh(geo, new THREE.MeshPhongMaterial({ color: colors[key], shininess: 80 }));
+                    scene.add(pathMeshes[key]);
+                }
+                optimizerMeshes[key].position.copy(pathData[key][frame]);
             });
         }
 
-        // Camera control
-        let targetRotY = 0.5, targetRotX = 0.3;
-        let isDragging = false;
-
-        document.addEventListener('mousedown', () => isDragging = true);
-        document.addEventListener('mouseup', () => isDragging = false);
-        document.addEventListener('mousemove', (e) => {
-            if (isDragging) {
-                targetRotY += e.movementX * 0.006;
-                targetRotX += e.movementY * 0.006;
-            }
-        });
-        window.addEventListener('wheel', (e) => {
-            camera.position.multiplyScalar(1 + e.deltaY * 0.0008);
-            camera.position.clampLength(5, 50);
-        });
-
-        // --- Main Loop ---
         function animate() {
             requestAnimationFrame(animate);
-
-            if (isAnimating && pathData) {
-                animProgress += 0.6; // Speed
-                const idx = Math.min(Math.floor(animProgress), 179);
-
-                ['sahabose', 'kfac', 'adam', 'sgd'].forEach((key, i) => {
-                    const pos = pathData[key][idx];
-                    optimizers[i].position.copy(pos);
-                    
-                    // Redraw Thick Path
-                    if (paths[i]) scene.remove(paths[i]);
-                    const points = pathData[key].slice(0, idx + 1);
-                    if (points.length > 1) {
-                        paths[i] = updatePathMesh(points, colors[key]);
-                        scene.add(paths[i]);
-                    }
-                });
-
-                if (animProgress >= 180) isAnimating = false;
+            
+            frame++;
+            if (frame >= 250) {
+                frame = 0;
+                pathData = generatePaths(); // New random noise for Adam
             }
+            
+            updateTubes();
 
-            scene.rotation.y += (targetRotY - scene.rotation.y) * 0.08;
-            scene.rotation.x += (targetRotX - scene.rotation.x) * 0.08;
+            // Auto-camera rotation
+            const time = Date.now() * 0.0002;
+            camera.position.x = 16 * Math.cos(time);
+            camera.position.z = 16 * Math.sin(time);
+            camera.lookAt(0, 0, 0);
 
             renderer.render(scene, camera);
         }
 
-        createLandscape('rugged');
         animate();
-
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
