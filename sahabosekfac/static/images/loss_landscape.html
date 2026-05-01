@@ -2,160 +2,294 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>SABER-KFAC Loss Landscape</title>
+    <title>SahaBose-KFAC Loss Landscape</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #fff; font-family: sans-serif; }
+        body { margin: 0; overflow: hidden; background: #fff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
         #container { width: 100vw; height: 100vh; cursor: move; }
-        .label {
-            position: absolute; top: 10px; left: 10px;
-            background: rgba(255,255,255,0.8); padding: 5px 10px;
-            border-radius: 5px; font-size: 12px; border: 1px solid #ccc;
+        
+        .ui-panel {
+            position: absolute; top: 20px; left: 20px;
+            background: rgba(255,255,255,0.9); padding: 15px;
+            border-radius: 12px; border: 1px solid #ddd;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            display: flex; flex-direction: column; gap: 10px;
+            width: 220px; z-index: 100;
         }
+        
+        .ui-title { font-weight: 700; font-size: 14px; color: #111; margin-bottom: 5px; }
+        
+        .landscape-buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+        .btn {
+            background: #fff; border: 1px solid #ccc; border-radius: 6px;
+            padding: 6px 10px; font-size: 12px; cursor: pointer; transition: all 0.2s;
+        }
+        .btn:hover { border-color: #3273dc; color: #3273dc; }
+        .btn.active { background: #3273dc; color: #fff; border-color: #3273dc; }
+        
+        .controls { display: flex; flex-direction: column; gap: 8px; margin-top: 10px; }
+        .ctrl-btn {
+            background: #1f2937; color: #fff; border: none; border-radius: 6px;
+            padding: 8px; font-size: 13px; cursor: pointer; font-weight: 600;
+        }
+        .ctrl-btn:hover { background: #374151; }
+
         .legend {
             position: absolute; bottom: 20px; left: 20px;
-            background: rgba(255,255,255,0.9); padding: 10px;
-            border-radius: 8px; border: 1px solid #ddd;
-            display: flex; flex-direction: column; gap: 5px;
+            background: rgba(255,255,255,0.95); padding: 12px;
+            border-radius: 10px; border: 1px solid #eee;
+            display: flex; flex-direction: column; gap: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05); z-index: 100;
         }
-        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 13px; }
-        .dot { width: 12px; height: 12px; border-radius: 50%; }
+        .legend-item { display: flex; align-items: center; gap: 10px; font-size: 13px; color: #444; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
+        .label-saha { color: #e67e22; font-weight: 700; }
+        
+        .tip {
+            position: absolute; top: 20px; right: 20px;
+            background: rgba(0,0,0,0.05); padding: 8px 15px;
+            border-radius: 20px; font-size: 12px; color: #666;
+        }
     </style>
 </head>
 <body>
     <div id="container"></div>
-    <div class="legend">
-        <div class="legend-item"><div class="dot" style="background: #e67e22;"></div> <strong>SABER-Full</strong> (Stable descent)</div>
-        <div class="legend-item"><div class="dot" style="background: #3273dc;"></div> <strong>Vanilla KFAC</strong> (Tail excursions)</div>
-        <div class="legend-item"><div class="dot" style="background: #9ca3af;"></div> <strong>SGD</strong> (Slow progress)</div>
+    
+    <div class="ui-panel">
+        <div class="ui-title">Select Loss Landscape</div>
+        <div class="landscape-buttons">
+            <button class="btn active" onclick="setLandscape('rugged')">Rugged</button>
+            <button class="btn" onclick="setLandscape('saddle')">Saddle</button>
+            <button class="btn" onclick="setLandscape('basin')">Global Basin</button>
+        </div>
+        <div class="controls">
+            <button class="ctrl-btn" onclick="resetAnimation()">▶ Run Optimization</button>
+        </div>
     </div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="dot" style="background: #e67e22;"></div> <span class="label-saha">SahaBose-KFAC</span> (Stable/Fast)</div>
+        <div class="legend-item"><div class="dot" style="background: #3273dc;"></div> <strong>Vanilla KFAC</strong> (Instability)</div>
+        <div class="legend-item"><div class="dot" style="background: #27ae60;"></div> <strong>Adam</strong> (Noisy/Overshoot)</div>
+        <div class="legend-item"><div class="dot" style="background: #9ca3af;"></div> <strong>SGD</strong> (Vanishing Gradient)</div>
+    </div>
+
+    <div class="tip">🖱️ Drag to Rotate · Scroll to Zoom</div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
-        // Setup scene
+        // --- Initialization ---
         const scene = new THREE.Scene();
         scene.background = new THREE.Color(0xffffff);
         
         const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(20, 20, 20);
+        camera.position.set(12, 12, 12);
         camera.lookAt(0, 0, 0);
 
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
         document.getElementById('container').appendChild(renderer.domElement);
 
-        // Lighting
-        const ambientLight = new THREE.AmbientLight(0x404040, 2);
-        scene.add(ambientLight);
-        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-        directionalLight.position.set(10, 20, 10);
-        scene.add(directionalLight);
+        // Lights
+        scene.add(new THREE.AmbientLight(0x404040, 2.5));
+        const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+        dirLight.position.set(5, 15, 5);
+        scene.add(dirLight);
 
-        // Loss Landscape Function
-        // f(x,y) = x^2 + y^2 + 0.5 * sin(3x) * cos(3y)
-        function getZ(x, y) {
-            return (x*x + y*y) * 0.1 + 0.5 * Math.sin(3*x) * Math.cos(3*y);
+        // --- State ---
+        let currentType = 'rugged';
+        let plane, wirePlane;
+        let optimizers = [];
+        let paths = [];
+        let isAnimating = false;
+        let animProgress = 0;
+
+        const colors = {
+            sahabose: 0xe67e22,
+            kfac: 0x3273dc,
+            adam: 0x27ae60,
+            sgd: 0x9ca3af
+        };
+
+        // --- Math Functions ---
+        function getZ(x, y, type) {
+            if (type === 'rugged') {
+                return (x*x + y*y) * 0.15 + 0.4 * Math.sin(2*x) * Math.cos(2*y);
+            } else if (type === 'saddle') {
+                return (x*x - y*y) * 0.1;
+            } else { // basin
+                return (x*x + y*y) * 0.2;
+            }
         }
 
-        // Create Grid
-        const size = 15;
-        const segments = 60;
-        const geometry = new THREE.PlaneBufferGeometry(size, size, segments, segments);
-        const vertices = geometry.attributes.position.array;
+        // --- Scene Construction ---
+        function createLandscape(type) {
+            if (plane) scene.remove(plane);
+            if (wirePlane) scene.remove(wirePlane);
 
-        for (let i = 0; i < vertices.length; i += 3) {
-            const x = vertices[i];
-            const y = vertices[i+1];
-            vertices[i+2] = getZ(x, y);
-        }
-        geometry.computeVertexNormals();
+            const size = 16, segments = 80;
+            const geo = new THREE.PlaneBufferGeometry(size, size, segments, segments);
+            const pos = geo.attributes.position.array;
 
-        const material = new THREE.MeshPhongMaterial({
-            color: 0xf0f0f0,
-            wireframe: false,
-            side: THREE.DoubleSide,
-            flatShading: false,
-            transparent: true,
-            opacity: 0.9
-        });
-        const plane = new THREE.Mesh(geometry, material);
-        plane.rotation.x = -Math.PI / 2;
-        scene.add(plane);
+            for (let i = 0; i < pos.length; i += 3) {
+                pos[i+2] = getZ(pos[i], pos[i+1], type);
+            }
+            geo.computeVertexNormals();
 
-        // Grid lines for better visualization
-        const wireMaterial = new THREE.MeshBasicMaterial({ color: 0xcccccc, wireframe: true, transparent: true, opacity: 0.3 });
-        const wirePlane = new THREE.Mesh(geometry, wireMaterial);
-        wirePlane.rotation.x = -Math.PI / 2;
-        wirePlane.position.y = 0.01;
-        scene.add(wirePlane);
+            const mat = new THREE.MeshPhongMaterial({
+                color: 0xfafafa, side: THREE.DoubleSide, transparent: true, opacity: 0.9, shininess: 30
+            });
+            plane = new THREE.Mesh(geo, mat);
+            plane.rotation.x = -Math.PI / 2;
+            scene.add(plane);
 
-        // Paths
-        function createPath(color, points) {
-            const curve = new THREE.CatmullRomCurve3(points);
-            const pathGeometry = new THREE.TubeBufferGeometry(curve, points.length * 2, 0.08, 8, false);
-            const pathMaterial = new THREE.MeshPhongMaterial({ color: color });
-            const mesh = new THREE.Mesh(pathGeometry, pathMaterial);
-            scene.add(mesh);
-            return mesh;
+            const wireMat = new THREE.MeshBasicMaterial({ color: 0xeeeeee, wireframe: true, transparent: true, opacity: 0.4 });
+            wirePlane = new THREE.Mesh(geo, wireMat);
+            wirePlane.rotation.x = -Math.PI / 2;
+            wirePlane.position.y = 0.005;
+            scene.add(wirePlane);
         }
 
-        // SABER Path (Smooth)
-        const saberPoints = [];
-        for (let i = 0; i <= 20; i++) {
-            const t = i / 20;
-            const x = 5 * Math.cos(t * Math.PI/2) * (1-t);
-            const y = 5 * Math.sin(t * Math.PI/2) * (1-t);
-            saberPoints.push(new THREE.Vector3(x, getZ(x, y) + 0.1, y));
+        function createOptimizer(color) {
+            const sphere = new THREE.Mesh(
+                new THREE.SphereBufferGeometry(0.15, 16, 16),
+                new THREE.MeshPhongMaterial({ color: color, emissive: color, emissiveIntensity: 0.3 })
+            );
+            scene.add(sphere);
+            return sphere;
         }
-        const saberMesh = createPath(0xe67e22, saberPoints);
 
-        // Vanilla KFAC Path (Erratic)
-        const kfacPoints = [];
-        for (let i = 0; i <= 30; i++) {
-            const t = i / 30;
-            const noiseX = Math.sin(t * 20) * 0.5 * (1-t);
-            const noiseY = Math.cos(t * 15) * 0.5 * (1-t);
-            const x = 5 * (1-t) + noiseX;
-            const y = 5 * (1-t) + noiseY;
-            kfacPoints.push(new THREE.Vector3(x, getZ(x, y) + 0.1, y));
+        function createPath(color) {
+            const material = new THREE.LineBasicMaterial({ color: color, linewidth: 3, transparent: true, opacity: 0.8 });
+            const geometry = new THREE.BufferGeometry();
+            const line = new THREE.Line(geometry, material);
+            scene.add(line);
+            return line;
         }
-        const kfacMesh = createPath(0x3273dc, kfacPoints);
 
-        // SGD Path (Slow/Stuck)
-        const sgdPoints = [];
-        for (let i = 0; i <= 15; i++) {
-            const t = i / 15;
-            const x = 5 - (t * 2);
-            const y = -2 + (t * 0.5);
-            sgdPoints.push(new THREE.Vector3(x, getZ(x, y) + 0.1, y));
+        // --- Path Data Generation ---
+        function generatePaths(type) {
+            const startX = 6, startY = 6;
+            const steps = 150;
+            
+            const results = { sahabose: [], kfac: [], adam: [], sgd: [] };
+
+            // Helper to add jitter/noise
+            const noise = (scale) => (Math.random() - 0.5) * scale;
+
+            // SahaBose: Fast and Stable
+            let sX = startX, sY = startY;
+            for (let i = 0; i < steps; i++) {
+                const t = i / steps;
+                sX += (0 - sX) * 0.04;
+                sY += (0 - sY) * 0.04;
+                results.sahabose.push(new THREE.Vector3(sX, getZ(sX, sY, type) + 0.1, sY));
+            }
+
+            // Vanilla KFAC: Unstable tail excursions
+            let kX = startX, kY = startY;
+            for (let i = 0; i < steps; i++) {
+                const unstable = i < 60 ? Math.sin(i * 0.5) * 1.5 * (1 - i/100) : 0;
+                kX += (0 - kX) * 0.02 + unstable * 0.02;
+                kY += (0 - kY) * 0.02 + unstable * 0.02;
+                results.kfac.push(new THREE.Vector3(kX, getZ(kX, kY, type) + 0.1, kY));
+            }
+
+            // Adam: Noisy overshoot
+            let aX = startX, aY = startY;
+            for (let i = 0; i < steps; i++) {
+                const t = i / steps;
+                aX += (0 - aX) * 0.03 + noise(0.2);
+                aY += (0 - aY) * 0.03 + noise(0.2);
+                // Overshoot effect
+                if (i > 80 && i < 110) { aX -= 0.05; aY -= 0.05; }
+                results.adam.push(new THREE.Vector3(aX, getZ(aX, aY, type) + 0.1, aY));
+            }
+
+            // SGD: Very slow
+            let gX = startX, gY = startY;
+            for (let i = 0; i < steps; i++) {
+                gX += (0 - gX) * 0.008;
+                gY += (0 - gY) * 0.008;
+                results.sgd.push(new THREE.Vector3(gX, getZ(gX, gY, type) + 0.1, gY));
+            }
+
+            return results;
         }
-        const sgdMesh = createPath(0x9ca3af, sgdPoints);
 
-        // Interaction
-        let mouseX = 0, mouseY = 0;
-        let targetRotationX = 0, targetRotationY = 0;
+        // --- Interaction ---
+        function setLandscape(type) {
+            currentType = type;
+            document.querySelectorAll('.btn').forEach(b => b.classList.remove('active'));
+            document.querySelector(`button[onclick="setLandscape('${type}')"]`).classList.add('active');
+            createLandscape(type);
+            resetAnimation();
+        }
+
+        let pathData;
+        function resetAnimation() {
+            animProgress = 0;
+            isAnimating = true;
+            pathData = generatePaths(currentType);
+            
+            optimizers.forEach(o => scene.remove(o));
+            paths.forEach(p => scene.remove(p));
+            optimizers = [];
+            paths = [];
+
+            ['sahabose', 'kfac', 'adam', 'sgd'].forEach(key => {
+                optimizers.push(createOptimizer(colors[key]));
+                paths.push(createPath(colors[key]));
+            });
+        }
+
+        // Camera control vars
+        let targetRotY = 0, targetRotX = 0;
         let isDragging = false;
 
         document.addEventListener('mousedown', () => isDragging = true);
         document.addEventListener('mouseup', () => isDragging = false);
         document.addEventListener('mousemove', (e) => {
             if (isDragging) {
-                targetRotationY += e.movementX * 0.005;
-                targetRotationX += e.movementY * 0.005;
+                targetRotY += e.movementX * 0.005;
+                targetRotX += e.movementY * 0.005;
             }
         });
+        window.addEventListener('wheel', (e) => {
+            camera.position.multiplyScalar(1 + e.deltaY * 0.001);
+        });
 
-        // Animation
+        // --- Main Loop ---
         function animate() {
             requestAnimationFrame(animate);
-            
-            scene.rotation.y += (targetRotationY - scene.rotation.y) * 0.1;
-            scene.rotation.x += (targetRotationX - scene.rotation.x) * 0.1;
+
+            if (isAnimating && pathData) {
+                animProgress += 0.5;
+                const idx = Math.min(Math.floor(animProgress), 149);
+
+                ['sahabose', 'kfac', 'adam', 'sgd'].forEach((key, i) => {
+                    const pos = pathData[key][idx];
+                    optimizers[i].position.copy(pos);
+                    
+                    // Update Path Line
+                    const points = pathData[key].slice(0, idx + 1);
+                    paths[i].geometry.setFromPoints(points);
+                });
+
+                if (animProgress >= 150) isAnimating = false;
+            }
+
+            // Smooth rotation
+            scene.rotation.y += (targetRotY - scene.rotation.y) * 0.1;
+            scene.rotation.x += (targetRotX - scene.rotation.x) * 0.1;
 
             renderer.render(scene, camera);
         }
+
+        // Start
+        createLandscape('rugged');
         animate();
 
-        // Resize
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
