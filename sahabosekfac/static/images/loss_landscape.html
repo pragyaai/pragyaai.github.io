@@ -4,49 +4,49 @@
     <meta charset="utf-8">
     <title>SahaBose-KFAC Optimization Diagnostic</title>
     <style>
-        body { margin: 0; overflow: hidden; background: #0b0e14; font-family: 'Inter', 'Segoe UI', sans-serif; }
+        body { margin: 0; overflow: hidden; background: #05070a; font-family: 'Inter', sans-serif; }
         #container { width: 100vw; height: 100vh; }
         
         .overlay {
-            position: absolute; top: 30px; left: 30px;
+            position: absolute; top: 40px; left: 40px;
             pointer-events: none; z-index: 100;
         }
         .title { 
-            font-size: 24px; font-weight: 800; color: #fff; 
-            letter-spacing: -0.5px; margin-bottom: 4px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+            font-size: 28px; font-weight: 900; color: #fff; 
+            letter-spacing: -1px; margin-bottom: 5px;
+            text-shadow: 0 0 20px rgba(59, 130, 246, 0.5);
         }
-        .subtitle { font-size: 11px; color: #94a3b8; text-transform: uppercase; letter-spacing: 2px; font-weight: 600; }
+        .subtitle { font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 3px; font-weight: 700; }
 
         .legend {
             position: absolute; bottom: 40px; left: 40px;
-            background: rgba(15, 23, 42, 0.85); padding: 24px;
-            border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
-            display: flex; flex-direction: column; gap: 16px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.4); z-index: 100;
-            backdrop-filter: blur(10px);
+            background: rgba(10, 15, 25, 0.7); padding: 30px;
+            border-radius: 24px; border: 1px solid rgba(255,255,255,0.1);
+            display: flex; flex-direction: column; gap: 20px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.5); z-index: 100;
+            backdrop-filter: blur(15px);
         }
-        .legend-item { display: flex; align-items: center; gap: 16px; font-size: 14px; font-weight: 500; color: #e2e8f0; }
-        .dot { width: 14px; height: 14px; border-radius: 50%; box-shadow: 0 0 12px currentColor; }
-        .saha-text { color: #f97316; font-weight: 800; }
+        .legend-item { display: flex; align-items: center; gap: 20px; font-size: 15px; font-weight: 600; color: #f8fafc; }
+        .dot { width: 16px; height: 16px; border-radius: 50%; box-shadow: 0 0 15px currentColor; }
+        .saha-text { color: #f97316; font-weight: 900; }
         
         .status {
-            position: absolute; top: 30px; right: 30px;
-            background: rgba(249, 115, 22, 0.1); color: #f97316; 
-            padding: 10px 20px; border: 1px solid rgba(249, 115, 22, 0.3);
-            border-radius: 40px; font-size: 12px; font-weight: 700;
-            display: flex; align-items: center; gap: 10px;
-            backdrop-filter: blur(5px);
+            position: absolute; top: 40px; right: 40px;
+            background: rgba(255,255,255,0.05); color: #fff; 
+            padding: 12px 24px; border: 1px solid rgba(255,255,255,0.15);
+            border-radius: 40px; font-size: 13px; font-weight: 800;
+            display: flex; align-items: center; gap: 12px;
+            backdrop-filter: blur(10px);
         }
         .pulse {
-            width: 8px; height: 8px; background: #f97316; border-radius: 50%;
-            box-shadow: 0 0 10px #f97316;
-            animation: pulse-orange 1.5s infinite;
+            width: 10px; height: 10px; background: #22c55e; border-radius: 50%;
+            box-shadow: 0 0 15px #22c55e;
+            animation: pulse-green 2s infinite;
         }
-        @keyframes pulse-orange {
-            0% { transform: scale(0.9); opacity: 0.8; }
-            50% { transform: scale(1.2); opacity: 1; }
-            100% { transform: scale(0.9); opacity: 0.8; }
+        @keyframes pulse-green {
+            0% { opacity: 0.5; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.5; transform: scale(0.9); }
         }
     </style>
 </head>
@@ -55,85 +55,80 @@
     
     <div class="overlay">
         <div class="title">Optimization Diagnostic</div>
-        <div class="subtitle">SahaBose-KFAC vs. Baselines</div>
+        <div class="subtitle">SahaBose-KFAC Convergence Benchmark</div>
     </div>
 
     <div class="status">
-        <div class="pulse"></div> LIVE ANALYTICS RUN
+        <div class="pulse"></div> REAL-TIME SIMULATION
     </div>
 
     <div class="legend">
-        <div class="legend-item"><div class="dot" style="background: #f97316; color: #f97316;"></div> <span class="saha-text">SahaBose-KFAC</span> (Stable Descent)</div>
-        <div class="legend-item"><div class="dot" style="background: #3b82f6; color: #3b82f6;"></div> <strong>Vanilla KFAC</strong> (Unstable)</div>
-        <div class="legend-item"><div class="dot" style="background: #10b981; color: #10b981;"></div> <strong>Adam</strong> (Overshoot)</div>
-        <div class="legend-item"><div class="dot" style="background: #94a3b8; color: #94a3b8;"></div> <strong>SGD</strong> (Vanishing)</div>
+        <div class="legend-item"><div class="dot" style="background: #f97316; color: #f97316;"></div> <span class="saha-text">SahaBose-KFAC</span> (Stable/Fast)</div>
+        <div class="legend-item"><div class="dot" style="background: #3b82f6; color: #3b82f6;"></div> <strong>Vanilla KFAC</strong> (Erratic)</div>
+        <div class="legend-item"><div class="dot" style="background: #10b981; color: #10b981;"></div> <strong>Adam</strong> (Noisy)</div>
+        <div class="legend-item"><div class="dot" style="background: #94a3b8; color: #94a3b8;"></div> <strong>SGD</strong> (Stuck)</div>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script>
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color(0x0b0e14);
+        scene.background = new THREE.Color(0x05070a);
         
-        const camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.1, 1000);
-        camera.position.set(18, 16, 18);
+        const camera = new THREE.PerspectiveCamera(32, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.set(22, 18, 22);
         camera.lookAt(0, 0, 0);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(window.devicePixelRatio);
         document.getElementById('container').appendChild(renderer.domElement);
 
         // Lights
-        const ambLight = new THREE.AmbientLight(0x404040, 1);
-        scene.add(ambLight);
-        
-        const pointLight1 = new THREE.PointLight(0x3b82f6, 2, 50);
-        pointLight1.position.set(10, 10, 10);
-        scene.add(pointLight1);
-        
-        const pointLight2 = new THREE.PointLight(0xf97316, 1.5, 50);
-        pointLight2.position.set(-10, 5, -10);
-        scene.add(pointLight2);
+        scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+        const p1 = new THREE.PointLight(0x3b82f6, 2, 60); p1.position.set(15, 10, 15); scene.add(p1);
+        const p2 = new THREE.PointLight(0xf97316, 2, 60); p2.position.set(-15, 5, -15); scene.add(p2);
 
-        // --- ULTRA COMPLEX LANDSCAPE ---
+        // --- TRANSPARENT GLASS LANDSCAPE ---
         function getZ(x, y) {
-            const r = Math.sqrt(x*x + y*y);
-            return 0.18 * (x*x + y*y) + 
-                   0.8 * (1 - Math.cos(2.5 * x)) + 
-                   0.8 * (1 - Math.cos(2.5 * y)) + 
-                   0.5 * Math.sin(6 * x) * Math.sin(6 * y);
+            // Simplified but still rugged landscape with clear global basin
+            return 0.2 * (x*x + y*y) + 
+                   0.6 * Math.sin(1.5 * x) * Math.cos(1.5 * y) + 
+                   0.3 * Math.sin(4 * x) * Math.cos(4 * y);
         }
 
-        const size = 20, segments = 160;
+        const size = 22, segments = 120;
         const geo = new THREE.PlaneBufferGeometry(size, size, segments, segments);
         const pos = geo.attributes.position.array;
-        const colors_attr = new Float32Array(pos.length);
-
         for (let i = 0; i < pos.length; i += 3) {
-            const x = pos[i], y = pos[i+1];
-            const z = getZ(x, y);
-            pos[i+2] = z;
-            
-            // Color mapping based on height
-            const h = (z + 2) / 10;
-            colors_attr[i] = 0.1 + h * 0.2;     // R
-            colors_attr[i+1] = 0.15 + h * 0.3;   // G
-            colors_attr[i+2] = 0.3 + h * 0.5;   // B
+            pos[i+2] = getZ(pos[i], pos[i+1]);
         }
-        geo.setAttribute('color', new THREE.BufferAttribute(colors_attr, 3));
         geo.computeVertexNormals();
 
-        const plane = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({
-            vertexColors: true,
-            roughness: 0.3,
-            metalness: 0.6,
-            side: THREE.DoubleSide
-        }));
+        // Glass Material
+        const planeMat = new THREE.MeshPhysicalMaterial({
+            color: 0x1e293b,
+            metalness: 0.9,
+            roughness: 0.1,
+            transparent: true,
+            opacity: 0.45,
+            side: THREE.DoubleSide,
+            transmission: 0.5,
+            thickness: 1
+        });
+        const plane = new THREE.Mesh(geo, planeMat);
         plane.rotation.x = -Math.PI / 2;
         scene.add(plane);
 
-        const grid = new THREE.GridHelper(20, 20, 0x1e293b, 0x1e293b);
-        grid.position.y = -1;
+        // Glowing Wireframe
+        const wireMat = new THREE.MeshBasicMaterial({ color: 0x334155, wireframe: true, transparent: true, opacity: 0.2 });
+        const wire = new THREE.Mesh(geo, wireMat);
+        wire.rotation.x = -Math.PI / 2;
+        wire.position.y = 0.01;
+        scene.add(wire);
+
+        // Floor Grid
+        const grid = new THREE.GridHelper(30, 30, 0x0f172a, 0x0f172a);
+        grid.position.y = -2;
         scene.add(grid);
 
         // --- OPTIMIZERS ---
@@ -143,13 +138,12 @@
         
         function createOptimizer(color) {
             const sphere = new THREE.Mesh(
-                new THREE.SphereBufferGeometry(0.35, 32, 32),
+                new THREE.SphereBufferGeometry(0.4, 32, 32),
                 new THREE.MeshStandardMaterial({ 
                     color: color, 
                     emissive: color, 
-                    emissiveIntensity: 0.8,
-                    metalness: 0.8,
-                    roughness: 0.1
+                    emissiveIntensity: 1.2,
+                    metalness: 1, roughness: 0
                 })
             );
             scene.add(sphere);
@@ -161,9 +155,9 @@
             pathMeshes[key] = null;
         });
 
-        // --- PATH DATA ---
+        // --- SYNCHRONIZED PATHS ---
         function generatePaths() {
-            const startX = 8, startY = 8;
+            const startX = 8.5, startY = 8.5; // Shared start
             const steps = 300;
             const res = { sahabose: [], kfac: [], adam: [], sgd: [] };
             
@@ -173,25 +167,25 @@
             let gX = startX, gY = startY;
 
             for (let i = 0; i < steps; i++) {
-                // SahaBose: Direct and fast
-                sX += (0 - sX) * 0.028; sY += (0 - sY) * 0.028;
-                res.sahabose.push(new THREE.Vector3(sX, getZ(sX, sY) + 0.25, sY));
+                // SahaBose: Smooth, direct, faster
+                sX += (0 - sX) * 0.035; sY += (0 - sY) * 0.035;
+                res.sahabose.push(new THREE.Vector3(sX, getZ(sX, sY) + 0.3, sY));
 
-                // KFAC: High instability early
-                const kfacNoise = i < 150 ? Math.sin(i * 0.35) * 3.5 * (1 - i/200) : 0;
+                // KFAC: Instability
+                const kfacNoise = i < 160 ? Math.sin(i * 0.4) * 4 * (1 - i/220) : 0;
                 kX += (0 - kX) * 0.01 + kfacNoise * 0.015;
                 kY += (0 - kY) * 0.01 + kfacNoise * 0.015;
-                res.kfac.push(new THREE.Vector3(kX, getZ(kX, kY) + 0.25, kY));
+                res.kfac.push(new THREE.Vector3(kX, getZ(kX, kY) + 0.3, kY));
 
-                // Adam: Noisy/Overshoot
-                aX += (0 - aX) * 0.018 + (Math.random()-0.5)*0.8;
-                aY += (0 - aY) * 0.018 + (Math.random()-0.5)*0.8;
-                if (i > 120 && i < 180) { aX -= 0.2; aY += 0.2; }
-                res.adam.push(new THREE.Vector3(aX, getZ(aX, aY) + 0.25, aY));
+                // Adam: Noisy
+                aX += (0 - aX) * 0.02 + (Math.random()-0.5)*1.0;
+                aY += (0 - aY) * 0.02 + (Math.random()-0.5)*1.0;
+                if (i > 130 && i < 180) { aX -= 0.3; aY += 0.3; }
+                res.adam.push(new THREE.Vector3(aX, getZ(aX, aY) + 0.3, aY));
 
                 // SGD: Slow
-                gX += (0 - gX) * 0.004; gY += (0 - gY) * 0.004;
-                res.sgd.push(new THREE.Vector3(gX, getZ(gX, gY) + 0.25, gY));
+                gX += (0 - gX) * 0.005; gY += (0 - gY) * 0.005;
+                res.sgd.push(new THREE.Vector3(gX, getZ(gX, gY) + 0.3, gY));
             }
             return res;
         }
@@ -205,13 +199,12 @@
                 const points = pathData[key].slice(0, frame + 1);
                 if (points.length > 1) {
                     const curve = new THREE.CatmullRomCurve3(points);
-                    const geo = new THREE.TubeBufferGeometry(curve, points.length * 2, 0.15, 12, false);
+                    const geo = new THREE.TubeBufferGeometry(curve, points.length * 2, 0.18, 12, false);
                     pathMeshes[key] = new THREE.Mesh(geo, new THREE.MeshStandardMaterial({ 
                         color: optColors[key], 
                         emissive: optColors[key],
-                        emissiveIntensity: 0.5,
-                        metalness: 0.7,
-                        roughness: 0.2
+                        emissiveIntensity: 0.8,
+                        metalness: 0.8, roughness: 0.2
                     }));
                     scene.add(pathMeshes[key]);
                 }
@@ -230,10 +223,10 @@
             
             updateTubes();
 
-            // Cinematic Camera
-            const time = Date.now() * 0.00015;
-            camera.position.x = 22 * Math.cos(time);
-            camera.position.z = 22 * Math.sin(time);
+            // Cinematic Orbital Camera
+            const time = Date.now() * 0.0002;
+            camera.position.x = 26 * Math.cos(time);
+            camera.position.z = 26 * Math.sin(time);
             camera.lookAt(0, 0, 0);
 
             renderer.render(scene, camera);
