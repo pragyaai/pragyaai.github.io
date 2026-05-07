@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -116,10 +116,10 @@
 </head>
 <body>
 
-<nav>
+<!-- <nav>
   <a href="https://github.com/SahaBose-KFAC">🏠 Home</a>
   <a href="#">More Research ▾</a>
-</nav>
+</nav> -->
 
 <div class="wrap">
 
@@ -127,36 +127,31 @@
 <div class="hero">
   <h1>SahaBose-KFAC: Making KFAC Stable via Spectral Annealing and Curvature Condensation</h1>
   <p class="authors">
-    <a href="#">Anish Sathyanarayanan</a><sup>1*</sup>,&ensp;
+    <a>Anonymous</a>
+    <!-- <a href="#">Anish Sathyanarayanan</a><sup>1*</sup>,&ensp;
     <a href="#">Rishikesh Mallagundla</a><sup>1*</sup>,&ensp;
     <a href="#">Visheshe Narang</a><sup>1</sup>,&ensp;
     <a href="#">Aman Chadha</a><sup>2</sup>,&ensp;
     <a href="#">Vinija Jain</a><sup>2</sup>,&ensp;
-    <a href="#">Amitava Das</a><sup>1</sup>
+    <a href="#">Amitava Das</a><sup>1</sup> -->
   </p>
-  <p class="affiliations">
+  <!-- <p class="affiliations">
     <sup>1</sup>PragyaLab, BITS Pilani Goa &nbsp;·&nbsp;
     <sup>2</sup>Google DeepMind
-  </p>
+  </p> -->
   <div class="btn-row">
-    <a class="btn" href="#">📄 Paper</a>
-    <a class="btn" href="#">arXiv</a>
-    <a class="btn" href="#">💻 Code</a>
+    <a class="btn" href="https://anonymous.4open.science/r/SahaBose-KFAC-3C83/README.md">Github</a>
   </div>
 </div>
 
 <!-- ═══ TEASER ═══ -->
 <section class="teaser" style="margin-top: 2rem;">
-  <div class="container is-max-desktop">
-    <div style="width: 100%; height: 500px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.05); position: relative;">
-      <iframe src="./static/images/loss_landscape.html" style="width: 100%; height: 100%; border: none;"></iframe>
-      <div style="position: absolute; top: 15px; right: 15px; background: rgba(255,255,255,0.8); padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; color: var(--muted); pointer-events: none; border: 1px solid var(--border);">
-        🖱️ Drag to rotate 3D view
-      </div>
+  <div class="container is-max-desktop" style="max-width: 860px; margin: 0 auto; display: flex; flex-direction: column; align-items: center;">
+    <div style="width: 100%; max-width: 860px; height: 700px; border-radius: 12px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 4px 20px rgba(0,0,0,0.05); position: relative; margin: 0 auto;">
+      <img src="./static/fig3_3d_loss_landscape_trimmed.gif" alt="Illustrative example of optimizer loss landscape trajectories" style="width: 100%; height: 100%; object-fit: contain; object-position: center center; display: block; background: #fff;">
     </div>
     <p style="text-align: center; font-size: 0.9rem; color: var(--muted); margin-top: 1rem; max-width: 800px; margin-left: auto; margin-right: auto;">
-      <strong>Interactive Diagnostic:</strong> Select a landscape and run the optimization descent. 
-      <span style="color: #e67e22; font-weight: 700;">SahaBose-KFAC</span> enters a stable descent channel earlier than <span style="color: #3273dc; font-weight: 700;">Vanilla KFAC</span>, <span style="color: #27ae60; font-weight: 700;">Adam</span>, or <span style="color: #9ca3af; font-weight: 700;">SGD</span>, avoiding tail-driven excursions in rugged regions.
+      <strong>Illustrative example:</strong> optimizer loss landscape trajectories for <span style="color: #e67e22; font-weight: 700;">SahaBose-KFAC</span>, <span style="color: #3273dc; font-weight: 700;">Vanilla KFAC</span>, <span style="color: #27ae60; font-weight: 700;">AdamW</span>, and <span style="color: #9ca3af; font-weight: 700;">SGD</span>.
     </p>
   </div>
 </section>
@@ -405,7 +400,7 @@ yielding \(\hat{C}^{-1}_t = U\,\mathrm{diag}(w(t))\,U^\top\) with the hard guara
   </tbody>
 </table></div>
 
-<!-- ═══ BIBTEX ═══ -->
+<!-- ═══ BIBTEX ═══
 <h2>BibTeX</h2>
 <pre>@inproceedings{sathyanarayanan2026sahabose,
   author    = {Sathyanarayanan, Anish and Mallagundla, Rishikesh and Narang, Visheshe
@@ -413,7 +408,7 @@ yielding \(\hat{C}^{-1}_t = U\,\mathrm{diag}(w(t))\,U^\top\) with the hard guara
   title     = {SahaBose-KFAC: Making KFAC Stable and Fast via Spectral Annealing
                and Curvature Condensation},
   year      = {2026},
-}</pre>
+}</pre> -->
 
 <footer>
   Website template adapted from <a href="https://nerfies.github.io">Nerfies</a>.
