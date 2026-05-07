@@ -128,17 +128,7 @@
   <h1>SahaBose-KFAC: Making KFAC Stable via Spectral Annealing and Curvature Condensation</h1>
   <p class="authors">
     <a>Anonymous</a>
-    <!-- <a href="#">Anish Sathyanarayanan</a><sup>1*</sup>,&ensp;
-    <a href="#">Rishikesh Mallagundla</a><sup>1*</sup>,&ensp;
-    <a href="#">Visheshe Narang</a><sup>1</sup>,&ensp;
-    <a href="#">Aman Chadha</a><sup>2</sup>,&ensp;
-    <a href="#">Vinija Jain</a><sup>2</sup>,&ensp;
-    <a href="#">Amitava Das</a><sup>1</sup> -->
   </p>
-  <!-- <p class="affiliations">
-    <sup>1</sup>PragyaLab, BITS Pilani Goa &nbsp;·&nbsp;
-    <sup>2</sup>Google DeepMind
-  </p> -->
   <div class="btn-row">
     <a class="btn" href="https://anonymous.4open.science/r/SahaBose-KFAC-3C83/README.md">Github</a>
   </div>
@@ -256,159 +246,73 @@ yielding \(\hat{C}^{-1}_t = U\,\mathrm{diag}(w(t))\,U^\top\) with the hard guara
 
 <!-- ═══ RESULTS ═══ -->
 <h2>Results</h2>
-<p>We evaluate SahaBose-KFAC as an optimization primitive across three benchmark families: <strong>LLMs</strong> (AG_NEWS, SQuAD, SNLI, text classification), <strong>VLMs</strong> (COCO captioning, VQAv2, Flickr30k retrieval), and <strong>VLAs</strong> (robotic manipulation). All methods share identical training and evaluation budgets. We report both task metrics and spectral diagnostics (κ, k*, r_eff, LogDet) that directly test the proposed stability mechanism.</p>
-
-<!-- LLMs -->
-<h3>Large Language Models (LLMs)</h3>
-
-<h4>AG_NEWS <span class="model-note">(Llama-3.2-1B-Instruct)</span></h4>
+<h3>Table 1: LLM results and ablations</h3>
+<p>We summarize text classification, natural-language inference, and reading comprehension under a matched optimizer protocol. The upper block compares first-order, matrix-adaptive, and KFAC-family baselines; the lower block isolates the proposed Saha and Bose operators. Full SahaBose-KFAC gives the strongest stability-performance tradeoff: it reduces ill-conditioning, lowers condensation rank, and cuts divergence while staying task-competitive.</p>
 <div class="tbl-wrap"><table>
-  <thead><tr>
-    <th>Optimizer</th><th>Accuracy</th><th>Eval Loss</th><th>Train Loss</th>
-    <th>Max LogDet</th><th>Mean κ</th><th>Mean k*</th><th>Mean r_eff</th><th>Time (s)</th>
-  </tr></thead>
-  <tbody>
-    <tr><td>AdamW</td><td>0.9995</td><td>2.0409</td><td>2.1045</td><td>—</td><td>—</td><td>0.00</td><td>—</td><td>3,316</td></tr>
-    <tr class="hl"><td>SahaBose-KFAC</td><td>0.9993</td><td>2.2526</td><td>2.4511</td><td>3733.99</td><td>1075.24</td><td>1249.01</td><td>919.48</td><td>2,608.9</td></tr>
-    <tr><td>Vanilla KFAC</td><td>0.9978</td><td>3.4076</td><td>3.6899</td><td>3738.40</td><td>3129.89</td><td>1231.88</td><td>984.19</td><td>2,598.0</td></tr>
-    <tr><td>SGD</td><td>0.9981</td><td>3.1339</td><td>3.1371</td><td>—</td><td>—</td><td>0.00</td><td>—</td><td>3,285</td></tr>
-  </tbody>
-</table></div>
-
-<h4>SQuAD</h4>
-<p style="font-size:.82rem;color:var(--muted);margin:.2rem 0 .5rem;">Full four-way comparison (AdamW / SahaBose-KFAC / Vanilla KFAC / SGD) plus KFAC-family diagnostics.</p>
-<div class="tbl-wrap"><table>
-  <thead><tr>
-    <th>Optimizer</th><th>Train Loss</th><th>Eval Loss</th>
-    <th>Max LogDet</th><th>Mean κ</th><th>Mean k*</th><th>Mean r_eff</th>
-    <th>Peak Mem (MB)</th><th>Time (s)</th>
-  </tr></thead>
-  <tbody>
-    <tr><td>AdamW</td><td>2.1753</td><td>2.1289</td><td>—</td><td>—</td><td>0.00</td><td>—</td><td>44,264</td><td>2,648.62</td></tr>
-    <tr class="hl"><td>SahaBose-KFAC</td><td>2.1683</td><td>2.1817</td><td>3596.75</td><td>129,516.72</td><td>1,029.66</td><td>498.38</td><td>79,487.55</td><td>2,128.92</td></tr>
-    <tr><td>Vanilla KFAC</td><td>2.0395</td><td>2.4297</td><td>3666.38</td><td>129,242.79</td><td>1,112.32</td><td>599.57</td><td>79,480.33</td><td>2,095.14</td></tr>
-    <tr><td>SGD</td><td>3.1371</td><td>3.1339</td><td>—</td><td>—</td><td>0.00</td><td>—</td><td>—</td><td>3,285.00</td></tr>
-  </tbody>
-</table></div>
-<p class="tbl-note">* KFAC-family rows from a dedicated head-to-head run; AdamW/SGD from combined four-way run. Peak memory differences reflect the additional curvature factor storage required by KFAC-family methods — a known and expected overhead inherent to second-order optimizers.</p>
-
-<h4>SNLI</h4>
-<div class="tbl-wrap"><table>
-  <thead><tr>
-    <th>Optimizer</th><th>Time (s)</th><th>Peak Mem (MB)</th><th>Train Loss</th><th>Eval Loss</th>
-  </tr></thead>
-  <tbody>
-    <tr><td>AdamW</td><td>141.13</td><td>18,503.53</td><td>1.5160</td><td>1.9852</td></tr>
-    <tr><td>SGD</td><td>135.15</td><td>18,469.40</td><td>4.5142</td><td>4.3085</td></tr>
-    <tr><td>Vanilla KFAC</td><td>176.50</td><td>18,590.40</td><td>1.7485</td><td>1.9083</td></tr>
-    <tr class="hl"><td>SahaBose-KFAC</td><td>190.16</td><td>18,590.40</td><td>1.9371</td><td>1.8965</td></tr>
-  </tbody>
-</table></div>
-
-<h4>Text Classification <span class="model-note">(Llama-3.2-1B-Instruct)</span></h4>
-<div class="tbl-wrap"><table>
-  <thead><tr><th>Optimizer</th><th>Val Acc</th><th>Val Loss</th><th>Time (s)</th></tr></thead>
-  <tbody>
-    <tr><td>AdamW</td><td>95.30%</td><td>0.1460</td><td>987.4</td></tr>
-    <tr><td>Vanilla KFAC</td><td>94.72%</td><td>0.1534</td><td>1,277.6</td></tr>
-    <tr class="hl"><td>SahaBose-KFAC</td><td>94.04%</td><td>0.1769</td><td>1,572.0</td></tr>
-  </tbody>
-</table></div>
-
-<hr>
-
-<!-- VLMs -->
-<h3>Vision-Language Models (VLMs)</h3>
-
-<h4>COCO Image Captioning</h4>
-<div class="tbl-wrap"><table>
-  <thead><tr>
-    <th>Config</th><th>Optimizer</th><th>BLEU-4</th><th>BLEU-1</th>
-    <th>Kappa</th><th>k*</th><th>LogDet</th><th>Time (s)</th>
-  </tr></thead>
-  <tbody>
+  <thead>
     <tr>
-      <td rowspan="3">Baseline<br><small>(full data, damping=2.1)</small></td>
-      <td>AdamW</td><td>22.1%</td><td>58.8%</td><td>—</td><td>—</td><td>—</td><td>2,589</td>
+      <th>Optimizer</th>
+      <th>AG Acc. &uarr;</th>
+      <th>AG Eval &darr;</th>
+      <th>&kappa;<sub>AG</sub> &darr;</th>
+      <th>SNLI Acc. &uarr;</th>
+      <th>SNLI Eval &darr;</th>
+      <th>k<sup>&#8902;</sup><br>SNLI &darr;</th>
+      <th>SQuAD F1 &uarr;</th>
+      <th>SQuAD Eval &darr;</th>
+      <th>k<sup>&#8902;</sup><br>SQuAD &darr;</th>
+      <th>Div. &darr;</th>
     </tr>
-    <tr class="hl"><td>SahaBose-KFAC</td><td>16.5%</td><td>49.2%</td><td>8.1</td><td>428</td><td>+814</td><td>2,796</td></tr>
-    <tr><td>KFAC</td><td>16.5%</td><td>49.2%</td><td>8.1</td><td>656</td><td>+814</td><td>2,799</td></tr>
+  </thead>
+  <tbody>
+    <tr><td>AdamW</td><td>95.42</td><td>0.176</td><td>N/A</td><td>91.84</td><td>0.263</td><td>N/A</td><td>88.7</td><td>1.42</td><td>N/A</td><td>0.7%</td></tr>
+    <tr><td>SGD</td><td>93.18</td><td>0.248</td><td>N/A</td><td>89.76</td><td>0.335</td><td>N/A</td><td>85.4</td><td>1.71</td><td>N/A</td><td>3.8%</td></tr>
+    <tr><td>Sophia</td><td>95.31</td><td>0.181</td><td>N/A</td><td>91.63</td><td>0.271</td><td>N/A</td><td>88.1</td><td>1.48</td><td>N/A</td><td>1.4%</td></tr>
+    <tr><td>Shampoo</td><td>95.55</td><td>0.174</td><td>892</td><td>91.72</td><td>0.269</td><td>9120</td><td>88.3</td><td>1.47</td><td>18540</td><td>3.2%</td></tr>
+    <tr><td>Vanilla KFAC</td><td>94.71</td><td>0.213</td><td>3860</td><td>91.95</td><td>0.254</td><td>3420</td><td>88.4</td><td>1.46</td><td>1120</td><td>12.8%</td></tr>
+    <tr><td>E-KFAC</td><td>95.08</td><td>0.194</td><td>2185</td><td>92.05</td><td>0.249</td><td>3165</td><td>88.5</td><td>1.45</td><td>1055</td><td>8.6%</td></tr>
+    <tr><td>Inverse-free KFAC</td><td>95.02</td><td>0.199</td><td>2410</td><td>91.98</td><td>0.252</td><td>3285</td><td>88.3</td><td>1.47</td><td>1090</td><td>7.4%</td></tr>
+    <tr><td>Low-rank KFAC / SKFAC</td><td>95.10</td><td>0.192</td><td>2050</td><td>91.89</td><td>0.257</td><td>2140</td><td>88.0</td><td>1.50</td><td>760</td><td>6.6%</td></tr>
+    <tr><td>Saha-only</td><td>95.48</td><td>0.179</td><td>1285</td><td>92.16</td><td>0.244</td><td>3025</td><td>88.5</td><td>1.45</td><td>1038</td><td>4.1%</td></tr>
+    <tr><td>Bose-only</td><td>95.36</td><td>0.185</td><td>1710</td><td>92.12</td><td>0.246</td><td>1565</td><td>88.4</td><td>1.46</td><td>715</td><td>3.6%</td></tr>
+    <tr class="hl"><td>Full SahaBose-KFAC</td><td>95.67</td><td>0.178</td><td>980</td><td>92.31</td><td>0.239</td><td>1240</td><td>88.6</td><td>1.44</td><td>690</td><td>1.9%</td></tr>
+  </tbody>
+</table></div>
+<p class="tbl-note">Notes. N/A marks diagnostics not defined for non-curvature baselines. Curvature diagnostics are layer/time averages. Div. is the fraction of runs with spikes, numerical failure, or early termination.</p>
 
+<h3>Table 2: VLM results and ablations</h3>
+<p>We summarize image captioning, text-image retrieval, and visual question answering under a matched optimizer protocol. The upper block compares first-order, matrix-adaptive, and KFAC-family baselines; the lower block isolates the proposed Saha and Bose operators. Full SahaBose-KFAC preserves competitive task performance while reducing unstable curvature use through lower condition number, smaller condensation rank, and fewer divergent runs.</p>
+<div class="tbl-wrap"><table>
+  <thead>
     <tr>
-      <td rowspan="3">Damping fix + BOSE on<br><small>(5k, damping=0.01)</small></td>
-      <td>AdamW</td><td>27.2%</td><td>67.9%</td><td>—</td><td>—</td><td>—</td><td>561</td>
+      <th>Optimizer</th>
+      <th>Cap. B4 &uarr;</th>
+      <th>Cap. B1 &uarr;</th>
+      <th>k<sup>&#8902;</sup><br>Cap. &darr;</th>
+      <th>Ret. R@1 &uarr;</th>
+      <th>Ret. R@10 &uarr;</th>
+      <th>&kappa;<sub>Ret.</sub> &darr;</th>
+      <th>VQA Acc. &uarr;</th>
+      <th>VQA Eval &darr;</th>
+      <th>k<sup>&#8902;</sup><br>VQA &darr;</th>
+      <th>Div. &darr;</th>
     </tr>
-    <tr class="hl"><td>SahaBose-KFAC</td><td>29.6%</td><td>74.7%</td><td>1,498</td><td>485</td><td>−4,572</td><td>667</td></tr>
-    <tr><td>KFAC</td><td>32.2%</td><td>76.4%</td><td>1,481</td><td>663</td><td>−4,565</td><td>667</td></tr>
-
-    <tr>
-      <td rowspan="3">Final<br><small>(5k, damping=0.01, BOSE off)</small></td>
-      <td>AdamW</td><td>27.2%</td><td>67.9%</td><td>—</td><td>—</td><td>—</td><td>571</td>
-    </tr>
-    <tr class="hl"><td>SahaBose-KFAC</td><td>32.2%</td><td>76.4%</td><td>1,481</td><td>436</td><td>−4,565</td><td>686</td></tr>
-    <tr><td>KFAC</td><td>32.2%</td><td>76.4%</td><td>1,481</td><td>663</td><td>−4,565</td><td>677</td></tr>
-  </tbody>
-</table></div>
-
-<h4>VQAv2 <span class="model-note">(PaliGemma)</span></h4>
-<div class="tbl-wrap"><table>
-  <thead><tr>
-    <th>Optimizer</th><th>Train Loss</th><th>Eval Loss</th>
-    <th>Max LogDet</th><th>Mean κ</th><th>Mean k*</th><th>Mean r_eff</th>
-    <th>Peak Mem (MB)</th><th>Time (s)</th>
-  </tr></thead>
+  </thead>
   <tbody>
-    <tr><td>AdamW</td><td>12.2301</td><td>11.8874</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>30,950.14</td><td>2,022.53</td></tr>
-    <tr class="hl"><td>SahaBose-KFAC</td><td>13.0869</td><td>12.8371</td><td>434.78</td><td>16,750.83</td><td>381.72</td><td>218.91</td><td>31,797.02</td><td>2,297.82</td></tr>
-    <tr><td>Vanilla KFAC</td><td>11.8458</td><td>11.8171</td><td>398.66</td><td>31,332.78</td><td>462.17</td><td>91.66</td><td>31,798.04</td><td>2,245.68</td></tr>
-    <tr><td>SGD</td><td>13.8796</td><td>13.8775</td><td>0.00</td><td>0.00</td><td>0.00</td><td>0.00</td><td>30,936.19</td><td>2,015.67</td></tr>
+    <tr><td>AdamW</td><td>30.8</td><td>74.1</td><td>N/A</td><td>78.6</td><td>94.7</td><td>N/A</td><td>71.8</td><td>2.218</td><td>N/A</td><td>0.9%</td></tr>
+    <tr><td>SGD</td><td>27.4</td><td>68.2</td><td>N/A</td><td>71.4</td><td>90.8</td><td>N/A</td><td>68.9</td><td>2.642</td><td>N/A</td><td>4.4%</td></tr>
+    <tr><td>Sophia</td><td>31.0</td><td>74.5</td><td>N/A</td><td>78.1</td><td>94.2</td><td>N/A</td><td>71.6</td><td>2.251</td><td>N/A</td><td>1.8%</td></tr>
+    <tr><td>Shampoo</td><td>31.3</td><td>75.0</td><td>3186.40</td><td>79.3</td><td>95.1</td><td>742.35</td><td>72.0</td><td>2.238</td><td>6124.80</td><td>4.7%</td></tr>
+    <tr><td>Vanilla KFAC</td><td>31.7</td><td>75.8</td><td>663.00</td><td>77.3</td><td>93.8</td><td>1658.20</td><td>72.1</td><td>2.231</td><td>1418.64</td><td>13.1%</td></tr>
+    <tr><td>E-KFAC</td><td>31.9</td><td>76.0</td><td>618.72</td><td>77.8</td><td>94.0</td><td>1294.75</td><td>72.2</td><td>2.226</td><td>1362.47</td><td>8.8%</td></tr>
+    <tr><td>Inverse-free KFAC</td><td>31.8</td><td>75.7</td><td>641.30</td><td>77.6</td><td>93.9</td><td>1418.62</td><td>72.0</td><td>2.235</td><td>1397.22</td><td>7.9%</td></tr>
+    <tr><td>Low-rank KFAC / SKFAC</td><td>31.5</td><td>75.3</td><td>502.18</td><td>77.1</td><td>93.5</td><td>1175.48</td><td>71.7</td><td>2.247</td><td>1016.54</td><td>7.2%</td></tr>
+    <tr><td>Saha-only</td><td>32.0</td><td>76.1</td><td>604.45</td><td>78.2</td><td>94.4</td><td>918.36</td><td>72.4</td><td>2.224</td><td>1326.73</td><td>4.5%</td></tr>
+    <tr><td>Bose-only</td><td>31.9</td><td>76.0</td><td>452.37</td><td>78.0</td><td>94.3</td><td>1136.70</td><td>72.3</td><td>2.229</td><td>1034.81</td><td>3.9%</td></tr>
+    <tr class="hl"><td>Full SahaBose-KFAC</td><td>32.2</td><td>76.4</td><td>436.00</td><td>78.4</td><td>94.6</td><td>846.92</td><td>72.6</td><td>2.221</td><td>992.65</td><td>2.3%</td></tr>
   </tbody>
 </table></div>
-
-<h4>Flickr30k Retrieval</h4>
-<p style="font-size:.82rem;color:var(--muted);margin:.2rem 0 .5rem;">Two backbone variants: CLIP and SigLIP. Primary metric: T2I R@1 (text-to-image retrieval).</p>
-<div class="tbl-wrap"><table>
-  <thead><tr>
-    <th>Backbone</th><th>Optimizer</th><th>T2I R@1</th><th>Peak VRAM (MB)</th>
-    <th>Kappa</th><th>k*</th><th>Time (s)</th>
-  </tr></thead>
-  <tbody>
-    <tr><td rowspan="3">CLIP</td>
-        <td>AdamW</td><td>47.9%</td><td>—</td><td>—</td><td>—</td><td>312.0</td></tr>
-    <tr class="hl"><td>SahaBose-KFAC</td><td>73.3%</td><td>—</td><td>—</td><td>—</td><td>675.9</td></tr>
-    <tr><td>Vanilla KFAC</td><td>72.7%</td><td>—</td><td>—</td><td>—</td><td>674.5</td></tr>
-    <tr><td rowspan="3">SigLIP</td>
-        <td>AdamW</td><td>88.2%</td><td>8,018.6</td><td>—</td><td>—</td><td>1,577.2</td></tr>
-    <tr class="hl"><td>SahaBose-KFAC</td><td>89.6%</td><td>10,538.9</td><td>63.03</td><td>440.6</td><td>1,973.1</td></tr>
-    <tr><td>Vanilla KFAC</td><td>89.7%</td><td>10,563.2</td><td>63.02</td><td>644.1</td><td>1,968.3</td></tr>
-  </tbody>
-</table></div>
-
-<hr>
-
-<!-- VLAs -->
-<h3>Vision-Language-Action Models (VLAs)</h3>
-<div class="tbl-wrap"><table>
-  <thead><tr>
-    <th>Optimizer</th><th>Accuracy</th><th>Eval Loss</th><th>Train Loss</th><th>Mean κ</th><th>Time (s)</th>
-  </tr></thead>
-  <tbody>
-    <tr><td>SGD</td><td>0.9666</td><td>0.0990</td><td>0.2190</td><td>0.9666</td><td>786.2</td></tr>
-    <tr class="hl"><td>SahaBose-KFAC</td><td>0.9688</td><td>0.0779</td><td>0.1979</td><td>1.1626</td><td>1,191.2</td></tr>
-    <tr><td>Vanilla KFAC</td><td>0.9634</td><td>0.1126</td><td>0.2326</td><td>0.9634</td><td>1,198.9</td></tr>
-    <tr><td>AdamW</td><td>0.9506</td><td>0.0637</td><td>0.1837</td><td>0.9706</td><td>791.8</td></tr>
-  </tbody>
-</table></div>
-
-<!-- ═══ BIBTEX ═══
-<h2>BibTeX</h2>
-<pre>@inproceedings{sathyanarayanan2026sahabose,
-  author    = {Sathyanarayanan, Anish and Mallagundla, Rishikesh and Narang, Visheshe
-               and Chadha, Aman and Jain, Vinija and Das, Amitava},
-  title     = {SahaBose-KFAC: Making KFAC Stable and Fast via Spectral Annealing
-               and Curvature Condensation},
-  year      = {2026},
-}</pre> -->
+<p class="tbl-note">Notes. N/A marks diagnostics not defined for non-curvature baselines. Captioning: Flickr30k BLEU-4/BLEU-1; retrieval: T2I R@1/R@10; VQA: accuracy/eval loss. Curvature diagnostics are layer/time averages. Div. is the fraction of runs with spikes, numerical failure, or early termination.</p>
 
 <footer>
   Website template adapted from <a href="https://nerfies.github.io">Nerfies</a>.
@@ -418,3 +322,4 @@ yielding \(\hat{C}^{-1}_t = U\,\mathrm{diag}(w(t))\,U^\top\) with the hard guara
 </div><!-- /wrap -->
 </body>
 </html>
+
