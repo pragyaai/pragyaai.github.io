@@ -1,0 +1,1595 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PragyaDex · Prefix-Conditioned Dexterity Search</title>
+<style>
+:root{
+  --navy:#172033;
+  --navy2:#202c42;
+  --ink:#253249;
+  --muted:#6e798b;
+  --line:#dfe4e9;
+  --line2:#edf0f3;
+  --bg:#fafaf8;
+  --paper:#ffffff;
+  --lav:#ece5f5;
+  --lav2:#8871b2;
+  --cyan:#e0eef3;
+  --cyan2:#5e90a4;
+  --mint:#e2efe8;
+  --mint2:#5d927c;
+  --teal:#4f8f88;
+  --amber:#f3e7d0;
+  --amber2:#b48746;
+  --red:#b45f59;
+  --grey:#c7cdd4;
+  --bluegrey:#8191a5;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+button,input{font:inherit}
+a{color:inherit;text-decoration:none}
+.topnav{
+  position:sticky;top:0;z-index:100;height:46px;background:rgba(250,250,248,.97);
+  border-bottom:1px solid var(--line);display:flex;align-items:center;gap:18px;padding:0 24px;
+  backdrop-filter:blur(8px)
+}
+.brand{font-weight:950;letter-spacing:.08em;color:var(--navy);margin-right:auto}
+.topnav a{font-size:8px;text-transform:uppercase;letter-spacing:.07em;color:#667286}
+.topnav a.active{color:var(--navy);font-weight:900}
+.hero{max-width:1280px;margin:0 auto;padding:64px 28px 40px;text-align:center}
+.hero .eyebrow{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:#778396;font-weight:900}
+.hero h1{font-size:51px;line-height:1.03;margin:10px auto 13px;color:var(--navy);max-width:1020px}
+.hero p{max-width:900px;margin:0 auto;font-size:14px;line-height:1.65;color:#687486}
+.heroPillRow{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-top:19px}
+.heroPill{padding:7px 10px;border:1px solid var(--line);background:#fff;font-size:8px;text-transform:uppercase;letter-spacing:.07em}
+.heroPill:nth-child(1){border-top:3px solid var(--lav2)}
+.heroPill:nth-child(2){border-top:3px solid var(--teal)}
+.heroPill:nth-child(3){border-top:3px solid var(--amber2)}
+.masterBtn{margin-top:22px;border:0;background:var(--navy);color:#fff;padding:12px 19px;font-size:9px;font-weight:950;letter-spacing:.06em;cursor:pointer;box-shadow:0 10px 24px rgba(23,32,51,.14)}
+.methodRail{max-width:980px;margin:20px auto 0;display:grid;grid-template-columns:repeat(11,1fr);gap:5px;align-items:center}
+.methodRail .step{padding:7px 5px;background:#fff;border-top:3px solid #9eabb9;font-size:7px;font-weight:900}
+.methodRail .arrow{text-align:center;color:#99a3b2}
+.methodRail .step:nth-child(1){border-top-color:var(--lav2)}
+.methodRail .step:nth-child(3){border-top-color:var(--amber2)}
+.methodRail .step:nth-child(5){border-top-color:var(--teal)}
+.methodRail .step:nth-child(7){border-top-color:var(--cyan2)}
+.methodRail .step:nth-child(9){border-top-color:var(--mint2)}
+.methodRail .step:nth-child(11){border-top-color:var(--navy)}
+
+.section{max-width:1280px;margin:24px auto;background:#fff;border:1px solid var(--line);box-shadow:0 18px 44px rgba(28,38,60,.045)}
+.sectionHead{padding:26px 28px 10px;display:grid;grid-template-columns:58px 1fr 390px;gap:16px;align-items:center}
+.secIcon{width:54px;height:54px;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;background:#fff}
+.secIcon svg{width:34px;height:34px;fill:none;stroke:#4c5b73;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.secIcon.lav{background:#fbf9fd}.secIcon.lav svg{stroke:#7c65a5}
+.secIcon.cyan{background:#f7fbfc}.secIcon.cyan svg{stroke:#5e90a4}
+.secIcon.mint{background:#f7fbf9}.secIcon.mint svg{stroke:#5d927c}
+.secIcon.amber{background:#fcfaf6}.secIcon.amber svg{stroke:#9c7942}
+.secNum{font:8.5px ui-monospace,monospace;text-transform:uppercase;letter-spacing:.1em;color:#778396}
+.sectionHead h2{font-size:29px;margin:4px 0 0;color:var(--navy)}
+.sectionHead p{font-size:11px;line-height:1.55;color:#707b8c;margin:0}
+.sectionBody{padding:10px 28px 28px}
+.k{font-size:7.5px;text-transform:uppercase;letter-spacing:.08em;color:#778396;font-weight:900}
+.eq{font-family:Georgia,"Times New Roman",serif}
+.mono{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.note{font-size:8px;line-height:1.45;color:#798496}
+.dark{background:var(--navy);color:#fff}
+.tag{display:inline-block;padding:5px 7px;font-size:7px;letter-spacing:.07em;text-transform:uppercase;font-weight:900;border:1px solid var(--line);background:#fff}
+.tag.proposed{color:#7b5ca4;background:#faf8fd;border-color:#dfd5eb}
+.tag.manuscript{color:#3d6f61;background:#f3f9f5;border-color:#d5e6db}
+.worked{color:#8a6534;background:#fcf7ef;border-color:#ebdcc1}
+
+/* SECTION 1 */
+.contextGrid{display:grid;grid-template-columns:1fr 130px 1.15fr 130px 1fr;gap:0;align-items:center;margin-top:12px}
+.contextColumn{display:grid;gap:8px}
+.contextCard{padding:13px;border:1px solid var(--line);background:#f8fafb;min-height:104px;transition:.35s}
+.contextCard.lang{background:#fbf9fd;border-top:3px solid var(--lav2)}
+.contextCard.hand{background:#f7fbfc;border-top:3px solid var(--cyan2)}
+.contextCard.contact{background:#f7fbf9;border-top:3px solid var(--teal)}
+.contextCard.object{background:#fcfaf6;border-top:3px solid var(--amber2)}
+.contextCard.goal{background:#fafafa;border-top:3px solid #8c9bad}
+.contextCard b{display:block;font-size:12px;color:#344158;margin-top:5px}
+.contextCard .mini{font:8px ui-monospace,monospace;color:#6f7a8d;line-height:1.55;margin-top:6px}
+.ctxArrow{color:#9aa5b4;font-size:24px;text-align:center}
+.contextCore{min-height:255px;background:var(--navy);color:#fff;padding:17px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;box-shadow:0 12px 28px rgba(23,32,51,.14)}
+.contextCore .label{font-size:7.5px;text-transform:uppercase;letter-spacing:.09em;color:#aab6c7}
+.contextCore .eq{font-size:22px;line-height:1.4;margin-top:10px}
+.contextCore .sub{font:8px ui-monospace,monospace;color:#bbc5d3;line-height:1.55;margin-top:9px}
+.ctxViz{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:13px;width:100%}
+.ctxViz div{padding:8px;background:#202c42;font:7.5px ui-monospace,monospace;color:#d5dde8}
+.contextCard.active{transform:translateY(-3px);box-shadow:0 10px 22px rgba(37,48,70,.09)}
+.contextCore.active{outline:4px solid rgba(136,113,178,.16);outline-offset:4px}
+
+/* SECTION 2 */
+.tokenGrid{display:grid;grid-template-columns:1.02fr .98fr;gap:14px}
+.tokenDefinition{padding:16px;background:#f8fafb;border:1px solid var(--line)}
+.tokenFormula{font:21px Georgia,serif;color:#344158;padding:11px 12px;background:#fff;border-left:3px solid var(--lav2);margin-top:8px}
+.tokenFields{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:12px}
+.tokenField{padding:10px;background:#fff;border:1px solid var(--line);border-top:3px solid #99a6b6}
+.tokenField:nth-child(1){border-top-color:var(--amber2)}.tokenField:nth-child(2){border-top-color:var(--cyan2)}.tokenField:nth-child(3){border-top-color:var(--teal)}.tokenField:nth-child(4){border-top-color:var(--amber2)}
+.tokenField:nth-child(5){border-top-color:var(--lav2)}.tokenField:nth-child(6){border-top-color:#8596ab}
+.tokenField b{font-size:9px}.tokenField span{display:block;font-size:7.2px;color:#7a8596;line-height:1.45;margin-top:4px}
+.proposalPanel{background:var(--navy);padding:16px;color:#fff}
+.proposalPanel h3{font-size:16px;margin:5px 0 5px}.proposalPanel p{font-size:8.5px;line-height:1.5;color:#b8c2d0}
+.propRows{display:grid;gap:7px;margin-top:12px}
+.propRow{display:grid;grid-template-columns:132px 1fr 45px;gap:8px;align-items:center}
+.propRow span{font-size:8px;color:#d6dee8}.propTrack{height:9px;background:#2a364c;overflow:hidden}.propTrack i{display:block;height:100%;width:0;transition:width .65s ease;background:#8c79b3}
+.propRow:nth-child(2) i{background:#6f9bad}.propRow:nth-child(3) i{background:#6b9b85}.propRow:nth-child(4) i{background:#c09250}.propRow:nth-child(5) i{background:#8393a7}
+.propVal{font:8px ui-monospace,monospace;text-align:right}
+.proposalEq{margin-top:12px;padding:9px;background:#202c42;font:15px Georgia,serif}
+.handoff{margin-top:10px;padding:10px 12px;background:#f8fafb;border-left:3px solid #7e8da2;display:flex;justify-content:space-between;gap:12px;align-items:center}
+.handoff b{font-size:10.5px}.handoff span{font-size:7.5px;color:#788396}
+
+/* SECTION 3 SEARCH */
+.searchSection{max-width:1380px}
+.searchBanner{margin:0 28px 12px;background:var(--navy);padding:18px;color:#fff;display:grid;grid-template-columns:1.2fr .8fr;gap:16px;align-items:center}
+.searchBanner h3{font-size:20px;margin:5px 0 6px}.searchBanner p{font-size:9px;line-height:1.5;color:#bdc7d4;margin:0}
+.searchPrinciple{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.principle{padding:10px 7px;background:#202c42;border-top:3px solid #7a8da4;text-align:center}.principle:nth-child(1){border-top-color:var(--lav2)}.principle:nth-child(2){border-top-color:var(--teal)}.principle:nth-child(3){border-top-color:var(--cyan2)}.principle:nth-child(4){border-top-color:var(--amber2)}.principle b{font-size:8px}.principle span{display:block;font-size:6.8px;color:#aab6c7;margin-top:3px}
+.searchStats{margin:0 28px 10px;display:grid;grid-template-columns:1.2fr .8fr;gap:10px}
+.depthRail{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;background:#fff;border:1px solid var(--line);padding:10px}
+.depthCell{text-align:center;padding:8px;background:#f7f8fa;border-bottom:3px solid #c3cbd5;transition:.35s}.depthCell b{display:block;font:17px ui-monospace,monospace}.depthCell span{font-size:6.8px;color:#7b8697}.depthCell.active{background:#edf4f8;border-bottom-color:#5d849f;transform:translateY(-2px)}
+.computeScale{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;background:#fff;border:1px solid var(--line);padding:10px}
+.computeScale div{padding:8px 5px;text-align:center;background:#f8fafb;border-top:3px solid #9eabb9}.computeScale div:nth-child(3){border-top-color:var(--lav2)}.computeScale div:nth-child(4){border-top-color:var(--teal)}.computeScale div:nth-child(5){border-top-color:var(--amber2)}
+.computeScale b{display:block;font:12px ui-monospace,monospace}.computeScale span{font-size:6.6px;color:#7c8798}
+.searchLayout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:10px;margin:0 28px}
+.searchFrame{border:1px solid var(--line);background:#fff;position:relative}
+.searchToolbar{height:42px;border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:7px;padding:0 9px;background:#fafbfc}
+.modeBtn{border:1px solid #d3d9e0;background:#fff;padding:6px 8px;font-size:7.5px;font-weight:900;cursor:pointer}.modeBtn.active{background:#f2eef8;color:#6f5798;border-color:#d6cae4}
+.toolbarSpacer{flex:1}.searchToolbar .tiny{font:7px ui-monospace,monospace;color:#7a8595}
+.treeScroll{overflow:auto;position:relative}
+.tree{position:relative;width:1580px;height:980px;background:#fff}
+#edges{position:absolute;inset:0;width:1580px;height:980px;pointer-events:none}
+.guide{position:absolute;top:44px;bottom:35px;border-left:1px dashed #e3e7ec}
+.depthHead{position:absolute;top:10px;width:150px;transform:translateX(-50%);text-align:center}.depthHead .d{font-size:6.8px;color:#7c8798;text-transform:uppercase;letter-spacing:.07em}.depthHead b{display:block;font:17px ui-monospace,monospace;color:#344158}
+.root{position:absolute;left:42px;top:482px;width:95px;text-align:center}.rootCore{width:68px;height:68px;border-radius:50%;margin:auto;background:#f7fbfc;border:2px solid var(--cyan2);display:flex;align-items:center;justify-content:center;font-weight:950;color:#436c80}.root small{display:block;font-size:7px;color:#7a8596;margin-top:5px}
+.node{position:absolute;transform:translate(-50%,-50%);cursor:pointer;z-index:6;transition:opacity .2s,transform .2s,filter .2s}
+.node.compact{width:13px;height:13px;border-radius:50%;background:#fff;border:1.4px solid #8691a2}
+.node.rich{width:122px;min-height:82px;background:#fff;border:1.5px solid #cfd5df;box-shadow:0 4px 12px rgba(15,27,50,.08);padding:7px}
+.node.accepted{border-color:var(--teal)}.node.rejected{border-color:var(--red)}.node.best{border:2.5px solid var(--mint2);box-shadow:0 0 0 3px rgba(93,146,124,.12),0 7px 16px rgba(15,27,50,.09)}
+.node:hover{transform:translate(-50%,-50%) scale(1.12);z-index:20}.node.inspect{outline:3px solid rgba(136,113,178,.28);outline-offset:4px;z-index:25}.node.dim{opacity:.10;filter:grayscale(.7)}
+.node.hiddenStage{opacity:.06;pointer-events:none}
+.node .title{font-size:8px;font-weight:950;color:#334057;line-height:1.15}.node .lr{display:grid;grid-template-columns:17px 1fr;gap:2px;font-size:6.7px;color:#697588;margin-top:4px}.node .lr b{font-size:6.7px;color:#4d5b70}
+.micro{height:26px;margin-top:4px;background:#f8fafb;border:1px solid #edf0f3;position:relative;overflow:hidden}
+.micro .obj{position:absolute;left:52px;top:6px;width:14px;height:16px;border-radius:4px;background:var(--amber);border:1px solid var(--amber2)}
+.micro .lh{position:absolute;left:12px;top:8px;width:18px;height:7px;border-radius:7px;background:var(--cyan);border:1px solid var(--cyan2)}
+.micro .rh{position:absolute;right:10px;top:6px;width:18px;height:7px;border-radius:7px;background:var(--lav);border:1px solid var(--lav2)}
+.micro .ct{position:absolute;left:43px;top:12px;width:8px;height:3px;background:var(--teal)}
+.node.rejected .micro .ct{background:var(--red)}
+.node .metrics{display:flex;justify-content:space-between;gap:3px;font:6.5px ui-monospace,monospace;color:#657185;margin-top:4px}
+.mark{position:absolute;right:-7px;top:-7px;width:16px;height:16px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:950}.mark.ok{background:var(--teal)}.mark.bad{background:var(--red)}.best .mark.ok{background:var(--mint2)}
+.nid{position:absolute;left:50%;top:calc(100% + 3px);transform:translateX(-50%);font:6.3px ui-monospace,monospace;color:#8b93a1;white-space:nowrap}
+.pbar{position:absolute;left:0;right:0;bottom:-7px;height:2px;background:#eef0f3;overflow:hidden}.pbar i{display:block;height:100%;width:0;background:var(--lav2);transition:width .5s}
+.node.proposed .pbar i{width:var(--pw)}
+.edge{fill:none;stroke:#c3cad3;stroke-width:1.1}.edge.accept{stroke:var(--teal);stroke-width:1.3}.edge.reject{stroke:var(--red);stroke-dasharray:5 4}.edge.best{stroke:var(--mint2);stroke-width:4}.edge.dim{opacity:.10}
+.edgeClickable{fill:none;stroke:transparent;stroke-width:12;pointer-events:stroke;cursor:pointer}
+.edgeFlash{animation:edgeflow 1s linear infinite;stroke-dasharray:8 6}@keyframes edgeflow{to{stroke-dashoffset:-28}}
+.treeFooter{position:absolute;left:18px;right:18px;bottom:9px;display:flex;justify-content:space-between;gap:12px;font-size:8px;color:#737e90}.legend{display:flex;gap:10px;flex-wrap:wrap}.legend span{display:flex;gap:5px;align-items:center}.ll{width:20px;border-top:2px solid}.ll.sel{border-top:4px solid var(--mint2)}.ll.ok{border-color:var(--teal)}.ll.bad{border-top:2px dashed var(--red)}.ll.comp{border-color:#9aa6b5}
+.compressionBand{position:absolute;left:1005px;top:52px;width:525px;height:875px;border-left:1px solid #eef1f4;background:rgba(248,250,251,.60);pointer-events:none}.compressionBand .dots{position:absolute;left:22px;top:405px;font-size:30px;color:#c7cdd4;letter-spacing:.15em}.compressionBand .txt{position:absolute;left:22px;top:448px;font-size:7px;color:#8a94a4;text-transform:uppercase;letter-spacing:.08em}
+.inspector{border:1px solid var(--line);background:#fff;min-height:980px;position:relative}
+.inspectorHead{padding:12px 13px;border-bottom:1px solid var(--line2);background:#fafbfc}.inspectorHead h3{font-size:13px;margin:3px 0 0;color:#443366}.inspectorBody{padding:12px}
+.rejectReason{padding:9px;background:#fff7f6;border-left:3px solid var(--red);font-size:8.5px;line-height:1.45;color:#73504c;margin-bottom:10px}
+.statusLine{display:flex;gap:7px;align-items:center;margin:8px 0;font-size:8px;font-weight:900}.statusDot{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff}.statusDot.ok{background:var(--teal)}.statusDot.bad{background:var(--red)}
+.subhead{font-size:7.3px;font-weight:950;letter-spacing:.08em;text-transform:uppercase;color:#778095;margin:11px 0 5px}
+.kv{display:grid;grid-template-columns:1fr auto;gap:5px 8px;font-size:8px;border-top:1px solid var(--line2);padding-top:6px}.kv span{color:#707b8d}.kv b{text-align:right}
+.prefix{font:7.7px ui-monospace,monospace;line-height:1.55;padding:7px;background:#fafbfc;border:1px solid var(--line2)}
+.checkRow{display:grid;grid-template-columns:1fr 38px 17px;gap:5px;align-items:center;font-size:7.7px;padding:4px 0;border-bottom:1px solid #f0f2f4}.checkRow b{text-align:right}.checkRow i{font-style:normal;font-weight:950}.checkRow i.ok{color:var(--teal)}.checkRow i.bad{color:var(--red)}
+.inspectorMini{height:105px;background:#f8fafb;border:1px solid var(--line);margin-top:8px;position:relative;overflow:hidden}.inspectorMini .bottle{position:absolute;left:130px;top:36px;width:28px;height:48px;border-radius:7px;background:var(--amber);border:1px solid var(--amber2)}.inspectorMini .leftHand{position:absolute;left:46px;top:52px;width:58px;height:13px;border-radius:8px;background:var(--cyan);border:1px solid var(--cyan2)}.inspectorMini .rightHand{position:absolute;right:42px;top:38px;width:58px;height:13px;border-radius:8px;background:var(--lav);border:1px solid var(--lav2)}.inspectorMini .contactLine{position:absolute;left:104px;top:57px;width:25px;height:3px;background:var(--teal)}.inspectorMini.reject .contactLine{background:var(--red)}
+.fidelityRow{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center;font-size:7.5px;padding:5px 0;border-bottom:1px solid #f0f2f4}.fidTag{padding:3px 5px;border:1px solid var(--line);background:#f8fafb;font:6.8px ui-monospace,monospace}
+
+/* Search lower diagnostics */
+.searchDiagnostics{display:grid;grid-template-columns:1.05fr .95fr;gap:10px;margin:10px 28px 0}
+.gatePanel,.crossoverPanel{border:1px solid var(--line);background:#fff;padding:13px}
+.gateCols{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:9px}.gateBox{padding:10px;background:#f8fafb;border-top:3px solid var(--red)}.gateBox.soft{border-top-color:var(--teal)}.gateBox h4{font-size:9px;margin:0 0 7px}.gateBox div{font-size:7.7px;display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px solid #eceff2}.gateEq{margin-top:8px;padding:8px;background:#fafbfc;font:13px Georgia,serif}
+.crossoverCore{display:grid;grid-template-columns:1fr 80px 1fr;gap:8px;align-items:center;margin-top:9px}.crossState{padding:11px;background:#f8fafb;border:1px solid var(--line)}.crossState.early{border-top:3px solid var(--red)}.crossState.late{border-top:3px solid var(--teal)}.crossState h4{font-size:10px;margin:0 0 6px}.crossState .scoreBig{font:26px ui-monospace,monospace;margin-top:6px}.crossState.early .scoreBig{color:var(--red)}.crossState.late .scoreBig{color:var(--teal)}
+.crossArrow{text-align:center;font-size:28px;color:#8d98a8}.sameAction{text-align:center;margin-top:9px;padding:9px;background:var(--navy);color:#fff;font-size:9px;font-weight:950;letter-spacing:.06em}
+.funnel{margin:10px 28px 0;border:1px solid var(--line);background:#fff;padding:13px}
+.funnelFlow{display:grid;grid-template-columns:repeat(9,1fr);gap:5px;align-items:center;margin-top:9px}.funnelBox{padding:10px 6px;background:#f8fafb;border-top:3px solid #93a2b4;text-align:center;min-height:58px;display:flex;align-items:center;justify-content:center;flex-direction:column}.funnelBox:nth-child(1){border-top-color:var(--lav2)}.funnelBox:nth-child(3){border-top-color:var(--amber2)}.funnelBox:nth-child(5){border-top-color:var(--teal)}.funnelBox:nth-child(7){border-top-color:var(--cyan2)}.funnelBox:nth-child(9){border-top-color:var(--mint2)}.funnelBox b{font-size:7.8px}.funnelBox span{font:6.6px ui-monospace,monospace;color:#7b8697;margin-top:3px}.funnelArrow{text-align:center;color:#9aa4b4}
+.funnelBox.active{background:#eef7f3;transform:translateY(-2px)}
+
+/* SECTION 4 */
+.selectedBand{background:var(--navy);color:#fff;padding:17px 18px;display:grid;grid-template-columns:1fr 240px;gap:18px;align-items:center}.selectedBand h3{font-size:21px;margin:5px 0 0}.selectedBand .seq{font:10px ui-monospace,monospace;color:#d8e0ea;margin-top:7px}.scorePair{display:grid;grid-template-columns:1fr 1fr;gap:7px}.scorePair div{padding:10px;background:#202c42;text-align:center}.scorePair span{display:block;font-size:6.8px;color:#aab6c7;text-transform:uppercase}.scorePair b{display:block;font:19px Georgia,serif;margin-top:3px}
+.rollout{margin-top:12px;border:1px solid var(--line);background:#fff;padding:13px}
+.rollRow{display:grid;grid-template-columns:92px repeat(5,1fr);gap:5px;align-items:center;margin-top:5px}.rollLabel{font-size:7.5px;color:#637085;font-weight:900}.rollCell{padding:8px 5px;background:#f7f8fa;text-align:center;border-top:3px solid #a5b0bc;font-size:7px;transition:.35s}.rollCell.left{border-top-color:var(--cyan2)}.rollCell.right{border-top-color:var(--lav2)}.rollCell.contact{border-top-color:var(--teal)}.rollCell.object{border-top-color:var(--amber2)}.rollCell.active{transform:translateY(-2px);background:#eef7f3}
+.scoreArea{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.likelihoodPanel,.terminalPanel{border:1px solid var(--line);background:#fff;padding:13px}.cumProb{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:8px}.probCell{padding:9px 5px;background:#f8fafb;border-bottom:3px solid var(--lav2);text-align:center}.probCell b{display:block;font:12px ui-monospace,monospace}.probCell span{font-size:6.8px;color:#7c8798}
+.bigEq{margin-top:9px;padding:9px;background:var(--navy);color:#fff;font:16px Georgia,serif}
+.termRows{display:grid;gap:4px;margin-top:8px}.termRow{display:grid;grid-template-columns:1fr 60px 70px;gap:7px;align-items:center;font-size:7.5px}.termTrack{height:7px;background:#eef1f4}.termTrack i{display:block;height:100%;background:#6e9a84;width:0;transition:width .65s}.termRow.risk .termTrack i{background:var(--red)}.termRow b{text-align:right}
+.distinction{margin-top:10px;padding:10px;background:#f7f8fa;border-left:3px solid var(--lav2);font-size:11px;font-weight:900}
+
+/* SECTION 5 */
+.retargetGrid{display:grid;grid-template-columns:1fr .85fr 1fr;gap:12px;align-items:stretch}
+.handPane{padding:14px;background:#f8fafb;border:1px solid var(--line)}.handPane h3{font-size:11px;margin:0 0 8px}.handPane svg{width:100%;height:240px}
+.optimPane{background:var(--navy);color:#fff;padding:14px}.optimPane .eq{font-size:14px;line-height:1.5}.retLoss{display:grid;gap:6px;margin-top:12px}.retLossRow{display:grid;grid-template-columns:88px 1fr;gap:8px;align-items:center}.retLossRow span{font-size:7px;color:#c3ccd7}.retBar{height:7px;background:#2b374d}.retBar i{display:block;height:100%;width:0;transition:width .7s;background:#748fa2}.retLossRow.contact i{background:#6aa087}.retLossRow.collision i{background:#aa6d67}.retLossRow.limits i{background:#b28b50}
+.mapLine{stroke:#6ba38c;stroke-width:2.5;stroke-dasharray:180;stroke-dashoffset:180;transition:stroke-dashoffset .9s ease}
+.physDiag{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:12px}.physItem{padding:10px 7px;background:#f8fafb;border-top:3px solid #8fa0b2;text-align:center}.physItem.ok{border-top-color:var(--teal)}.physItem b{display:block;font:11px ui-monospace,monospace}.physItem span{font-size:6.5px;color:#7a8596}
+
+/* SECTION 6 */
+.commit{padding:13px;background:#f8fafb;border:1px solid var(--line)}.commitRow{display:flex;gap:7px;align-items:center;flex-wrap:wrap;margin-top:8px}.commitTok{padding:8px 10px;background:#fff;border:1px solid #dce2e8;font:8px ui-monospace,monospace;transition:.4s}.commitTok.commitOne{background:var(--navy);color:#fff;border-color:var(--navy)}.commitTok.provisional{opacity:.28;filter:grayscale(1)}
+.execGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}.execPane,.replanPane{border:1px solid var(--line);background:#fff;padding:13px}.execPane h3,.replanPane h3{font-size:11px;margin:0 0 8px}
+.contactVerify{display:grid;grid-template-columns:1fr 42px 1fr;gap:7px;align-items:center}.verifyCard{padding:11px;background:#f8fafb;border-top:3px solid var(--teal)}.verifyCard b{display:block;font-size:8px}.verifyCard span{display:block;font:8px ui-monospace,monospace;color:#657185;margin-top:5px}
+.clock{margin-top:10px;padding:10px;background:var(--navy);color:#fff}.clockTrack{height:5px;background:#2d394f;position:relative;margin:8px 5px}.cursor{position:absolute;left:0;top:50%;width:12px;height:12px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);transition:left .45s}.clockTicks{display:flex;justify-content:space-between;font:6.7px ui-monospace,monospace;color:#aeb9c8}
+.triggers{display:grid;grid-template-columns:1fr 1fr;gap:6px}.trigger{padding:8px;background:#f8fafb;border-left:3px solid #94a4b5;font-size:7.5px;display:flex;justify-content:space-between}.trigger.warn{border-left-color:var(--red)}
+.replanFlow{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;align-items:center;margin-top:10px}.rNode{padding:9px 6px;background:#f8fafb;border-top:3px solid #8fa0b2;text-align:center;font-size:7px}.rNode:nth-child(1){border-top-color:var(--teal)}.rNode:nth-child(3){border-top-color:var(--amber2)}.rNode:nth-child(5){border-top-color:var(--cyan2)}.rNode:nth-child(7){border-top-color:var(--lav2)}.rArrow{text-align:center;color:#98a3b2}
+.miniTree{height:120px;background:var(--navy);margin-top:10px;overflow:hidden}.miniTree svg{width:100%;height:120px}.miniTree path{stroke:#8798ad;stroke-width:2;fill:none;stroke-dasharray:180;stroke-dashoffset:180;transition:stroke-dashoffset .9s}.miniTree.draw path{stroke-dashoffset:0}
+.closeMessage{margin-top:12px;padding:16px;background:var(--navy);color:#fff;text-align:center}.closeMessage b{font-size:20px}.closeMessage span{display:block;margin-top:5px;font-size:8.5px;color:#bbc5d2}
+
+/* Footer and guided tour */
+.footer{max-width:1280px;margin:18px auto 44px;padding:14px 16px;background:var(--navy);color:#c2cbd7;display:grid;grid-template-columns:1fr 1fr;gap:20px}.footer .pipe{font:8px ui-monospace,monospace;color:#fff;line-height:1.6}.footer .prov{font-size:7.4px;line-height:1.5;text-align:right}
+.tourBar{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;z-index:120;background:var(--navy);color:#fff;padding:7px 9px;display:none;align-items:center;gap:7px;box-shadow:0 12px 30px rgba(23,32,51,.26)}.tourBar.show{display:flex}.tourStatus{font:7.5px ui-monospace,monospace;color:#c1cad6;min-width:310px}
+.tourBtn{border:1px solid #526179;background:transparent;color:#fff;padding:5px 7px;font-size:7px;cursor:pointer}.tourBtn.active{background:#fff;color:var(--navy)}
+.speedBtns{display:flex;gap:3px}.speedBtns button{border:1px solid #526179;background:transparent;color:#fff;padding:4px 5px;font-size:6.7px;cursor:pointer}.speedBtns button.active{background:#fff;color:var(--navy)}
+@keyframes pulse{0%{transform:none;box-shadow:none}45%{transform:translateY(-3px);box-shadow:0 10px 22px rgba(37,48,70,.10)}100%{transform:none;box-shadow:none}}
+.pulse{animation:pulse .75s ease both}
+
+@media(max-width:1050px){
+  .sectionHead{grid-template-columns:54px 1fr}.sectionHead p{grid-column:2}
+  .contextGrid,.tokenGrid,.searchBanner,.searchStats,.searchLayout,.searchDiagnostics,.scoreArea,.retargetGrid,.execGrid{grid-template-columns:1fr}
+  .ctxArrow{transform:rotate(90deg)}
+  .searchLayout{margin:0 12px}.searchBanner,.searchStats,.searchDiagnostics,.funnel{margin-left:12px;margin-right:12px}
+  .inspector{min-height:520px}
+  .physDiag{grid-template-columns:repeat(3,1fr)}
+  .methodRail{grid-template-columns:1fr}.methodRail .arrow{transform:rotate(90deg)}
+}
+
+/* ===== v2 INDUSTRY-GRADE OVERRIDES ===== */
+.industryHero{padding-top:56px}.industryHero h1{max-width:1100px}.instructionShell{max-width:1060px;margin:28px auto 0;border:1px solid var(--line);background:#fff;box-shadow:0 18px 42px rgba(28,38,60,.07);text-align:left}.instructionTop{height:35px;display:flex;align-items:center;justify-content:space-between;padding:0 13px;background:#f8fafb;border-bottom:1px solid var(--line);font-size:7.5px;font-weight:950;letter-spacing:.09em;color:#647084}.liveDot{color:var(--teal)}.instructionMain{padding:14px;display:grid;grid-template-columns:1fr 250px;gap:12px}.instructionMain textarea{width:100%;resize:none;border:0;outline:none;background:#fff;font-size:19px;line-height:1.4;color:var(--navy);padding:8px 6px}.instructionControls{display:grid;grid-template-columns:1fr 1fr;gap:7px}.instructionControls select{border:1px solid var(--line);background:#fafbfc;padding:8px;font-size:8px;color:#526074}.generateBtn{grid-column:1/-1;border:0;background:var(--navy);color:#fff;padding:10px;font-size:8.5px;font-weight:950;letter-spacing:.05em;cursor:pointer}.semanticIntent{display:flex;align-items:center;justify-content:center;gap:13px;padding:10px;background:#fbf9fd;border-top:1px solid #eee8f4;opacity:0;transform:translateY(5px);transition:.5s}.semanticIntent.show{opacity:1;transform:none}.semanticIntent span{padding:6px 9px;border:1px solid #dcd2e9;background:#fff;font-size:8px;font-weight:900;color:#604b83}.semanticIntent b{color:#9a8aaa}.presetRow{display:flex;gap:7px;padding:9px 14px;border-top:1px solid var(--line2);flex-wrap:wrap}.presetRow button{border:1px solid var(--line);background:#fff;padding:6px 8px;font-size:7px;color:#667286;cursor:pointer}
+.provenanceRow{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:10px}.industrySection .sectionBody{padding-top:8px}.contextIndustry{display:grid;grid-template-columns:1.28fr .72fr;gap:12px}.sceneStage{background:#f8fafb;border:1px solid var(--line);padding:12px}.stageHeader,.artifactHead{display:flex;justify-content:space-between;align-items:center;gap:10px;font-size:7.2px;font-weight:950;letter-spacing:.08em;color:#647084}.stageHeader .mono{font-size:7px;color:#8a94a4}.sceneSvg{width:100%;height:350px}.sceneTelemetry{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.sceneTelemetry div{padding:8px;background:#fff;border-top:3px solid #92a1b3;text-align:center}.sceneTelemetry div:nth-child(1),.sceneTelemetry div:nth-child(2){border-top-color:var(--amber2)}.sceneTelemetry div:nth-child(3){border-top-color:var(--cyan2)}.sceneTelemetry div:nth-child(4){border-top-color:var(--lav2)}.sceneTelemetry span{display:block;font-size:6.5px;color:#7a8596}.sceneTelemetry b{display:block;font:9px ui-monospace,monospace;margin-top:3px}.contextArtifacts{display:grid;gap:9px}.artifact{border:1px solid var(--line);background:#fff;padding:11px}.contactArtifact svg{width:100%;height:130px}.contactEdge{fill:none;stroke-width:3}.contactEdge.active{stroke:var(--teal)}.contactEdge.inactive{stroke:#c9cfd6;stroke-dasharray:6 5}.contactLegendLine{font-size:7px;color:#687486;display:flex;align-items:center;gap:5px}.tealDot,.greyDot{width:7px;height:7px;border-radius:50%;display:inline-block}.tealDot{background:var(--teal)}.greyDot{background:#c3cad2;margin-left:8px}.smallState{font:6.8px ui-monospace,monospace;color:#8a94a4}.stateRail{display:flex;align-items:center;gap:5px;margin-top:17px}.statePoint{font-size:7px;padding:6px 7px;background:#f7f8fa;border-bottom:3px solid #c3cad2}.statePoint.active{background:#fcf7ef;border-bottom-color:var(--amber2)}.stateRail i{flex:1;height:1px;background:#cdd3da}.goalGraph{display:grid;grid-template-columns:1fr 28px 1fr;align-items:center;margin-top:13px}.goalNode{padding:9px;text-align:center;background:#f8fafb;border-top:3px solid #9ba8b8;font-size:8px}.goalNode.current{border-top-color:var(--amber2);background:#fcfaf6}.goalGraph b{text-align:center;color:#9ba6b4}.contextEquation{margin-top:11px;padding:15px 17px;background:var(--navy);color:#fff;display:grid;grid-template-columns:165px 1fr;gap:8px 16px;align-items:center}.contextEquation span{font-size:7.2px;letter-spacing:.08em;color:#aab6c7}.contextEquation b{font-size:18px}.contextEquation em{grid-column:2;font-size:8px;color:#bcc6d3;font-style:normal}
+.proposalIndustry{display:grid;grid-template-columns:.9fr 1.1fr;gap:12px}.tokenAnatomy{height:365px;position:relative;background:#f8fafb;border:1px solid var(--line);overflow:hidden}.tokenCore{position:absolute;left:50%;top:34px;transform:translateX(-50%);width:180px;padding:11px;background:var(--navy);color:#fff;text-align:center;z-index:2}.tokenCore span{display:block;font-size:6.5px;color:#aab6c7}.tokenCore b{display:block;font-size:14px;margin-top:4px}.tokenCore em{display:block;font:13px Georgia,serif;margin-top:4px;color:#d8e0ea}.tokenLinks{position:absolute;inset:0;width:100%;height:100%}.tokenLinks path{fill:none;stroke:#c7ced6;stroke-width:1.5;stroke-dasharray:260;stroke-dashoffset:260;transition:stroke-dashoffset .8s}.tokenBranch{position:absolute;width:130px;padding:10px;background:#fff;border:1px solid var(--line);border-top:3px solid #9ba7b6}.tokenBranch span{display:block;font-size:6.4px;color:#7b8697}.tokenBranch b{display:block;font-size:8px;line-height:1.5;margin-top:4px}.tokenBranch.role{left:26px;top:170px;border-top-color:var(--cyan2)}.tokenBranch.contact{left:165px;top:170px;border-top-color:var(--teal)}.tokenBranch.object{right:165px;top:170px;border-top-color:var(--amber2)}.tokenBranch.params{right:26px;top:170px;border-top-color:var(--lav2)}.candidateArtifact{background:var(--navy);color:#fff;border:1px solid var(--navy);padding:12px}.darkHead{color:#c8d1dc}.darkHead .smallState{color:#9eabba}.candidateBody{display:grid;grid-template-columns:1.1fr .9fr;gap:12px;margin-top:12px}.candidateBars{display:grid;gap:8px}.cand{display:grid;grid-template-columns:125px 1fr 38px;gap:7px;align-items:center}.cand span{font-size:8px;color:#d6dee8}.cand i{height:9px;background:#2a364c}.cand i b{display:block;height:100%;width:0;background:#8871b2;transition:width .7s}.cand:nth-child(2) i b{background:#5e90a4}.cand:nth-child(3) i b{background:#5d927c}.cand:nth-child(4) i b{background:#b45f59}.cand:nth-child(5) i b{background:#8392a6}.cand strong{font:8px ui-monospace,monospace}.proposalPlot svg{width:100%;height:180px}.plotCaption{font-size:7px;line-height:1.4;color:#aeb8c7}.motionPreviewStrip{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;margin-top:10px}.previewCard{position:relative;background:#fff;border:1px solid var(--line);overflow:hidden;min-height:115px}.previewCard img{width:100%;height:92px;object-fit:cover;display:block;filter:saturate(.85);transition:.25s}.previewCard:hover img{filter:none;transform:scale(1.02)}.previewCard span{font-size:7px;font-weight:900;padding:6px;display:inline-block}.previewCard b{float:right;font:7px ui-monospace,monospace;padding:6px}.previewCard.rejected{border-top:3px solid var(--red)}.previewCard.schematic{display:flex;flex-direction:column;justify-content:flex-end}.approachIcon{height:92px;background:#f8fafb;display:flex;align-items:center;justify-content:center;gap:8px}.approachIcon i{width:12px;height:12px;border-radius:50%;background:#dfe4e9}.approachIcon i:nth-child(2){background:var(--lav)}.proposalHandoff{margin-top:10px;padding:12px;background:#f8fafb;border-left:3px solid var(--lav2);display:flex;justify-content:space-between;gap:12px}.proposalHandoff span{font:14px Georgia,serif}.proposalHandoff b{font-size:9px}
+/* Search inspector rule: hidden unless explicitly selected */.searchLayout{grid-template-columns:minmax(0,1fr)!important;transition:grid-template-columns .35s ease}.searchLayout.inspectorOpen{grid-template-columns:minmax(0,1fr) 330px!important}.inspector{display:none!important}.searchLayout.inspectorOpen .inspector{display:block!important}.inspectorHead{display:flex;justify-content:space-between;align-items:flex-start}.inspectorClose{border:0;background:transparent;font-size:20px;color:#7c8798;cursor:pointer;line-height:1}.treeScroll{transition:.35s}.node.rich{overflow:hidden}.node.rich .nodeGif{width:100%;height:44px;object-fit:cover;margin:4px 0;display:block;border:1px solid #eef1f4}.node.rich .micro{display:none}
+.winnerHero{background:var(--navy);color:#fff;padding:17px 18px;display:grid;grid-template-columns:1fr 230px;gap:15px;align-items:center}.winnerHero h3{font-size:21px;margin:5px 0}.winnerHero p{font:9px ui-monospace,monospace;color:#cbd4df}.lightK{color:#aab6c7!important}.winnerStats{display:grid;grid-template-columns:1fr 1fr;gap:7px}.winnerStats div{padding:10px;background:#202c42;text-align:center}.winnerStats span{display:block;font-size:6.5px;color:#aab6c7}.winnerStats b{display:block;font:19px Georgia,serif;margin-top:3px}.filmstrip{display:grid;grid-template-columns:1fr 25px 1fr 25px 1fr 25px 1fr 25px 1fr;gap:5px;margin-top:11px;align-items:center}.filmCard{border:1px solid var(--line);background:#fff;overflow:hidden;transition:.35s}.filmCard.active{transform:scale(1.04);box-shadow:0 10px 24px rgba(28,38,60,.12);border-color:#b9d3c5}.filmCard img{width:100%;height:120px;object-fit:cover;display:block}.filmCard span{font:7px ui-monospace,monospace;color:#7b8697;padding:6px 7px;display:inline-block}.filmCard b{float:right;padding:6px 7px;font-size:7px}.filmArrow{text-align:center;color:#9aa5b3}.syncTracks{margin-top:11px;border:1px solid var(--line);padding:10px}.syncRow{display:grid;grid-template-columns:92px repeat(5,1fr);gap:5px;margin-top:5px}.syncRow>span{font-size:7px;font-weight:950;color:#687486;padding-top:8px}.syncRow i{font-style:normal;padding:8px 5px;background:#f7f8fa;border-top:3px solid #9ca9b8;text-align:center;font-size:7px;transition:.3s}.syncRow.leftTrack i{border-top-color:var(--cyan2)}.syncRow.rightTrack i{border-top-color:var(--lav2)}.syncRow.contactTrack i{border-top-color:var(--teal)}.syncRow.objectTrack i{border-top-color:var(--amber2)}.syncRow i.active{background:#edf7f2;transform:translateY(-2px)}.winnerPlots{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:11px}.plotPanel{border:1px solid var(--line);background:#fff;padding:12px}.plotPanel svg{width:100%;height:220px}.axisDash{stroke:#eef1f4;stroke-dasharray:5 5}.bigMetric{padding:9px;background:#f8fafb;display:flex;justify-content:space-between;font-size:9px}.contribRows{display:grid;gap:6px;margin-top:12px}.contribRows>div{display:grid;grid-template-columns:90px 1fr 62px;gap:7px;align-items:center}.contribRows span{font-size:7.5px}.contribRows i{height:8px;background:#eef1f4}.contribRows i b{display:block;height:100%;width:0;background:var(--teal);transition:.65s}.contribRows strong{font:7px ui-monospace,monospace;text-align:right}.contribRows .riskRow i b{background:var(--red)}.qualityStatement{margin-top:12px;padding:10px;background:var(--navy);color:#fff;font-size:9px;font-weight:950;letter-spacing:.05em}.finalRollout{margin-top:12px;display:grid;grid-template-columns:1.15fr .85fr;background:var(--navy);color:#fff}.rolloutMedia img{width:100%;height:330px;object-fit:cover;display:block}.rolloutCopy{padding:24px;display:flex;flex-direction:column;justify-content:center}.rolloutCopy h3{font-size:24px;margin:11px 0 6px}.rolloutCopy p{font:9px ui-monospace,monospace;color:#cad3de}.rolloutStatus{display:grid;grid-template-columns:1fr auto;gap:8px 12px;margin-top:15px}.rolloutStatus span{font-size:7px;color:#9eabba}.rolloutStatus b{font-size:8px}
+.retargetIndustry{display:grid;grid-template-columns:1fr .8fr 1fr;gap:10px}.correspondencePane,.contactBridge{border:1px solid var(--line);background:#f8fafb;padding:12px}.correspondencePane svg,.contactBridge svg{width:100%;height:270px}.contactBridge{background:var(--navy);color:#fff}.bridgeEdge{fill:none;stroke:var(--teal);stroke-width:3;stroke-dasharray:220;stroke-dashoffset:220;transition:.8s}.contactPrinciple{text-align:center;font-size:7px;color:#c4ceda;letter-spacing:.07em}.retargetEquation{margin-top:10px;padding:13px;background:#fff;border-left:3px solid var(--teal);display:flex;justify-content:space-between;gap:16px;align-items:center}.retargetEquation span{font-size:15px}.retargetEquation b{font-size:9px}.retargetArtifacts{display:grid;grid-template-columns:1.1fr .9fr;gap:10px;margin-top:10px}.residualViz{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:15px}.magnifier,.orientationViz,.clearanceViz{height:155px;background:#f8fafb;border:1px solid var(--line);position:relative;text-align:center}.desiredDot,.actualDot{position:absolute;width:12px;height:12px;border-radius:50%;top:52px}.desiredDot{left:42%;background:var(--amber2)}.actualDot{left:55%;background:var(--teal)}.magnifier i{position:absolute;left:45%;top:58px;width:48px;border-top:2px solid #98a5b5}.residualViz b{position:absolute;left:0;right:0;top:88px;font:13px ui-monospace,monospace}.residualViz small{position:absolute;left:0;right:0;bottom:18px;font-size:6.8px;color:#7a8596}.ori{position:absolute;font-size:42px;top:33px}.ori.desired{left:33%;color:var(--amber2)}.ori.actual{left:49%;color:var(--teal);transform:rotate(3deg)}.fingerGeom,.objectGeom{position:absolute;top:48px;height:20px;border-radius:10px}.fingerGeom{left:24px;width:75px;background:var(--mint)}.objectGeom{right:24px;width:75px;background:var(--amber)}.clearanceViz i{position:absolute;left:99px;top:58px;width:40px;border-top:2px dashed #98a5b5}.feasibilityLine{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-top:10px}.feasibilityLine div{padding:9px 6px;text-align:center;background:#f8fafb;border-top:3px solid var(--teal)}.feasibilityLine span{display:block;font-size:6.3px;color:#7a8596}.feasibilityLine b{display:block;font:10px ui-monospace,monospace;margin-top:3px}
+.executionPlan{border:1px solid var(--line);padding:12px}.executionTokens{display:grid;grid-template-columns:repeat(9,1fr);gap:6px;align-items:center;margin-top:10px}.execToken{padding:11px;background:#f8fafb;border-top:3px solid #9ca9b8;text-align:center;transition:.35s}.execToken.committed{background:var(--navy);color:#fff;border-top-color:var(--mint2)}.execToken span{font:6.5px ui-monospace,monospace}.execToken b{display:block;font-size:8px;margin-top:3px}.execToken em{display:block;font-size:6px;font-style:normal;color:#8a94a4;margin-top:3px}.execToken.committed em{color:#aeb9c8}.executionTokens>i{text-align:center;color:#9ca7b5}.executionIndustry{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.liveExecution{background:var(--navy);padding:12px;color:#fff}.liveExecution img{width:100%;height:280px;object-fit:cover;margin-top:10px}.executionClock{display:grid;grid-template-columns:45px 1fr 55px;gap:7px;align-items:center;margin-top:9px;font:7px ui-monospace,monospace;color:#aab6c7}.executionClock i{height:5px;background:#2b374d;position:relative}.executionClock i b{position:absolute;left:0;top:50%;width:12px;height:12px;border-radius:50%;background:#fff;transform:translate(-50%,-50%);transition:left .5s}.observationStack{display:grid;gap:10px}.verifyArtifact{padding:12px}.contactCompare{display:grid;grid-template-columns:1fr 30px 1fr;gap:6px;align-items:center;margin-top:8px}.contactCompare>div{background:#f8fafb;padding:8px}.contactCompare span{font-size:6.5px;color:#7a8596}.contactCompare svg{width:100%;height:60px}.contactCompare b{font-size:7px}.contactCompare>strong{text-align:center;color:#9aa5b4}.mismatchMetric{margin-top:6px;padding:7px;background:#edf7f2;font-size:7px;display:flex;justify-content:space-between}.executionPlots{display:grid;grid-template-columns:1fr 1fr;gap:8px}.microPlot{border:1px solid var(--line);padding:9px;background:#fff}.microPlot>span{font-size:6.5px;font-weight:900;color:#687486}.microPlot svg{width:100%;height:100px}.triggerBus{display:grid;grid-template-columns:130px repeat(6,1fr);gap:6px;align-items:center;margin-top:10px;padding:10px;background:#f8fafb;border:1px solid var(--line)}.busLabel{font-size:6.8px;font-weight:950;color:#687486}.busEvent{text-align:center;font-size:6.2px;color:#778396}.busEvent i{display:block;width:10px;height:10px;border-radius:50%;background:#d2d8df;margin:0 auto 5px}.busEvent.fired i{background:var(--teal);box-shadow:0 0 0 4px rgba(79,143,136,.12)}.stateUpdate{display:grid;grid-template-columns:1fr 26px 1fr 26px 1fr 30px 1.2fr;gap:6px;align-items:center;margin-top:10px}.stateUpdate>div{padding:11px;background:#f8fafb;text-align:center;border-top:3px solid #95a4b5}.stateUpdate>div:nth-child(1){border-top-color:var(--teal)}.stateUpdate>div:nth-child(3){border-top-color:var(--amber2)}.stateUpdate>div:nth-child(5){border-top-color:var(--cyan2)}.stateUpdate .nextState{background:var(--navy);color:#fff;border-top-color:var(--lav2)}.stateUpdate span{display:block;font:14px Georgia,serif}.stateUpdate b{display:block;font-size:6.5px;margin-top:3px}.stateUpdate>i{text-align:center;color:#9aa5b4}.restartSearch{margin-top:10px;height:175px;background:#fff;border:1px solid var(--line);position:relative;overflow:hidden}.restartCore{position:absolute;left:25px;top:62px;width:60px;height:60px;border-radius:50%;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font:15px Georgia,serif;z-index:2}.restartSearch svg{position:absolute;inset:0;width:100%;height:100%}.restartEdge{fill:none;stroke:#8797aa;stroke-width:2;stroke-dasharray:300;stroke-dashoffset:300;transition:.8s}.restartLabel{position:absolute;right:24px;top:20px;font-size:7px;color:#7a8596;text-transform:uppercase;letter-spacing:.08em}
+@media(max-width:1050px){.instructionMain,.contextIndustry,.proposalIndustry,.winnerPlots,.finalRollout,.retargetIndustry,.retargetArtifacts,.executionIndustry{grid-template-columns:1fr}.motionPreviewStrip{grid-template-columns:repeat(2,1fr)}.filmstrip{grid-template-columns:1fr}.filmArrow{transform:rotate(90deg)}.feasibilityLine{grid-template-columns:repeat(3,1fr)}.triggerBus{grid-template-columns:1fr 1fr}.stateUpdate{grid-template-columns:1fr}.stateUpdate>i{transform:rotate(90deg)}}
+
+
+/* ===== V3: evidence-grounded, computation-linked presentation ===== */
+.v3Section{background:#fbfbfa}.techPanelHead{display:flex;justify-content:space-between;gap:14px;align-items:center;padding-bottom:9px;border-bottom:1px solid #e5e9ee;color:#677489}.techPanelHead>div{display:flex;align-items:baseline;gap:9px}.techPanelHead span{font-size:7px;font-weight:950;letter-spacing:.09em}.techPanelHead b{font:13px Georgia,serif;color:#172033}.techPanelHead em{font:6.7px ui-monospace,monospace;color:#8d98a8;font-style:normal}.darkTechnical{color:#c9d3df;border-bottom-color:#334056}.darkTechnical b{color:#fff}.darkTechnical em{color:#9fabb9}.tealText{color:#4f8f88!important}.amberText{color:#a06f28!important}.redText{color:#b45f59!important}.technicalTakeaway{margin-top:12px;padding:13px 15px;border-left:3px solid #4f8f88;background:#f6f8f8;font-size:9px;line-height:1.55;color:#4f5d70}
+.observationGrid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(330px,.55fr);gap:12px}.observedPhysical{background:#172033;padding:12px;color:#fff;border:1px solid #172033}.observedPhysical .techPanelHead{border-bottom-color:#334056}.observedPhysical .techPanelHead span,.observedPhysical .techPanelHead b{color:#fff}.observedPhysical .techPanelHead em{color:#a6b2c1}.physicalViewport{position:relative;margin-top:10px;overflow:hidden;background:#111827;aspect-ratio:800/413}.physicalViewport img{width:100%;height:100%;object-fit:cover;display:block}.evidenceCallout{position:absolute;min-width:126px;padding:7px 8px;background:rgba(23,32,51,.91);border:1px solid rgba(255,255,255,.22);box-shadow:0 8px 22px rgba(0,0,0,.18)}.evidenceCallout b{display:block;font-size:7px;letter-spacing:.05em}.evidenceCallout small{display:block;font-size:6.1px;line-height:1.35;color:#c4ceda;margin-top:2px}.evidenceCallout span{position:absolute;height:1px;background:#c7d2de;transform-origin:left center}.leftSupport{left:2.5%;top:55%;border-left:3px solid #5e90a4}.leftSupport span{width:70px;left:100%;top:50%;transform:rotate(-9deg)}.capClosed{left:28%;top:7%;border-left:3px solid #b48746}.capClosed span{width:54px;left:35%;top:100%;transform:rotate(62deg)}.rightFree{right:3%;top:18%;border-left:3px solid #8871b2}.rightFree span{width:68px;right:100%;top:55%;transform-origin:right center;transform:rotate(10deg)}.cupTarget{right:2%;bottom:8%;border-left:3px solid #5e90a4}.cupTarget span{width:62px;right:100%;top:35%;transform-origin:right center;transform:rotate(-16deg)}.evidenceFooter{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;margin-top:1px;background:#334056}.evidenceFooter div{background:#1d2940;padding:8px}.evidenceFooter span{display:block;font-size:5.9px;color:#9eabba;letter-spacing:.05em}.evidenceFooter b{display:block;font-size:7.5px;margin-top:3px}.stateExtraction{display:grid;gap:9px}.instrumentPanel{background:#fff;border:1px solid #e0e5ea;padding:11px}.contactMatrix{display:grid;grid-template-columns:1.3fr .8fr .8fr;gap:1px;background:#e8ecf0;margin-top:10px}.contactMatrix>*{background:#fbfcfd;padding:7px;font-size:6.7px;text-align:center}.matrixHead{font-weight:900;color:#687486}.matrixLabel{text-align:left!important;font-weight:900}.cyanLabel{color:#5e90a4}.lavLabel{color:#8871b2}.matrixCell{font:9px ui-monospace,monospace;color:#929dab}.activeCell{background:#e9f4f1!important;color:#35796f;font-weight:950}.graphReadout svg{width:100%;height:85px;margin-top:4px}.instrumentConclusion{display:flex;justify-content:space-between;padding:7px;background:#f6f8f8;font-size:6.7px}.instrumentConclusion b{color:#4f8f88}.objectTrace{display:grid;grid-template-columns:1fr 20px 1fr 20px 1fr 20px 1fr;align-items:center;margin-top:13px}.objectStage{text-align:center;color:#8a95a5}.objectStage i{width:11px;height:11px;border-radius:50%;background:#d1d7dd;display:block;margin:auto}.objectStage b{display:block;font-size:6.7px;margin-top:5px}.objectStage span{display:block;font-size:5.6px;margin-top:2px}.objectStage.active{color:#8a6534}.objectStage.active i{background:#b48746}.traceEdge{height:1px;background:#d5dbe1}.dependencyGraph{display:grid;grid-template-columns:1fr 72px 1fr;align-items:center;margin-top:13px}.depNode{padding:11px 8px;background:#f7f8fa;border-top:3px solid #98a5b5}.depNode.current{border-top-color:#b48746;background:#fcf8f1}.depNode span{font:6px ui-monospace,monospace;color:#8792a3}.depNode b{display:block;font-size:7.5px;margin-top:2px}.depNode small{display:block;font-size:5.7px;color:#7e8999;margin-top:2px}.depEdge{text-align:center;position:relative}.depEdge i{display:block;height:1px;background:#bfc7d0}.depEdge b{font-size:5.7px;color:#8c97a7;background:#fff;padding:2px;position:relative;top:-8px}.stateFusion{display:grid;grid-template-columns:165px 1fr 38px 1.1fr;gap:10px;align-items:center;margin-top:11px;padding:13px;background:#172033;color:#fff}.fusionLabel span{display:block;font-size:6.5px;color:#9eabba;letter-spacing:.08em}.fusionLabel b{display:block;font-size:8.5px;margin-top:4px}.fusionInputs{display:flex;flex-wrap:wrap;gap:5px}.fusionInputs span{padding:6px 7px;background:#222f46;font-size:6.4px;color:#c6cfdb}.fusionArrow{text-align:center;font-size:20px;color:#8c98a9}.fusionOutput b{font:25px Georgia,serif}.fusionOutput span{display:block;font:7px ui-monospace,monospace;color:#bec8d5;margin-top:4px}
+.proposalTechnical{display:grid;grid-template-columns:1.15fr .85fr;gap:10px}.tokenRecord,.tokenPhysicalEvidence,.proposalPreviewPanel{border:1px solid #e0e5ea;background:#fff;padding:12px}.tokenSchema{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:#e6eaef;margin-top:10px}.tokenSchema div{background:#fafbfc;padding:9px}.tokenSchema span{display:block;font-size:6.3px;color:#7b8797}.tokenSchema b{display:block;font-size:7.5px;margin-top:3px}.tokenEquation{margin-top:9px;padding:10px;background:#172033;color:#fff;font:14px Georgia,serif;text-align:center}.tokenPhysicalEvidence img{width:100%;height:242px;object-fit:cover;display:block;margin-top:10px}.tokenEvidenceStrip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#e4e8ed}.tokenEvidenceStrip div{background:#f9fafb;padding:7px}.tokenEvidenceStrip span{display:block;font-size:5.8px;color:#7a8596}.tokenEvidenceStrip b{display:block;font-size:6.8px;margin-top:2px}.proposalEvidenceRow{display:grid;grid-template-columns:.88fr 1.12fr;gap:10px;margin-top:10px}.proposalRankPanel{background:#172033;color:#fff;padding:12px}.v3Bars{margin-top:12px}.v3Bars .cand{grid-template-columns:145px 1fr 38px}.distributionStats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#344057;margin-top:10px}.distributionStats div{background:#202c42;padding:8px;text-align:center}.distributionStats span{display:block;font-size:5.8px;color:#9fabb9}.distributionStats b{display:block;font:12px ui-monospace,monospace;margin-top:3px}.evidencePreviews{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:10px}.evidencePreview{border:1px solid #e0e5ea;background:#fff;padding:0;cursor:pointer;text-align:left;overflow:hidden;color:#172033}.evidencePreview img{width:100%;height:100px;object-fit:cover;display:block;filter:saturate(.8)}.evidencePreview span{display:inline-block;padding:6px;font-size:6.3px;font-weight:900}.evidencePreview b{float:right;padding:6px;font:6.5px ui-monospace,monospace}.evidencePreview.selected{border:2px solid #4f8f88}.evidencePreview.invalid{border-top:3px solid #b45f59}.proposalPreviewDetail{margin-top:8px;padding:9px;background:#f7f8fa;display:flex;gap:12px;align-items:center}.proposalPreviewDetail b{font-size:7px}.proposalPreviewDetail span{font-size:6.6px;color:#718093}
+.filmCard img{filter:saturate(.88)}.filmCard.active img{filter:none}.finalRollout img{filter:saturate(.9)}
+.retargetEvidenceChain{display:grid;grid-template-columns:1fr .78fr 1.15fr;gap:10px}.landmarkPanel,.robotRealizationPanel{background:#fff;border:1px solid #e0e5ea;padding:12px}.landmarkPanel svg{width:100%;height:265px}.jointLink{fill:none;stroke:#5e90a4;stroke-width:3}.landmarkReadout,.robotContactReadout{display:grid;grid-template-columns:1fr 1fr;gap:4px 8px;padding:8px;background:#f7f8fa}.landmarkReadout span,.robotContactReadout span{font-size:6px;color:#7b8797}.landmarkReadout b,.robotContactReadout b{font-size:6.8px;text-align:right}.contactInvariantPanel{background:#172033;color:#fff;padding:12px}.contactInvariantGraph{height:205px;position:relative;margin-top:10px}.ciNode{position:absolute;padding:8px 10px;border-radius:16px;font-size:6.7px;font-weight:900}.ciNode.human{left:15px;background:#26364f;border:1px solid #5e90a4}.ciNode.object{right:15px;background:#352d23;border:1px solid #b48746}.ciNode.index{top:66px}.ciNode.palm{top:132px}.ciNode.cap{top:32px}.ciNode.bottle{top:142px}.ciNode.human:first-child{top:10px}.ciEdge{position:absolute;left:94px;width:116px;height:2px;background:#4f8f88;transform-origin:left}.ciEdge.e1{top:40px;transform:rotate(2deg)}.ciEdge.e2{top:92px;transform:rotate(-18deg)}.ciEdge.e3{top:160px;transform:rotate(5deg)}.invariantRules{display:grid;gap:5px}.invariantRules div{display:flex;justify-content:space-between;border-top:1px solid #334056;padding-top:6px}.invariantRules span{font-size:5.8px;color:#9eabba}.invariantRules b{font-size:6.4px}.retargetRobotMedia{position:relative;margin-top:10px}.retargetRobotMedia img{width:100%;height:250px;object-fit:cover;display:block}.retargetContactMarker{position:absolute;width:12px;height:12px;border-radius:50%;border:3px solid #4f8f88;background:rgba(255,255,255,.7)}.thumbMarker{left:43%;top:29%}.indexMarker{left:48%;top:35%}.retargetObjective{display:grid;grid-template-columns:1fr .7fr;gap:16px;align-items:center;margin-top:10px;padding:13px 15px;background:#172033;color:#fff}.retargetObjective span{display:block;font-size:6px;color:#a4b0bf}.retargetObjective b{display:block;font:15px Georgia,serif;margin-top:4px}.retargetObjective em{font-size:7px;line-height:1.5;color:#c1cad6;font-style:normal}.retargetDiagnostics{display:grid;grid-template-columns:1.1fr .9fr;gap:10px;margin-top:10px}.convergencePanel svg{height:245px}.measurementPanel{background:#fff;border:1px solid #e0e5ea;padding:12px}.measurementRows{display:grid;gap:8px;margin-top:12px}.measurementRows>div{display:grid;grid-template-columns:1fr auto;gap:6px;align-items:center;padding:8px 0;border-bottom:1px solid #eef1f4;position:relative}.measurementRows span{font-size:6.7px;color:#6f7c8e}.measurementRows b{font:8px ui-monospace,monospace}.measurementRows i{grid-column:1/-1;height:3px;background:#edf0f3;position:relative}.measurementRows i:after{content:"";display:block;width:var(--p);height:100%;background:#4f8f88}.measurementRows .binary b{color:#4f8f88}
+.commitTimeline{background:#fff;border:1px solid #e0e5ea;padding:12px}.commitTrack{display:grid;grid-template-columns:1fr 24px 1fr 24px 1fr 24px 1fr 24px 1fr;gap:5px;align-items:center;margin-top:10px}.commitToken{padding:10px;background:#f7f8fa;border-top:3px solid #a0acbb}.commitToken.current{background:#172033;color:#fff;border-top-color:#4f8f88}.commitToken span{font:6px ui-monospace,monospace}.commitToken b{display:block;font-size:7.2px;margin-top:2px}.commitToken em{display:block;font-size:5.7px;font-style:normal;color:#8792a3;margin-top:2px}.commitTrack>i{height:1px;background:#c7ced6}.executionEvidenceGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.executedTokenPanel{background:#172033;padding:12px;color:#fff}.executedTokenPanel img{width:100%;height:290px;object-fit:cover;display:block;margin-top:10px}.verificationPanel{background:#fff;border:1px solid #e0e5ea;padding:12px}.contactDiff{display:grid;grid-template-columns:1fr 28px 1fr;gap:7px;align-items:center;margin-top:11px}.contactDiffSide{background:#f7f8fa;padding:10px}.contactDiffSide>span{font-size:5.8px;color:#7c8797}.contactTuple{display:grid;grid-template-columns:10px 1fr 16px 10px 1fr;gap:5px;align-items:center;margin-top:8px}.contactTuple b{font-size:6.4px}.contactTuple strong{text-align:center;color:#4f8f88}.cyanDot,.objectDot{width:9px;height:9px;border-radius:50%;display:block}.cyanDot{background:#5e90a4}.objectDot{background:#b48746}.diffOperator{text-align:center;color:#9ca7b5}.diffResult{grid-column:1/-1;padding:8px;background:#edf7f2;display:flex;justify-content:space-between}.diffResult span{font-size:6px}.diffResult b{font:11px ui-monospace,monospace;color:#35796f}.executionTelemetry{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.telemetryPlot{padding:8px;border:1px solid #e9edf1}.telemetryPlot>span{font-size:5.9px;color:#6e7b8d}.telemetryPlot svg{width:100%;height:95px}.stateUpdatePipeline{display:grid;grid-template-columns:1fr 40px 1fr 40px 1fr;gap:7px;align-items:center;margin-top:10px}.stateUpdatePipeline>div:not(.updateArrow){padding:11px;background:#f7f8fa;border-top:3px solid #99a6b6}.stateUpdatePipeline .updateResult{background:#172033;color:#fff;border-top-color:#4f8f88}.stateUpdatePipeline span{display:block;font-size:5.8px;color:#7b8797}.stateUpdatePipeline .updateResult span{color:#a4b0bf}.stateUpdatePipeline b{display:block;font:11px Georgia,serif;margin-top:3px}.stateUpdatePipeline small{display:block;font-size:5.7px;margin-top:3px;color:#8591a1}.updateArrow{text-align:center;color:#95a1b0;font-size:17px}.replanRow{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}.replanTriggers,.nextFrontier{background:#fff;border:1px solid #e0e5ea;padding:12px}.quietTriggerBus{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:12px}.quietTrigger{text-align:center;color:#8a95a5}.quietTrigger i{width:9px;height:9px;border-radius:50%;display:block;background:#d1d7dd;margin:0 auto 5px}.quietTrigger b{font-size:5.8px}.quietTrigger.fired{color:#355f58}.quietTrigger.fired i{background:#4f8f88;box-shadow:0 0 0 4px rgba(79,143,136,.12)}.nextFrontier{position:relative}.frontierRoot{position:absolute;left:18px;top:69px;width:52px;height:52px;border-radius:50%;background:#172033;color:#fff;display:flex;align-items:center;justify-content:center;font:12px Georgia,serif}.frontierBranches{margin:12px 0 0 95px;display:grid;gap:6px}.frontierBranches>div{position:relative;padding:8px 8px 8px 28px;background:#f7f8fa}.frontierBranches>div:before{content:"";position:absolute;left:-25px;top:50%;width:28px;border-top:1px solid #98a5b5}.frontierBranches i{position:absolute;left:10px;top:11px;width:7px;height:7px;border-radius:50%;background:#8871b2}.frontierBranches div:nth-child(2) i{background:#4f8f88}.frontierBranches div:nth-child(3) i{background:#b48746}.frontierBranches b{font-size:6.5px}.frontierBranches span{display:block;font-size:5.7px;color:#8792a3;margin-top:2px}
+@media(max-width:1050px){.observationGrid,.proposalTechnical,.proposalEvidenceRow,.retargetEvidenceChain,.retargetDiagnostics,.executionEvidenceGrid,.replanRow{grid-template-columns:1fr}.stateFusion,.retargetObjective,.stateUpdatePipeline{grid-template-columns:1fr}.fusionArrow,.updateArrow{transform:rotate(90deg)}.evidencePreviews{grid-template-columns:repeat(2,1fr)}}
+
+
+/* ================== V4 COLOR AESTHETIC LAYER ==================
+   Goal: richer scientific color language without neon or gradients.
+   Persistent semantics:
+   cyan = left hand
+   lavender = right hand / language
+   teal = contact / valid
+   amber = object state
+   mint = selected / surviving
+   red = rejected / hard failure
+   navy = computation
+   warm white = canvas
+=============================================================== */
+
+:root{
+  --paper:#f8f5ef;
+  --paper2:#fbfaf6;
+  --lavTint:#f1ecf7;
+  --lavTint2:#e8def2;
+  --cyanTint:#eaf3f6;
+  --cyanTint2:#d9e9ef;
+  --mintTint:#eaf4ee;
+  --mintTint2:#d9eadf;
+  --amberTint:#f8f0e3;
+  --amberTint2:#efe0c6;
+  --roseTint:#f7eceb;
+  --roseTint2:#eed8d6;
+  --blueGrey:#eef2f5;
+  --inkSoft:#566479;
+}
+
+/* ---------- Global canvas ---------- */
+body{
+  background:var(--paper);
+  color:#172033;
+}
+.page,.wrap,.main{
+  background:transparent;
+}
+.section{
+  border-color:#d9dee5;
+  box-shadow:0 12px 32px rgba(23,32,51,.045);
+}
+.sectionHead{
+  border-bottom-color:#dde3e9;
+}
+.sectionHead h2{
+  color:#172033;
+}
+.sectionHead p{
+  color:#637185;
+}
+
+/* ---------- Hero ---------- */
+.industryHero{
+  background:#f5f0e9;
+  border-bottom:1px solid #ded7cd;
+  box-shadow:inset 0 5px 0 #8871b2;
+}
+.industryHero .eyebrow{
+  color:#74618f;
+}
+.industryHero h1{
+  color:#172033;
+}
+.industryHero h1::after{
+  content:"";
+  display:block;
+  width:170px;
+  height:5px;
+  margin:18px auto 0;
+  background:#8871b2;
+  box-shadow:56px 0 0 #5e90a4,112px 0 0 #4f8f88;
+}
+.instructionShell{
+  background:#fffdf9;
+  border-color:#d8d0c7;
+  box-shadow:0 20px 48px rgba(48,43,61,.085);
+}
+.instructionTop{
+  background:#eee8f3;
+  color:#69577f;
+  border-bottom-color:#ddd3e7;
+}
+.instructionMain textarea{
+  background:#fffdf9;
+}
+.instructionControls select{
+  background:#f7f2f9;
+  border-color:#dfd6e8;
+}
+.generateBtn{
+  background:#172033;
+  box-shadow:inset 0 -4px 0 #4f8f88;
+}
+.semanticIntent{
+  background:#f1ecf7;
+  border-top-color:#e2d9eb;
+}
+.semanticIntent span{
+  background:#fff;
+  border-color:#d6cae3;
+  color:#5c4974;
+}
+.presetRow{
+  background:#faf7f2;
+}
+.presetRow button{
+  background:#fffdf9;
+  border-color:#ded7cf;
+}
+.methodRail{
+  background:#fffaf4;
+  border-color:#e5ddd2;
+}
+.methodRail .step:nth-of-type(1),
+.methodRail .step:nth-of-type(3){
+  color:#5f4c79;
+}
+.methodRail .step:nth-of-type(5),
+.methodRail .step:nth-of-type(9){
+  color:#3f7a73;
+}
+.methodRail .step:nth-of-type(11){
+  color:#936621;
+}
+
+/* ---------- Section color bands ---------- */
+#context{
+  background:#f8fbfc;
+  border-top:5px solid #5e90a4;
+}
+#proposal{
+  background:#fbf8fd;
+  border-top:5px solid #8871b2;
+}
+#search{
+  background:#f7f8fa;
+  border-top:5px solid #172033;
+}
+#rollout{
+  background:#f6fbf7;
+  border-top:5px solid #5d927c;
+}
+#retarget{
+  background:#fbf8f2;
+  border-top:5px solid #b48746;
+}
+#execute{
+  background:#f7fbfa;
+  border-top:5px solid #4f8f88;
+}
+
+/* subtle section-number color reinforcement */
+#context .secNum{color:#4c7e92}
+#proposal .secNum{color:#78609c}
+#search .secNum{color:#172033}
+#rollout .secNum{color:#4f7f6a}
+#retarget .secNum{color:#9a6c2d}
+#execute .secNum{color:#3f7e76}
+
+/* ---------- Context: more differentiated physical/state shades ---------- */
+.observedPhysical{
+  background:#172033;
+  border-color:#263550;
+  box-shadow:0 14px 30px rgba(23,32,51,.11);
+}
+.evidenceFooter{
+  background:#40516c;
+}
+.evidenceFooter div:nth-child(2){
+  background:#203f3b;
+}
+.evidenceFooter div:nth-child(3){
+  background:#4b3b24;
+}
+.evidenceFooter div:nth-child(4){
+  background:#4a2d2c;
+}
+.stateExtraction .instrumentPanel{
+  box-shadow:0 8px 20px rgba(70,80,96,.045);
+}
+.contactInstrument{
+  background:#f3f9fa;
+  border-color:#cfdee4;
+}
+.objectInstrument{
+  background:#fcf7ee;
+  border-color:#eadcc3;
+}
+.goalInstrument{
+  background:#f5f1f8;
+  border-color:#ded3e7;
+}
+.contactMatrix{
+  background:#d8e3e8;
+}
+.activeCell{
+  background:#d8ebe6!important;
+}
+.graphReadout .instrumentConclusion{
+  background:#e8f3f0;
+  border-left:3px solid #4f8f88;
+}
+.objectStage.active{
+  background:#fcf1dc;
+  padding:6px 4px;
+  border-radius:6px;
+}
+.depNode.current{
+  background:#faeedc;
+}
+.stateFusion{
+  box-shadow:inset 0 4px 0 #5e90a4;
+}
+.fusionInputs span:nth-child(1){
+  background:#3a3150;
+}
+.fusionInputs span:nth-child(2),
+.fusionInputs span:nth-child(3){
+  background:#223a4a;
+}
+.fusionInputs span:nth-child(4){
+  background:#1f433e;
+}
+.fusionInputs span:nth-child(5){
+  background:#4b3b24;
+}
+.fusionInputs span:nth-child(6){
+  background:#3f3548;
+}
+.technicalTakeaway{
+  background:#eef5f2;
+  border-left-color:#4f8f88;
+}
+
+/* ---------- Proposal ---------- */
+.tokenRecord{
+  background:#f7f2fa;
+  border-color:#ddd1e7;
+}
+.tokenPhysicalEvidence{
+  background:#f2f8fa;
+  border-color:#d2e1e6;
+}
+.tokenSchema{
+  background:#dfd5e7;
+}
+.tokenSchema div:nth-child(1),
+.tokenSchema div:nth-child(2){
+  background:#f2ecf7;
+}
+.tokenSchema div:nth-child(3),
+.tokenSchema div:nth-child(4),
+.tokenSchema div:nth-child(5){
+  background:#eef7f4;
+}
+.tokenSchema div:nth-child(6){
+  background:#fcf5e9;
+}
+.tokenSchema div:nth-child(7),
+.tokenSchema div:nth-child(8){
+  background:#f6f7f9;
+}
+.tokenEquation{
+  box-shadow:inset 0 4px 0 #8871b2;
+}
+.proposalRankPanel{
+  background:#172033;
+  box-shadow:inset 0 4px 0 #8871b2;
+}
+.v3Bars .cand:nth-child(1) i b{background:#5e90a4}
+.v3Bars .cand:nth-child(2) i b{background:#8871b2}
+.v3Bars .cand:nth-child(3) i b{background:#4f8f88}
+.v3Bars .cand:nth-child(4) i b{background:#b45f59}
+.v3Bars .cand:nth-child(5) i b{background:#b48746}
+.distributionStats div:nth-child(1){background:#27344d}
+.distributionStats div:nth-child(2){background:#342c47}
+.distributionStats div:nth-child(3){background:#233c46}
+.distributionStats div:nth-child(4){background:#24433d}
+.proposalPreviewPanel{
+  background:#fffdfa;
+  border-color:#ddd6ce;
+}
+.evidencePreview{
+  background:#fffdf9;
+  box-shadow:0 6px 14px rgba(36,45,64,.04);
+}
+.evidencePreview:nth-child(1){border-bottom:3px solid #5e90a4}
+.evidencePreview:nth-child(2){border-bottom:3px solid #8871b2}
+.evidencePreview:nth-child(3){border-bottom:3px solid #4f8f88}
+.evidencePreview:nth-child(4){border-bottom:3px solid #b45f59}
+.evidencePreview:nth-child(5){border-bottom:3px solid #b48746}
+.evidencePreview.selected{
+  background:#edf6f3;
+}
+.proposalPreviewDetail{
+  background:#f0edf5;
+  border-left:3px solid #8871b2;
+}
+.proposalHandoff{
+  background:#f1ecf7;
+  border-left-color:#8871b2;
+}
+
+/* ---------- Search surface ---------- */
+.searchSection{
+  background:#f5f6f8;
+}
+.searchLayout{
+  background:#f8f9fa;
+}
+.treeScroll{
+  background:#fbfcfd;
+  border:1px solid #dce2e8;
+}
+.depthCell:nth-child(1){background:#eef3f5}
+.depthCell:nth-child(2){background:#f3eef7}
+.depthCell:nth-child(3){background:#eef6f3}
+.depthCell:nth-child(4){background:#fbf4e8}
+.depthCell:nth-child(5){background:#f2f4f7}
+.depthCell.active{
+  outline:2px solid #8871b2;
+  outline-offset:-2px;
+}
+.node.selected,.node.path,.node.final{
+  box-shadow:0 0 0 2px #5d927c,0 7px 18px rgba(67,113,91,.14);
+}
+.node.prunedHard{
+  background:#f8eceb;
+}
+.node.prunedSoft{
+  background:#f2f3f5;
+}
+.inspector{
+  background:#fffdf9;
+  border-color:#d8d2ca;
+  box-shadow:0 16px 34px rgba(23,32,51,.09);
+}
+.inspectorHead{
+  background:#f0ebf4;
+  padding:10px;
+  margin:-10px -10px 10px;
+}
+.funnelBox:nth-child(1){background:#f3eef7}
+.funnelBox:nth-child(2){background:#eef5f8}
+.funnelBox:nth-child(3){background:#eef6f2}
+.funnelBox:nth-child(4){background:#fbf2e5}
+.funnelBox:nth-child(5){background:#f7eceb}
+
+/* ---------- Selected program ---------- */
+.winnerHero{
+  box-shadow:inset 0 5px 0 #5d927c;
+}
+.winnerStats div:first-child{
+  background:#25433b;
+}
+.winnerStats div:last-child{
+  background:#302b45;
+}
+.filmCard{
+  background:#fffdfa;
+}
+.filmCard:nth-of-type(1){border-bottom:4px solid #5e90a4}
+.filmCard:nth-of-type(3){border-bottom:4px solid #8871b2}
+.filmCard:nth-of-type(5){border-bottom:4px solid #b48746}
+.filmCard:nth-of-type(7){border-bottom:4px solid #4f8f88}
+.filmCard:nth-of-type(9){border-bottom:4px solid #5d927c}
+.filmCard.active{
+  background:#eef6f1;
+  border-color:#b7d4c3;
+}
+.syncTracks{
+  background:#fffdf9;
+}
+.syncRow:nth-child(1) i{background:#f4f5f7}
+.syncRow.leftTrack i{background:#eef6f8}
+.syncRow.rightTrack i{background:#f3eef7}
+.syncRow.contactTrack i{background:#edf7f3}
+.syncRow.objectTrack i{background:#fcf5e9}
+.syncRow i.active{
+  background:#dceee3;
+}
+.winnerPlots .plotPanel:first-child{
+  background:#f7f4fa;
+}
+.winnerPlots .plotPanel:last-child{
+  background:#f2f8f4;
+}
+.contribRows>div:nth-child(1) i b{background:#5d927c}
+.contribRows>div:nth-child(2) i b{background:#4f8f88}
+.contribRows>div:nth-child(3) i b{background:#b48746}
+.contribRows>div:nth-child(4) i b{background:#5e90a4}
+.contribRows>div:nth-child(5) i b{background:#7a89a3}
+.contribRows>div:nth-child(6) i b{background:#8871b2}
+.contribRows>div:nth-child(7) i b{background:#91a58f}
+.finalRollout{
+  box-shadow:inset 0 5px 0 #5d927c;
+}
+
+/* ---------- Retargeting ---------- */
+.landmarkPanel{
+  background:#eef6f8;
+  border-color:#d1e1e7;
+}
+.contactInvariantPanel{
+  background:#172033;
+  box-shadow:inset 0 4px 0 #4f8f88;
+}
+.robotRealizationPanel{
+  background:#f2f7f3;
+  border-color:#d7e5db;
+}
+.retargetObjective{
+  box-shadow:inset 0 4px 0 #b48746;
+}
+.retargetDiagnostics .convergencePanel{
+  background:#fbf6ee;
+}
+.measurementPanel{
+  background:#f3f8f5;
+}
+.measurementRows>div:nth-child(1) i:after{background:#5e90a4}
+.measurementRows>div:nth-child(2) i:after{background:#8871b2}
+.measurementRows>div:nth-child(3) i:after{background:#b48746}
+.measurementRows .binary{
+  background:#edf6f1;
+  padding-left:8px;
+  padding-right:8px;
+  border-radius:5px;
+}
+
+/* ---------- Execute / observe / replan ---------- */
+.commitTimeline{
+  background:#fffaf3;
+  border-color:#e5d9c8;
+}
+.commitToken.current{
+  box-shadow:inset 0 4px 0 #4f8f88;
+}
+.commitToken:nth-of-type(3){background:#f3eef7}
+.commitToken:nth-of-type(5){background:#eef6f8}
+.commitToken:nth-of-type(7){background:#eef6f2}
+.commitToken:nth-of-type(9){background:#fbf3e7}
+.executedTokenPanel{
+  box-shadow:inset 0 4px 0 #4f8f88;
+}
+.verificationPanel{
+  background:#f3f8f5;
+  border-color:#d7e5db;
+}
+.contactDiffSide:first-child{
+  background:#eef6f8;
+}
+.contactDiffSide:nth-child(3){
+  background:#eef7f3;
+}
+.diffResult{
+  background:#dfeee7;
+}
+.telemetryPlot:first-child{
+  background:#fbf5eb;
+}
+.telemetryPlot:last-child{
+  background:#eef7f3;
+}
+.updateEvidence{
+  background:#eef6f8!important;
+  border-top-color:#5e90a4!important;
+}
+.updateOperation{
+  background:#f3eef7!important;
+  border-top-color:#8871b2!important;
+}
+.updateResult{
+  box-shadow:inset 0 4px 0 #4f8f88;
+}
+.replanTriggers{
+  background:#fbf6ee;
+  border-color:#e6dccb;
+}
+.nextFrontier{
+  background:#f2f7f4;
+  border-color:#d8e5dc;
+}
+.frontierBranches>div:nth-child(1){background:#f2edf6}
+.frontierBranches>div:nth-child(2){background:#eaf5f1}
+.frontierBranches>div:nth-child(3){background:#fbf3e8}
+.closeMessage{
+  background:#172033;
+  box-shadow:inset 0 5px 0 #4f8f88;
+}
+
+/* ---------- Footer / playback ---------- */
+.footer{
+  background:#f1ece5;
+  border-top-color:#d7cec2;
+}
+.tourControls,.tourBar,.playback{
+  background:#172033;
+}
+
+</style>
+<style>.stateFusion.stateFused{outline:1px solid rgba(79,143,136,.55);outline-offset:2px}</style>
+</head>
+<body>
+
+<nav class="topnav">
+ <span class="brand">PRAGYADEX</span>
+ <a href="#context">Context</a>
+ <a href="#proposal">Proposal</a>
+ <a href="#search">Search</a>
+ <a href="#rollout">τ*</a>
+ <a href="#retarget">Retarget</a>
+ <a href="#execute">Execute</a>
+</nav>
+
+<header class="hero industryHero">
+ <div class="eyebrow">PragyaDex · Contact-Aware Dexterity Intelligence</div>
+ <h1>Language → Contact-Aware Dexterity → Robot Hand Motion</h1>
+ <p>Give PragyaDex a natural-language manipulation goal. The system constructs a physical context, proposes dexterity-program tokens, searches contact- and object-state-valid futures, retargets the winning program to the robot embodiment, and executes one verified transition at a time.</p>
+ <div class="instructionShell" id="instructionShell">
+  <div class="instructionTop"><span>WHAT SHOULD PRAGYADEX DO?</span><span class="liveDot">● READY</span></div>
+  <div class="instructionMain">
+   <textarea id="instructionInput" rows="2" spellcheck="false">Open the bottle and pour water into the cup.</textarea>
+   <div class="instructionControls">
+    <select id="languageSelect" aria-label="Language"><option>English</option><option>Hindi</option><option>Bengali</option><option>Telugu</option></select>
+    <select id="robotSelect" aria-label="Robot"><option>Unitree G1 / Dex3</option></select>
+    <button class="generateBtn" onclick="startSimulation()">▶ GENERATE DEXTEROUS ACTION</button>
+   </div>
+  </div>
+  <div class="semanticIntent" id="semanticIntent"><span>OPEN BOTTLE</span><b>→</b><span>POUR INTO CUP</span></div>
+  <div class="presetRow"><button onclick="setPreset('Open the bottle and pour water into the cup.')">Open + Pour</button><button onclick="setPreset('Fold the cloth neatly.')">Fold Cloth</button><button onclick="setPreset('Thread the flowers into a garland.')">Thread Garland</button><button onclick="setPreset('Tighten the fastener with the tool.')">Tighten Fastener</button></div>
+ </div>
+ <div class="methodRail">
+  <div class="step">UNDERSTAND</div><div class="arrow">→</div><div class="step">PROPOSE</div><div class="arrow">→</div><div class="step">SEARCH</div><div class="arrow">→</div><div class="step">RETARGET</div><div class="arrow">→</div><div class="step">VERIFY</div><div class="arrow">→</div><div class="step">EXECUTE</div>
+ </div>
+</header>
+
+
+<section class="section v3Section" id="context">
+ <div class="sectionHead">
+  <div class="secIcon lav"><svg viewBox="0 0 40 40"><path d="M6 31h28M10 26l8-12 7 6 5-10"/><circle cx="10" cy="26" r="2"/><circle cx="18" cy="14" r="2"/><circle cx="25" cy="20" r="2"/><circle cx="30" cy="10" r="2"/></svg></div>
+  <div><div class="secNum">01 · Observe → Structure the Physical Context</div><h2>The planner begins from physical evidence, not a symbolic cartoon.</h2></div>
+  <p>The observation is grounded in the same robot, bottle, cup, and hand configuration used by the manipulation rollout. Contact and object state are then extracted as structured planning variables.</p>
+ </div>
+ <div class="sectionBody">
+  <div class="provenanceRow"><span class="tag manuscript">MANUSCRIPT · SCENE / CONTACT / HAND STATE</span><span class="tag proposed">SEARCH STATE X<sub>t</sub> · PROPOSED EXTENSION</span></div>
+  <div class="observationGrid">
+   <div class="observedPhysical" id="sceneStage">
+    <div class="techPanelHead"><div><span>OBSERVED PHYSICAL STATE</span><b>Ŝ<sub>t</sub></b></div><em id="observationMode">FRAME-ALIGNED EVIDENCE · dex_1</em></div>
+    <div class="physicalViewport">
+     <img id="observedScene" src="dex_1_still.jpg" data-still="dex_1_still.jpg" data-gif="dex_1.gif" alt="Observed robot manipulation state">
+     <div class="evidenceCallout leftSupport"><span></span><b>LEFT SUPPORT</b><small>palm/fingers maintain bottle contact</small></div>
+     <div class="evidenceCallout capClosed"><span></span><b>CAP CLOSED</b><small>opening prerequisite unresolved</small></div>
+     <div class="evidenceCallout rightFree"><span></span><b>RIGHT HAND FREE</b><small>available for cap approach</small></div>
+     <div class="evidenceCallout cupTarget"><span></span><b>CUP TARGET</b><small>terminal pour region</small></div>
+    </div>
+    <div class="evidenceFooter">
+     <div><span>OBSERVATION SOURCE</span><b>robot manipulation frame</b></div>
+     <div><span>SUPPORT CONTACT</span><b class="tealText">active</b></div>
+     <div><span>CAP STATE</span><b class="amberText">closed</b></div>
+     <div><span>POUR LEGAL?</span><b class="redText">no</b></div>
+    </div>
+   </div>
+   <div class="stateExtraction">
+    <div class="instrumentPanel contactInstrument" id="contactInstrument">
+     <div class="techPanelHead"><div><span>CONTACT STATE</span><b>C<sub>t</sub></b></div><em>frame → graph</em></div>
+     <div class="contactMatrix">
+      <div class="matrixHead"></div><div class="matrixHead">BOTTLE</div><div class="matrixHead">CAP</div>
+      <div class="matrixLabel cyanLabel">L PALM</div><div class="matrixCell activeCell">1</div><div class="matrixCell">0</div>
+      <div class="matrixLabel lavLabel">R THUMB</div><div class="matrixCell">0</div><div class="matrixCell">0</div>
+      <div class="matrixLabel lavLabel">R INDEX</div><div class="matrixCell">0</div><div class="matrixCell">0</div>
+     </div>
+     <div class="graphReadout">
+      <svg viewBox="0 0 440 105">
+       <circle cx="55" cy="34" r="10" fill="#e0eef3" stroke="#5e90a4"/><circle cx="55" cy="75" r="10" fill="#ece5f5" stroke="#8871b2"/>
+       <circle cx="335" cy="34" r="14" fill="#f3e7d0" stroke="#b48746"/><circle cx="335" cy="75" r="14" fill="#f8f0e5" stroke="#b48746"/>
+       <text x="16" y="38" font-size="9" fill="#637185">L palm</text><text x="13" y="79" font-size="9" fill="#637185">R hand</text>
+       <text x="355" y="38" font-size="9" fill="#7b623a">bottle</text><text x="355" y="79" font-size="9" fill="#7b623a">cap</text>
+       <path id="observedContactEdge" d="M66 34 C165 34 240 34 320 34" fill="none" stroke="#4f8f88" stroke-width="4" stroke-dasharray="270" stroke-dashoffset="270"/>
+       <path d="M66 75 C165 75 240 75 320 75" fill="none" stroke="#c9cfd6" stroke-width="2" stroke-dasharray="5 5"/>
+      </svg>
+      <div class="instrumentConclusion"><b>ACTIVE EDGE</b><span>L palm ↔ bottle</span></div>
+     </div>
+    </div>
+    <div class="instrumentPanel objectInstrument">
+     <div class="techPanelHead"><div><span>OBJECT STATE</span><b>O<sub>t</sub></b></div><em>prerequisite trace</em></div>
+     <div class="objectTrace" id="objectTrace">
+      <div class="objectStage active"><i></i><b>CLOSED</b><span>cap attached</span></div><div class="traceEdge"></div>
+      <div class="objectStage"><i></i><b>LOOSENING</b><span>rotation underway</span></div><div class="traceEdge"></div>
+      <div class="objectStage"><i></i><b>OPEN</b><span>pour admissible</span></div><div class="traceEdge"></div>
+      <div class="objectStage"><i></i><b>POURING</b><span>target transition</span></div>
+     </div>
+    </div>
+    <div class="instrumentPanel goalInstrument">
+     <div class="techPanelHead"><div><span>REMAINING TASK GRAPH</span><b>G<sub>t</sub><sup>rem</sup></b></div><em>instruction → prerequisites</em></div>
+     <div class="dependencyGraph">
+      <div class="depNode current"><span>01</span><b>OPEN BOTTLE</b><small>unresolved prerequisite</small></div>
+      <div class="depEdge"><i></i><b>enables</b></div>
+      <div class="depNode"><span>02</span><b>POUR INTO CUP</b><small>terminal goal</small></div>
+     </div>
+    </div>
+   </div>
+  </div>
+  <div class="stateFusion" id="contextEquation">
+   <div class="fusionLabel"><span>STATE FUSION</span><b>physical evidence → planner context</b></div>
+   <div class="fusionInputs"><span>instruction x</span><span>scene Ŝ<sub>t</sub></span><span>robot q<sub>t</sub>,q̇<sub>t</sub></span><span>contact C<sub>t</sub></span><span>object O<sub>t</sub></span><span>goal G<sub>t</sub><sup>rem</sup></span></div>
+   <div class="fusionArrow">→</div>
+   <div class="fusionOutput"><b>X<sub>t</sub></b><span>(x, Ŝ<sub>t</sub>, q<sub>t</sub>, q̇<sub>t</sub>, C<sub>t</sub>, O<sub>t</sub>, G<sub>t</sub><sup>rem</sup>, M<sub>t</sub>, U<sub>t</sub>)</span></div>
+  </div>
+  <div class="technicalTakeaway">The action space is conditioned on <b>what is physically true now</b>: current contacts, current object state, current robot state, and unresolved task prerequisites.</div>
+ </div>
+</section>
+
+<section class="section v3Section" id="proposal">
+ <div class="sectionHead">
+  <div class="secIcon amber"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="4"/><path d="M20 16V7M20 24v9M16 20H7M24 20h9M17 17l-7-7M23 17l7-7M17 23l-7 7M23 23l7 7"/></svg></div>
+  <div><div class="secNum">02 · Decode → Rank Physical Action Hypotheses</div><h2>A dexterity token is a structured physical program fragment.</h2></div>
+  <p>The decoder does not emit a bare verb. Each candidate binds a primitive to hand roles, contact additions/removals, object-state effect, contact geometry, continuous parameters, and duration.</p>
+ </div>
+ <div class="sectionBody">
+  <div class="proposalTechnical">
+   <div class="tokenRecord">
+    <div class="techPanelHead"><div><span>DEXTERITY TOKEN RECORD</span><b>d<sub>t+1</sub></b></div><em>example candidate · UNSCREW CAP</em></div>
+    <div class="tokenSchema">
+     <div><span>p · primitive</span><b>UNSCREW CAP</b></div><div><span>r · bimanual role</span><b>L stabilize · R rotate</b></div>
+     <div><span>Γ<sup>+</sup> · add contact</span><b>R thumb/index ↔ cap</b></div><div><span>Γ<sup>−</sup> · release</span><b>none</b></div>
+     <div><span>g<sub>c</sub> · contact geometry</span><b>cap rim / opposing digits</b></div><div><span>ΔO · object effect</span><b>CLOSED → LOOSENING</b></div>
+     <div><span>θ · continuous params</span><b>wrist rotation · contact force</b></div><div><span>T · duration</span><b>local action horizon</b></div>
+    </div>
+    <div class="tokenEquation">d<sub>t+1</sub> = (p, r, Γ<sup>+</sup>, Γ<sup>−</sup>, g<sub>c</sub>, ΔO, θ, T)</div>
+   </div>
+   <div class="tokenPhysicalEvidence">
+    <div class="techPanelHead"><div><span>PHYSICAL INTERPRETATION</span><b>candidate preview</b></div><em>motion evidence, not decoration</em></div>
+    <img id="tokenEvidenceMedia" src="dex_3_still.jpg" data-still="dex_3_still.jpg" data-gif="dex_3.gif" alt="Unscrew dexterity token physical preview">
+    <div class="tokenEvidenceStrip">
+     <div><span>LEFT</span><b>support bottle</b></div><div><span>RIGHT</span><b>rotate cap</b></div>
+     <div><span>CONTACT</span><b>cap grasp maintained</b></div><div><span>OBJECT</span><b>closed → loosening</b></div>
+    </div>
+   </div>
+  </div>
+  <div class="proposalEvidenceRow">
+   <div class="proposalRankPanel" id="candidateArtifact">
+    <div class="techPanelHead darkTechnical"><div><span>CANDIDATE DISTRIBUTION</span><b>P<sub>θ</sub>(d | X<sub>t</sub>)</b></div><em>SIMULATED WORKED TRACE</em></div>
+    <div class="candidateBars v3Bars" id="candidateBars">
+     <div class="cand"><span>STABILIZE BOTTLE</span><i><b data-w="100"></b></i><strong>.31</strong></div>
+     <div class="cand"><span>GRASP CAP</span><i><b data-w="87"></b></i><strong>.27</strong></div>
+     <div class="cand"><span>REGRASP BOTTLE</span><i><b data-w="58"></b></i><strong>.18</strong></div>
+     <div class="cand rejectedCand"><span>TILT BOTTLE</span><i><b data-w="42"></b></i><strong>.13</strong></div>
+     <div class="cand"><span>APPROACH CAP / CUP</span><i><b data-w="35"></b></i><strong>.11</strong></div>
+    </div>
+    <div class="distributionStats"><div><span>TOP-K</span><b>5</b></div><div><span>ENTROPY</span><b>1.44</b></div><div><span>TOP-1 MASS</span><b>.31</b></div><div><span>TOP-5 MASS</span><b>1.00</b></div></div>
+   </div>
+   <div class="proposalPreviewPanel">
+    <div class="techPanelHead"><div><span>TOP-5 PHYSICAL HYPOTHESES</span><b>click to inspect</b></div><em>inactive candidates remain static</em></div>
+    <div class="evidencePreviews" id="proposalPreviews">
+     <button class="evidencePreview selected" data-still="dex_1_still.jpg" data-gif="dex_1.gif" data-label="STABILIZE BOTTLE"><img src="dex_1_still.jpg"><span>STABILIZE</span><b>.31</b></button>
+     <button class="evidencePreview" data-still="dex_2_still.jpg" data-gif="dex_2.gif" data-label="GRASP CAP"><img src="dex_2_still.jpg"><span>GRASP CAP</span><b>.27</b></button>
+     <button class="evidencePreview" data-still="dex_4_still.jpg" data-gif="dex_4.gif" data-label="REGRASP BOTTLE"><img src="dex_4_still.jpg"><span>REGRASP</span><b>.18</b></button>
+     <button class="evidencePreview invalid" data-still="dex_6_still.jpg" data-gif="dex_6.gif" data-label="TILT BEFORE OPEN"><img src="dex_6_still.jpg"><span>TILT · INVALID</span><b>.13</b></button>
+     <button class="evidencePreview" data-still="dex_2_still.jpg" data-gif="dex_2.gif" data-label="APPROACH CAP / CUP"><img src="dex_2_still.jpg"><span>APPROACH</span><b>.11</b></button>
+    </div>
+    <div class="proposalPreviewDetail" id="proposalPreviewDetail"><b>STABILIZE BOTTLE</b><span>Physical hypothesis corresponding to the currently inspected decoder candidate.</span></div>
+   </div>
+  </div>
+  <div class="proposalHandoff" id="proposalHandoff"><span>𝒟<sub>t+1</sub> = DiverseTopK<sub>5</sub>P<sub>θ</sub>(d<sub>t+1</sub> | X<sub>t</sub>)</span><b>probability proposes · search decides</b></div>
+ </div>
+</section>
+<section class="section searchSection" id="search">
+ <div class="sectionHead">
+  <div class="secIcon mint"><svg viewBox="0 0 40 40"><circle cx="7" cy="20" r="3"/><circle cx="20" cy="10" r="3"/><circle cx="20" cy="20" r="3"/><circle cx="20" cy="30" r="3"/><circle cx="33" cy="7" r="3"/><circle cx="33" cy="16" r="3"/><circle cx="33" cy="25" r="3"/><circle cx="33" cy="34" r="3"/><path d="M10 20l7-10M10 20h7M10 20l7 10M23 10l7-3M23 10l7 6M23 20l7-4M23 20l7 5M23 30l7-5M23 30l7 4"/></svg></div>
+  <div><div class="secNum">03 · Prefix-Conditioned Search Over Dexterity Programs</div><h2>Search contact-aware programs—not just likely next actions.</h2></div>
+  <p>The proposed planner separates model likelihood, physical-prefix admissibility, robot feasibility, and terminal program quality through a lazy diverse beam with increasingly expensive checks.</p>
+ </div>
+
+ <div class="searchBanner">
+  <div><span class="tag proposed">PROPOSED PRAGYADEX PLANNER EXTENSION</span><h3>LIKELY ≠ CONTACT-VALID ≠ ROBOT-FEASIBLE ≠ BEST PROGRAM</h3><p>Cheap symbolic/contact checks cover the large conceptual search. Retargeting and physics are invoked only on promising prefixes.</p></div>
+  <div class="searchPrinciple"><div class="principle"><b>P</b><span>proposal likelihood</span></div><div class="principle"><b>A</b><span>prefix admissibility</span></div><div class="principle"><b>F</b><span>physical feasibility</span></div><div class="principle"><b>S(τ)</b><span>terminal quality</span></div></div>
+ </div>
+
+ <div class="searchStats">
+  <div class="depthRail" id="depthRail"><div class="depthCell"><b>5</b><span>depth 1</span></div><div class="depthCell"><b>25</b><span>depth 2</span></div><div class="depthCell"><b>125</b><span>depth 3</span></div><div class="depthCell"><b>625</b><span>depth 4</span></div><div class="depthCell"><b>3,125</b><span>depth 5</span></div></div>
+  <div class="computeScale"><div><b>3,905</b><span>full tree</span></div><div><b>200</b><span>visible</span></div><div><b>475</b><span>online evals</span></div><div><b>≤69</b><span>retargeted</span></div><div><b>8</b><span>physics</span></div></div>
+ </div>
+
+ <div class="searchLayout" id="searchLayout">
+  <div class="searchFrame">
+   <div class="searchToolbar">
+    <button class="modeBtn active" data-mode="conceptual" onclick="setSearchMode('conceptual')">CONCEPTUAL</button>
+    <button class="modeBtn" data-mode="online" onclick="setSearchMode('online')">ONLINE</button>
+    <button class="modeBtn" data-mode="physical" onclick="setSearchMode('physical')">PHYSICAL</button>
+    <div class="toolbarSpacer"></div>
+    <span class="tiny">lazy diverse beam · K=5 · H=5 · B=32</span>
+   </div>
+   <div class="treeScroll"><div class="tree" id="tree">
+    <svg id="edges" viewBox="0 0 1580 980"></svg>
+    <div class="root"><div class="rootCore">X<sub>t</sub></div><small>bottle closed · current contact graph</small></div>
+    <div class="compressionBand"><div class="dots">⋯ ⋯ ⋯</div><div class="txt">compressed representatives preserve scale without pretending every state receives high-fidelity simulation</div></div>
+    <div class="treeFooter"><div><b>Search rendering:</b> 200 visible states ⊂ 3,905 conceptual states</div><div class="legend"><span><i class="ll sel"></i>τ*</span><span><i class="ll ok"></i>survives</span><span><i class="ll bad"></i>rejected</span><span><i class="ll comp"></i>compressed</span></div></div>
+   </div></div>
+  </div>
+
+  <aside class="inspector" id="inspector" aria-hidden="true">
+   <div class="inspectorHead"><div><div class="k">Node inspector</div><h3 id="inspectorTitle">Selected node</h3></div><button class="inspectorClose" onclick="closeInspector(event)" aria-label="Close inspector">×</button></div>
+   <div class="inspectorBody" id="inspectorBody">
+    <div class="note">Hover a node to highlight its ancestry. Click a node to pin its dexterity token, prefix, admissibility, physical checks, retargeting diagnostics, and decision.</div>
+    <div class="inspectorMini"><div class="leftHand"></div><div class="bottle"></div><div class="rightHand"></div><div class="contactLine"></div></div>
+    <div class="subhead">Interpretation</div>
+    <div class="note">The visualized search state is physical and interpretable; it is not merely the neural hidden state.</div>
+   </div>
+  </aside>
+ </div>
+
+ <div class="searchDiagnostics">
+  <div class="gatePanel">
+   <div class="k">Hard veto versus soft ranking</div>
+   <div class="gateCols">
+    <div class="gateBox"><h4>HARD VETO</h4><div><span>illegal object transition</span><b>✕</b></div><div><span>confirmed collision</span><b>✕</b></div><div><span>joint-limit violation</span><b>✕</b></div><div><span>impossible required contact</span><b>✕</b></div></div>
+    <div class="gateBox soft"><h4>SOFT RANKING</h4><div><span>proposal likelihood</span><b>P</b></div><div><span>contact quality</span><b>Q<sub>c</sub></b></div><div><span>task progress</span><b>V<sub>g</sub></b></div><div><span>feasibility margin</span><b>Q<sub>f</sub></b></div><div><span>uncertainty / risk</span><b>R</b></div></div>
+   </div>
+   <div class="gateEq">G<sub>hard</sub> = g<sub>obj</sub>g<sub>collision</sub>g<sub>limits</sub>g<sub>contact</sub> ; &nbsp; G<sub>hard</sub>=0 ⇒ PRUNE</div>
+  </div>
+
+  <div class="crossoverPanel" id="crossover">
+   <div class="k">Prefix-conditioned crossover · simulated worked trace</div>
+   <div class="crossoverCore">
+    <div class="crossState early" id="crossEarly"><h4>POUR · EARLY PREFIX</h4><div class="note">Π<sub>a</sub> = [STABILIZE]</div><div class="kv"><span>primitive</span><b>.83 ✓</b><span>contact</span><b>.76 ✓</b><span>object legality</span><b>.28 ✕</b><span>object</span><b>CAP CLOSED</b></div><div class="scoreBig">.28 ×</div></div>
+    <div class="crossArrow">→</div>
+    <div class="crossState late" id="crossLate"><h4>POUR · LATER PREFIX</h4><div class="note">Π<sub>b</sub> = STABILIZE → GRASP → UNSCREW → REGRASP</div><div class="kv"><span>primitive</span><b>.94 ✓</b><span>contact</span><b>.92 ✓</b><span>object legality</span><b>.96 ✓</b><span>kinematics</span><b>.86 ✓</b></div><div class="scoreBig">.91 ✓</div></div>
+   </div>
+   <div class="sameAction">SAME ACTION · DIFFERENT PHYSICAL PREFIX</div>
+  </div>
+ </div>
+
+ <div class="funnel" id="funnel">
+  <div class="k">Lazy fidelity cascade</div>
+  <div class="funnelFlow">
+   <div class="funnelBox"><b>NEURAL PROPOSAL</b><span>3,905 conceptual</span></div><div class="funnelArrow">→</div>
+   <div class="funnelBox"><b>OBJECT / SYMBOLIC</b><span>cheap hard gates</span></div><div class="funnelArrow">→</div>
+   <div class="funnelBox"><b>CONTACT CHECK</b><span>geometry + roles</span></div><div class="funnelArrow">→</div>
+   <div class="funnelBox"><b>RETARGET / IK</b><span>≤69 solves</span></div><div class="funnelArrow">→</div>
+   <div class="funnelBox"><b>PHYSICS VERIFY</b><span>8 terminal programs</span></div>
+  </div>
+ </div>
+</section>
+
+<section class="section industrySection" id="rollout">
+ <div class="sectionHead">
+  <div class="secIcon mint"><svg viewBox="0 0 40 40"><path d="M5 30h30"/><path d="M7 25l6-8 6 5 6-12 8 15"/><circle cx="7" cy="25" r="2"/><circle cx="19" cy="22" r="2"/><circle cx="25" cy="10" r="2"/><circle cx="33" cy="25" r="2"/></svg></div>
+  <div><div class="secNum">04 · Selected Program τ*</div><h2>The search collapses into one physically coherent manipulation program.</h2></div>
+  <p>Inspect the same winning program simultaneously as physical motion, primitive sequence, bimanual roles, contact evolution, object-state evolution, likelihood, and terminal quality.</p>
+ </div>
+ <div class="sectionBody">
+  <div class="winnerHero"><div><span class="k lightK">SELECTED PROGRAM · SIMULATED WORKED TRACE</span><h3>STABILIZE → GRASP CAP → UNSCREW → REGRASP → POUR</h3><p>τ* = [d₁*, d₂*, d₃*, d₄*, d₅*]</p></div><div class="winnerStats"><div><span>S(τ*)</span><b>.845</b></div><div><span>RANK</span><b>#1 / 3,125</b></div></div></div>
+  <div class="filmstrip" id="filmstrip">
+   <div class="filmCard active"><img src="dex_1_still.jpg" data-still="dex_1_still.jpg" data-gif="dex_1.gif" alt="Stabilize bottle"><span>01</span><b>STABILIZE</b></div>
+   <div class="filmArrow">→</div><div class="filmCard"><img src="dex_2_still.jpg" data-still="dex_2_still.jpg" data-gif="dex_2.gif" alt="Grasp cap"><span>02</span><b>GRASP CAP</b></div>
+   <div class="filmArrow">→</div><div class="filmCard"><img src="dex_3_still.jpg" data-still="dex_3_still.jpg" data-gif="dex_3.gif" alt="Unscrew cap"><span>03</span><b>UNSCREW</b></div>
+   <div class="filmArrow">→</div><div class="filmCard"><img src="dex_4_still.jpg" data-still="dex_4_still.jpg" data-gif="dex_4.gif" alt="Regrasp"><span>04</span><b>REGRASP</b></div>
+   <div class="filmArrow">→</div><div class="filmCard"><img src="dex_5_still.jpg" data-still="dex_5_still.jpg" data-gif="dex_5.gif" alt="Pour"><span>05</span><b>POUR</b></div>
+  </div>
+  <div class="syncTracks" id="syncTracks">
+   <div class="syncRow"><span>PRIMITIVE</span><i>STABILIZE</i><i>GRASP</i><i>UNSCREW</i><i>REGRASP</i><i>POUR</i></div>
+   <div class="syncRow leftTrack"><span>LEFT HAND</span><i>SUPPORT</i><i>SUPPORT</i><i>SUPPORT</i><i>SUPPORT</i><i>ASSIST</i></div>
+   <div class="syncRow rightTrack"><span>RIGHT HAND</span><i>APPROACH</i><i>GRASP</i><i>ROTATE</i><i>REGRASP</i><i>TILT</i></div>
+   <div class="syncRow contactTrack"><span>CONTACT</span><i>BODY SUPPORT</i><i>CAP GRASP</i><i>ROTATIONAL</i><i>POUR GRASP</i><i>POUR SUPPORT</i></div>
+   <div class="syncRow objectTrack"><span>OBJECT</span><i>CLOSED</i><i>CLOSED</i><i>LOOSENING</i><i>OPEN</i><i>POURING</i></div>
+  </div>
+  <div class="winnerPlots">
+   <div class="plotPanel"><div class="artifactHead"><span>CUMULATIVE SEQUENCE LOG-LIKELIHOOD</span><span class="smallState">Σ log P</span></div><svg viewBox="0 0 520 235"><path d="M48 190H490M48 190V28" stroke="#9aa6b5"/><path class="axisDash" d="M48 58H490M48 100H490M48 142H490"/><path id="likelihoodLine" d="M48 40 L130 64 L212 90 L294 119 L376 153 L458 184" fill="none" stroke="#8871b2" stroke-width="4" stroke-dasharray="600" stroke-dashoffset="600"/><g fill="#8871b2"><circle cx="48" cy="40" r="4"/><circle cx="130" cy="64" r="4"/><circle cx="212" cy="90" r="4"/><circle cx="294" cy="119" r="4"/><circle cx="376" cy="153" r="4"/><circle cx="458" cy="184" r="4"/></g><text x="43" y="213" font-size="8" fill="#778396">0</text><text x="126" y="213" font-size="8" fill="#778396">1</text><text x="208" y="213" font-size="8" fill="#778396">2</text><text x="290" y="213" font-size="8" fill="#778396">3</text><text x="372" y="213" font-size="8" fill="#778396">4</text><text x="454" y="213" font-size="8" fill="#778396">5</text></svg><div class="bigMetric"><span>P(τ*) = e<sup>−5.82</sup></span><b>≈ 0.00296</b></div></div>
+   <div class="plotPanel"><div class="artifactHead"><span>TERMINAL QUALITY CONTRIBUTIONS</span><span class="smallState">S(τ*)=.845</span></div><div class="contribRows" id="contribRows"><div><span>Task</span><i><b data-w="93"></b></i><strong>+.2325</strong></div><div><span>Contact</span><i><b data-w="90"></b></i><strong>+.1980</strong></div><div><span>Object</span><i><b data-w="78"></b></i><strong>+.1365</strong></div><div><span>Feasibility</span><i><b data-w="68"></b></i><strong>+.1040</strong></div><div><span>Progress</span><i><b data-w="62"></b></i><strong>+.0890</strong></div><div><span>Bimanual</span><i><b data-w="56"></b></i><strong>+.0800</strong></div><div><span>Smoothness</span><i><b data-w="35"></b></i><strong>+.0350</strong></div><div class="riskRow"><span>Risk</span><i><b data-w="18"></b></i><strong>−.0300</strong></div></div><div class="qualityStatement">LIKELIHOOD IS NOT THE FINAL OBJECTIVE.</div></div>
+  </div>
+  <div class="finalRollout"><div class="rolloutMedia"><img id="finalRolloutMedia" src="dex_final_still.jpg" data-still="dex_final_still.jpg" data-gif="dex_final.gif" alt="Complete selected PragyaDex program"></div><div class="rolloutCopy"><span class="tag worked">SELECTED PROGRAM · τ*</span><h3>Full physical rollout</h3><p>STABILIZE → GRASP CAP → UNSCREW → REGRASP → POUR</p><div class="rolloutStatus"><span>contact structure</span><b>preserved ✓</b><span>object progression</span><b>closed → pouring</b><span>program rank</span><b>#1</b></div></div></div>
+ </div>
+</section>
+<section class="section industrySection" id="retarget">
+ <div class="sectionHead">
+  <div class="secIcon cyan"><svg viewBox="0 0 40 40"><circle cx="9" cy="20" r="4"/><circle cx="31" cy="20" r="4"/><path d="M13 20h14M23 15l5 5-5 5"/><path d="M7 29c4-5 7-7 12-7M33 29c-4-5-7-7-12-7"/></svg></div>
+  <div><div class="secNum">05 · Retarget → Validate the Selected Contact Program</div><h2>Preserve manipulation function while embodiment geometry changes.</h2></div>
+  <p>Retargeting is treated as an optimization problem: preserve task-relevant pose and contact structure while satisfying robot joint limits and collision constraints.</p>
+ </div>
+ <div class="sectionBody">
+  <div class="provenanceRow"><span class="tag manuscript">RETARGETING OBJECTIVE · MANUSCRIPT-BACKED</span><span class="tag worked">DIAGNOSTIC VALUES · ILLUSTRATIVE</span></div>
+  <div class="retargetEvidenceChain">
+   <div class="landmarkPanel">
+    <div class="techPanelHead"><div><span>CANONICAL HAND STATE</span><b>H · 21 landmarks</b></div><em>task-space representation</em></div>
+    <svg viewBox="0 0 360 310" id="landmarkPlot">
+     <path class="jointLink" d="M142 240L128 190L116 145L106 104"/><path class="jointLink" d="M153 235L153 178L154 122L155 75"/>
+     <path class="jointLink" d="M163 238L183 181L196 131L207 91"/><path class="jointLink" d="M170 244L211 198L233 158L250 127"/>
+     <path class="jointLink" d="M137 246L103 225L75 204L54 184"/><path class="jointLink" d="M137 246L153 235L163 238L170 244"/>
+     <g class="landmarks" fill="#5e90a4"></g>
+     <circle cx="106" cy="104" r="8" fill="#4f8f88"/><circle cx="155" cy="75" r="8" fill="#4f8f88"/>
+     <rect x="242" y="88" width="76" height="122" rx="12" fill="#f3e7d0" stroke="#b48746"/>
+     <text x="252" y="228" font-size="9" fill="#7b623a">OBJECT FRAME</text>
+     <path d="M112 104 C155 92 203 90 242 110" fill="none" stroke="#4f8f88" stroke-width="2" stroke-dasharray="4 4"/>
+     <path d="M162 76 C197 76 220 84 242 98" fill="none" stroke="#4f8f88" stroke-width="2" stroke-dasharray="4 4"/>
+    </svg>
+    <div class="landmarkReadout"><span>contact landmarks</span><b>thumb tip · index tip</b><span>reference frame</span><b>object-centric</b></div>
+   </div>
+   <div class="contactInvariantPanel">
+    <div class="techPanelHead darkTechnical"><div><span>CONTACT INVARIANT</span><b>C / G</b></div><em>what must survive transfer</em></div>
+    <div class="contactInvariantGraph">
+     <div class="ciNode human">thumb</div><i class="ciEdge e1"></i><div class="ciNode object cap">CAP</div>
+     <div class="ciNode human index">index</div><i class="ciEdge e2"></i>
+     <div class="ciNode human palm">palm</div><i class="ciEdge e3"></i><div class="ciNode object bottle">BOTTLE</div>
+    </div>
+    <div class="invariantRules"><div><span>preserve</span><b>cap grasp topology</b></div><div><span>preserve</span><b>bottle support relation</b></div><div><span>allow</span><b>embodiment-specific joint geometry</b></div></div>
+   </div>
+   <div class="robotRealizationPanel">
+    <div class="techPanelHead"><div><span>ROBOT REALIZATION</span><b>R={q<sub>t</sub>}</b></div><em>selected token · UNSCREW</em></div>
+    <div class="retargetRobotMedia"><img id="retargetRobotMedia" src="dex_3_still.jpg" data-still="dex_3_still.jpg" data-gif="dex_3.gif" alt="Robot realization of unscrew token"><span class="retargetContactMarker thumbMarker"></span><span class="retargetContactMarker indexMarker"></span></div>
+    <div class="robotContactReadout"><span>required cap contacts</span><b class="tealText">preserved</b><span>robot morphology</span><b>different geometry</b></div>
+   </div>
+  </div>
+  <div class="retargetObjective"><div><span>OPTIMIZATION OBJECTIVE</span><b>min<sub>q</sub> [ L<sub>pose</sub> + λ<sub>c</sub>L<sub>contact</sub> + λ<sub>lim</sub>L<sub>limits</sub> + λ<sub>col</sub>L<sub>collision</sub> ]</b></div><em>Contact is not a visual annotation here; it is an optimization term and feasibility condition.</em></div>
+  <div class="retargetDiagnostics">
+   <div class="plotPanel convergencePanel">
+    <div class="techPanelHead"><div><span>RETARGET OPTIMIZATION</span><b>objective vs. iteration</b></div><em>ILLUSTRATIVE TRACE</em></div>
+    <svg viewBox="0 0 620 260">
+     <path d="M54 215H580M54 215V28" stroke="#9aa6b5"/><path class="axisDash" d="M54 68H580M54 112H580M54 156H580"/>
+     <path id="optTotalV3" d="M62 44 C126 73 159 108 221 135 S355 171 558 196" fill="none" stroke="#172033" stroke-width="4" stroke-dasharray="700" stroke-dashoffset="700"/>
+     <path id="optContactV3" d="M62 73 C137 87 184 116 255 149 S399 181 558 194" fill="none" stroke="#4f8f88" stroke-width="2.7" stroke-dasharray="700" stroke-dashoffset="700"/>
+     <path id="optLimitV3" d="M62 103 C129 121 195 148 267 169 S415 190 558 199" fill="none" stroke="#b48746" stroke-width="2.5" stroke-dasharray="700" stroke-dashoffset="700"/>
+     <path id="optCollisionV3" d="M62 126 C145 140 214 161 290 177 S435 194 558 202" fill="none" stroke="#b45f59" stroke-width="2.5" stroke-dasharray="700" stroke-dashoffset="700"/>
+     <text x="465" y="45" font-size="9" fill="#172033">total</text><text x="465" y="59" font-size="9" fill="#4f8f88">contact</text><text x="465" y="73" font-size="9" fill="#b48746">limits</text><text x="465" y="87" font-size="9" fill="#b45f59">collision</text>
+    </svg>
+   </div>
+   <div class="measurementPanel">
+    <div class="techPanelHead"><div><span>PHYSICAL FEASIBILITY</span><b>per-token diagnostics</b></div><em>ILLUSTRATIVE</em></div>
+    <div class="measurementRows" id="feasibilityLine">
+     <div><span>fingertip residual</span><b>4.6 mm</b><i style="--p:62%"></i></div><div><span>orientation residual</span><b>3.2°</b><i style="--p:47%"></i></div>
+     <div><span>minimum clearance</span><b>6.1 mm</b><i style="--p:74%"></i></div><div class="binary"><span>joint limits</span><b>PASS</b></div>
+     <div class="binary"><span>self collision</span><b>PASS</b></div><div class="binary"><span>object collision</span><b>PASS</b></div><div class="binary"><span>required contact</span><b>PASS</b></div>
+    </div>
+   </div>
+  </div>
+  <div class="technicalTakeaway"><b>Geometry changes. Functional contact survives.</b> Expensive retargeting and physical validation are invoked only for the narrowed search frontier.</div>
+ </div>
+</section>
+<section class="section v3Section" id="execute">
+ <div class="sectionHead">
+  <div class="secIcon amber"><svg viewBox="0 0 40 40"><path d="M7 20h24"/><path d="M24 13l7 7-7 7"/><circle cx="7" cy="20" r="4"/><path d="M13 31h20"/></svg></div>
+  <div><div class="secNum">06 · Execute One → Measure → Update → Replan</div><h2>Foresight is multi-step; commitment is one verified transition.</h2></div>
+  <p>The selected five-token program is not executed open-loop. PragyaDex commits one token, measures contact and object evidence, updates the planner state, and regenerates the frontier.</p>
+ </div>
+ <div class="sectionBody">
+  <div class="commitTimeline">
+   <div class="techPanelHead"><div><span>RECEDING-HORIZON COMMITMENT</span><b>τ* · horizon 5</b></div><em>only d₁* is committed</em></div>
+   <div class="commitTrack"><div class="commitToken current"><span>01</span><b>STABILIZE</b><em>EXECUTE</em></div><i></i><div class="commitToken"><span>02</span><b>GRASP</b><em>planned</em></div><i></i><div class="commitToken"><span>03</span><b>UNSCREW</b><em>planned</em></div><i></i><div class="commitToken"><span>04</span><b>REGRASP</b><em>planned</em></div><i></i><div class="commitToken"><span>05</span><b>POUR</b><em>planned</em></div></div>
+  </div>
+  <div class="executionEvidenceGrid">
+   <div class="executedTokenPanel">
+    <div class="techPanelHead darkTechnical"><div><span>EXECUTING d₁*</span><b>STABILIZE BOTTLE</b></div><em>physical evidence · dex_1</em></div>
+    <img id="executionMedia" src="dex_1_still.jpg" data-still="dex_1_still.jpg" data-gif="dex_1.gif" alt="Executed stabilize token">
+    <div class="executionClock"><span>0 ms</span><i><b id="execCursor"></b></i><span>720 ms</span></div>
+   </div>
+   <div class="verificationPanel">
+    <div class="techPanelHead"><div><span>EXPECTED vs OBSERVED CONTACT</span><b>ΔC</b></div><em>post-token check</em></div>
+    <div class="contactDiff">
+     <div class="contactDiffSide"><span>EXPECTED</span><div class="contactTuple"><i class="cyanDot"></i><b>L palm</b><strong>↔</strong><i class="objectDot"></i><b>bottle</b></div></div>
+     <div class="diffOperator">−</div>
+     <div class="contactDiffSide"><span>OBSERVED</span><div class="contactTuple"><i class="cyanDot"></i><b>L palm</b><strong>↔</strong><i class="objectDot"></i><b>bottle</b></div></div>
+     <div class="diffResult"><span>CONTACT MISMATCH</span><b>0</b></div>
+    </div>
+    <div class="executionTelemetry">
+     <div class="telemetryPlot"><span>BOTTLE POSE ERROR · mm</span><svg viewBox="0 0 300 110"><path d="M30 86H280M30 86V18" stroke="#a3adba"/><path id="poseErrorLineV3" d="M36 30 C75 38 101 55 135 62 S204 72 267 77" fill="none" stroke="#b48746" stroke-width="3" stroke-dasharray="360" stroke-dashoffset="360"/><text x="244" y="67" font-size="8" fill="#8a6534">2.1</text></svg></div>
+     <div class="telemetryPlot"><span>CONTACT CONFIDENCE</span><svg viewBox="0 0 300 110"><path d="M30 86H280M30 86V18" stroke="#a3adba"/><path id="contactConfLineV3" d="M36 28 C84 28 116 29 151 34 S214 39 267 41" fill="none" stroke="#4f8f88" stroke-width="3" stroke-dasharray="360" stroke-dashoffset="360"/><text x="244" y="58" font-size="8" fill="#4f8f88">.94</text></svg></div>
+    </div>
+   </div>
+  </div>
+  <div class="stateUpdatePipeline">
+   <div class="updateEvidence"><span>NEW EVIDENCE</span><b>C<sub>obs</sub>, O<sub>obs</sub>, q<sub>t+1</sub></b><small>contact · object · robot state</small></div><div class="updateArrow">→</div>
+   <div class="updateOperation"><span>STATE UPDATE</span><b>X<sub>t</sub> + observations</b><small>replace predicted state with measured state</small></div><div class="updateArrow">→</div>
+   <div class="updateResult"><span>NEXT CONTEXT</span><b>X<sub>t+1</sub></b><small>new planning root</small></div>
+  </div>
+  <div class="replanRow">
+   <div class="replanTriggers">
+    <div class="techPanelHead"><div><span>REPLAN CONDITION</span><b>event gate</b></div><em>successful worked path</em></div>
+    <div class="quietTriggerBus"><div class="quietTrigger fired"><i></i><b>TOKEN COMPLETE</b></div><div class="quietTrigger"><i></i><b>CONTACT LOST</b></div><div class="quietTrigger"><i></i><b>SLIP / DROP RISK</b></div><div class="quietTrigger"><i></i><b>OBJECT-STATE MISMATCH</b></div><div class="quietTrigger"><i></i><b>COLLISION PROXIMITY</b></div></div>
+   </div>
+   <div class="nextFrontier">
+    <div class="techPanelHead"><div><span>NEW LOCAL FRONTIER</span><b>conditioned on X<sub>t+1</sub></b></div><em>compact replan view</em></div>
+    <div class="frontierRoot">X<sub>t+1</sub></div>
+    <div class="frontierBranches"><div><i></i><b>GRASP CAP</b><span>highest task progress</span></div><div><i></i><b>MICRO-ADJUST</b><span>contact refinement</span></div><div><i></i><b>REPOSITION</b><span>alternate geometry</span></div></div>
+   </div>
+  </div>
+  <div class="closeMessage"><b>Plan 5. Execute 1. Verify Contact. Replan.</b><span>Every committed transition converts predicted physical state into measured physical evidence before the next search.</span></div>
+ </div>
+</section>
+<footer class="footer"><div class="pipe">PRAGYADEX · TEXT → PHYSICAL CONTEXT → TOKEN PROPOSAL → PREFIX SEARCH → RETARGET → VERIFY → EXECUTE → OBSERVE → REPLAN</div><div class="prov"><b>Provenance.</b> Contact graphs, primitives, skill graphs and contact-preserving retargeting follow the PragyaDex manuscript. Prefix-conditioned search, K=5/H=5/B=32, rendered search scale, probabilities, admissibility, feasibility, timing, score decompositions and diagnostic plots are proposed or simulated demonstration constructs and must be replaced by checkpoint, simulator and robot logs before empirical reporting.</div></footer>
+
+<div class="tourBar" id="tourBar">
+ <span class="tourStatus" id="tourStatus">READY</span>
+ <button class="tourBtn" onclick="tourPrev()">PREV</button>
+ <button class="tourBtn" id="pauseBtn" onclick="tourPause()">PAUSE</button>
+ <button class="tourBtn" onclick="tourNext()">NEXT</button>
+ <div class="speedBtns"><button id="spd05" onclick="setSpeed(.5)">0.5×</button><button id="spd10" class="active" onclick="setSpeed(1)">1×</button><button id="spd15" onclick="setSpeed(1.5)">1.5×</button></div>
+ <button class="tourBtn" onclick="tourExit()">EXIT</button>
+</div>
+
+<script>
+/* ============================================================
+   DATA + SEARCH TREE
+   ============================================================ */
+const COLORS={teal:"#4f8f88",red:"#b45f59",mint:"#5d927c",grey:"#c3cad3",lav:"#8871b2"};
+const TREE=document.getElementById("tree");
+const SVG=document.getElementById("edges");
+const POS={root:{x:75,y:482}};
+const byId={};
+const nodes=[];
+
+const selectedSpec=[
+ {id:"s1",depth:1,parent:"root",primitive:"STABILIZE BOTTLE",left:"support bottle",right:"approach cap",obj:"CLOSED",p:.31,A:.94,F:.92,y:420,rich:true,status:"best"},
+ {id:"s2",depth:2,parent:"s1",primitive:"GRASP CAP",left:"maintain support",right:"thumb/index grasp",obj:"CLOSED",p:.27,A:.95,F:.91,y:548,rich:true,status:"best"},
+ {id:"s3",depth:3,parent:"s2",primitive:"UNSCREW CAP",left:"stabilize bottle",right:"rotate cap",obj:"LOOSENING",p:.36059,A:.94,F:.92,y:354,rich:true,status:"best"},
+ {id:"s4",depth:4,parent:"s3",primitive:"RELEASE / REGRASP",left:"support bottle",right:"release cap → bottle",obj:"OPEN",p:.289,A:.91,F:.89,y:475,rich:true,status:"best"},
+ {id:"s5",depth:5,parent:"s4",primitive:"POUR",left:"assist support",right:"tilt bottle",obj:"POURING",p:.154,A:.91,F:.86,y:598,rich:true,status:"best",terminal:.845}
+];
+const rejectedSpec=[
+ {id:"r1",depth:1,parent:"root",primitive:"TILT BEFORE OPEN",left:"support weak",right:"tilt bottle",obj:"CLOSED",p:.13,A:.28,F:.83,y:655,rich:true,status:"rejected",reason:"Rejected: POUR/TILT is not a legal object-state transition while the cap remains closed."},
+ {id:"r2",depth:2,parent:"s1",primitive:"RELEASE SUPPORT EARLY",left:"release bottle",right:"grasp cap",obj:"CLOSED",p:.16,A:.22,F:.61,y:210,rich:true,status:"rejected",reason:"Rejected: removing the stabilizing left-hand support makes the subsequent cap manipulation physically fragile."},
+ {id:"r3",depth:3,parent:"s2",primitive:"BIMANUAL ROLE CONFLICT",left:"rotate cap",right:"rotate bottle",obj:"CLOSED",p:.12,A:.33,F:.57,y:735,rich:true,status:"rejected",reason:"Rejected: left/right role assignment creates conflicting contact objectives for the same object transition."},
+ {id:"r4",depth:4,parent:"s3",primitive:"INFEASIBLE GRASP",left:"support bottle",right:"wide cap grasp",obj:"LOOSENING",p:.18,A:.78,F:.34,y:150,rich:true,status:"rejected",reason:"Rejected: the desired cap contact geometry is not reachable within the robot-hand morphology and joint limits."}
+];
+const extraRich=[
+ {id:"e1",depth:1,parent:"root",primitive:"APPROACH CAP",left:"support bottle",right:"approach cap",obj:"CLOSED",p:.22,A:.72,F:.94,y:300,rich:true,status:"accepted"},
+ {id:"e2",depth:2,parent:"e1",primitive:"MICRO REGRASP",left:"adjust support",right:"cap approach",obj:"CLOSED",p:.18,A:.71,F:.88,y:770,rich:true,status:"accepted"}
+];
+const X={1:260,2:520,3:790,4:1070,5:1350};
+
+function addNode(n){
+  nodes.push(n); byId[n.id]=n; POS[n.id]={x:X[n.depth],y:n.y};
+}
+selectedSpec.concat(rejectedSpec,extraRich).forEach(addNode);
+
+/* deterministic pseudo-random generator */
+let seed=137;
+function rnd(){seed=(seed*1664525+1013904223)>>>0; return seed/4294967296}
+function choose(arr){return arr[Math.floor(rnd()*arr.length)]}
+const prims=["STABILIZE","GRASP CAP","REGRASP","APPROACH CUP","ALIGN WRIST","ROTATE CAP","HOLD","RELEASE","TILT","POUR","MICRO-ADJUST","SUPPORT"];
+const objStates=["CLOSED","CLOSED","LOOSENING","OPEN","POUR-READY"];
+const leftRoles=["support","brace","hold","assist","reposition"];
+const rightRoles=["approach","grasp","rotate","release","regrasp","tilt"];
+const reservedParents = {
+  1:["root"],2:["s1","e1","r1"],3:["s2","r2","e2"],4:["s3","r3"],5:["s4","r4"]
+};
+
+function existsId(id){return !!byId[id]}
+function genLayer(depth,count){
+  let made=0;
+  const yMin=78,yMax=890;
+  while(made<count){
+    const id=`n${depth}_${String(made).padStart(3,"0")}`;
+    if(existsId(id)){made++;continue}
+    let parent;
+    if(depth===1) parent="root";
+    else{
+      const candidates=nodes.filter(n=>n.depth===depth-1);
+      parent=choose(candidates).id;
+    }
+    const p=.07+rnd()*.31;
+    const hardBad=rnd()<(.12+depth*.025);
+    const A=hardBad?.18+rnd()*.43:.70+rnd()*.28;
+    const F=hardBad?.30+rnd()*.47:.72+rnd()*.25;
+    const status=hardBad?"rejected":"accepted";
+    const y=yMin + (made+.45)*(yMax-yMin)/count + (rnd()-.5)*12;
+    addNode({
+      id,depth,parent,
+      primitive:choose(prims),
+      left:choose(leftRoles),
+      right:choose(rightRoles),
+      obj:choose(objStates),
+      p,A,F,y,
+      rich:false,status,
+      reason: hardBad ? choose([
+        "Rejected: object-state precondition is not satisfied by this prefix.",
+        "Rejected: required contact relation conflicts with the current bimanual role assignment.",
+        "Rejected: cheap kinematic/contact proxy falls below the hard-gate threshold.",
+        "Rejected: candidate is dominated by an equivalent contact/object state with a stronger prefix priority."
+      ]) : null
+    });
+    made++;
+  }
+}
+/* target totals: root + depth1 5 + depth2 25 + depth3 125 + depth4 30 + depth5 14 = 200 */
+const existingByDepth=d=>nodes.filter(n=>n.depth===d).length;
+genLayer(1,5-existingByDepth(1));
+genLayer(2,25-existingByDepth(2));
+genLayer(3,125-existingByDepth(3));
+genLayer(4,30-existingByDepth(4));
+genLayer(5,14-existingByDepth(5));
+
+function selectedSet(){return new Set(selectedSpec.map(n=>n.id))}
+const SEL=selectedSet();
+function isAncestral(parent,child){
+ let cur=byId[child];
+ while(cur && cur.parent && cur.parent!=="root"){
+   if(cur.parent===parent)return true;
+   cur=byId[cur.parent];
+ }
+ return cur && cur.parent===parent;
+}
+function pathTo(id){
+ let arr=[id],cur=byId[id];
+ while(cur && cur.parent && cur.parent!=="root"){arr.push(cur.parent);cur=byId[cur.parent]}
+ arr.push("root"); return arr;
+}
+
+function makeRichHTML(n){
+ return `<div class="title">${n.primitive}</div>
+   <div class="lr"><b>L</b><span>${n.left}</span><b>R</b><span>${n.right}</span></div>
+   <div class="micro"><span class="lh"></span><span class="obj"></span><span class="rh"></span><span class="ct"></span></div>
+   <div class="metrics"><span>P ${n.p.toFixed(2)}</span><span>A ${n.A.toFixed(2)}</span><span>F ${n.F.toFixed(2)}</span></div>`;
+}
+function createNodes(){
+  nodes.forEach(n=>{
+    const el=document.createElement("div");
+    el.className=`node ${n.rich?"rich":"compact"} ${n.status==="rejected"?"rejected":"accepted"} ${SEL.has(n.id)?"best":""}`;
+    el.id=`node_${n.id}`;
+    el.dataset.id=n.id;
+    el.style.left=POS[n.id].x+"px"; el.style.top=POS[n.id].y+"px";
+    el.style.setProperty("--pw",(n.p*100)+"%");
+    if(n.rich) el.innerHTML=makeRichHTML(n);
+    if(n.rich || n.status==="rejected"){
+      const mark=document.createElement("span");mark.className=`mark ${n.status==="rejected"?"bad":"ok"}`;mark.textContent=n.status==="rejected"?"×":"✓";el.appendChild(mark);
+    }
+    const nid=document.createElement("span");nid.className="nid";nid.textContent=n.id;el.appendChild(nid);
+    const pb=document.createElement("span");pb.className="pbar";pb.innerHTML="<i></i>";el.appendChild(pb);
+    el.onclick=e=>{e.stopPropagation();inspectNode(n.id)};
+    el.onmouseenter=()=>highlightPath(n.id);
+    el.onmouseleave=()=>clearHighlight();
+    TREE.appendChild(el);
+  });
+}
+function makePath(x1,y1,x2,y2){
+ const dx=(x2-x1)*.42; return `M ${x1} ${y1} C ${x1+dx} ${y1}, ${x2-dx} ${y2}, ${x2} ${y2}`;
+}
+function drawEdges(){
+ SVG.innerHTML="";
+ nodes.forEach(n=>{
+   const p=n.parent==="root"?POS.root:POS[n.parent]; if(!p)return;
+   const q=POS[n.id];
+   const path=document.createElementNS("http://www.w3.org/2000/svg","path");
+   const selectedEdge=SEL.has(n.id) && (n.parent==="root" || SEL.has(n.parent));
+   path.setAttribute("d",makePath(p.x+(n.parent==="root"?32:7),p.y,q.x-(n.rich?61:7),q.y));
+   path.setAttribute("class",`edge ${selectedEdge?"best":n.status==="rejected"?"reject":"accept"}`);
+   path.dataset.child=n.id; path.id=`edge_${n.id}`; SVG.appendChild(path);
+   const hit=document.createElementNS("http://www.w3.org/2000/svg","path");
+   hit.setAttribute("d",path.getAttribute("d"));hit.setAttribute("class","edgeClickable");hit.dataset.child=n.id;
+   hit.addEventListener("click",e=>{e.stopPropagation();inspectTransition(n.id)});SVG.appendChild(hit);
+ });
+}
+
+function highlightPath(id){
+ const path=new Set(pathTo(id));
+ document.querySelectorAll(".node").forEach(el=>el.classList.toggle("dim",!path.has(el.dataset.id)));
+ document.querySelectorAll(".edge").forEach(el=>el.classList.toggle("dim",!path.has(el.dataset.child)));
+}
+function clearHighlight(){document.querySelectorAll(".node,.edge").forEach(el=>el.classList.remove("dim"))}
+
+function nodeCheckValues(n){
+ const hard=n.status==="rejected";
+ const vals={
+  primitive: hard?Math.max(.35,n.A+.12):Math.min(.98,n.A+.02),
+  contact: hard?Math.max(.28,n.A+.05):Math.min(.98,n.A+.03),
+  object: hard && /object|POUR|TILT/i.test(n.reason||n.primitive)?Math.max(.18,n.A):Math.min(.99,n.A+.04),
+  bimanual: hard && /role/i.test(n.reason||"")?Math.max(.25,n.A):Math.min(.98,n.A-.01),
+  kinematic: hard && /morphology|kinematic/i.test(n.reason||"")?Math.max(.30,n.F):Math.min(.98,n.F),
+  collision: hard?.62+Math.min(.20,n.F*.2):Math.min(.98,n.F+.02),
+  dynamics: hard?.55+Math.min(.20,n.F*.15):Math.min(.97,n.F-.02)
+ };
+ return vals;
+}
+function inspectNode(id){
+ document.querySelectorAll(".node.inspect").forEach(x=>x.classList.remove("inspect"));
+ document.getElementById(`node_${id}`)?.classList.add("inspect");
+ const n=byId[id]; if(!n)return;
+ const c=nodeCheckValues(n);
+ const prefix=pathTo(id).filter(x=>x!=="root").reverse().map(x=>byId[x].primitive).join(" → ");
+ const body=document.getElementById("inspectorBody");
+ document.getElementById("inspectorTitle").textContent=n.primitive;
+ const reject=n.status==="rejected"?`<div class="rejectReason">${n.reason||"Rejected by a hard physical-prefix gate."}</div>`:"";
+ const retarget=n.depth>=3 && n.status!=="rejected";
+ const terminal=n.depth===5 && n.status!=="rejected";
+ body.innerHTML=`${reject}
+  <div class="statusLine"><span class="statusDot ${n.status==="rejected"?"bad":"ok"}">${n.status==="rejected"?"×":"✓"}</span>${n.status==="rejected"?"PRUNED":"SURVIVES CURRENT STAGE"}</div>
+  <div class="inspectorMini ${n.status==="rejected"?"reject":""}"><div class="leftHand"></div><div class="bottle"></div><div class="rightHand"></div><div class="contactLine"></div></div>
+  <div class="subhead">Program token</div><div class="kv"><span>node</span><b>${n.id}</b><span>depth</span><b>${n.depth} / 5</b><span>primitive</span><b>${n.primitive}</b><span>left role</span><b>${n.left}</b><span>right role</span><b>${n.right}</b><span>object state</span><b>${n.obj}</b></div>
+  <div class="subhead">Prefix</div><div class="prefix">${prefix||n.primitive}</div>
+  <div class="subhead">Model</div><div class="kv"><span>P(token | prefix)</span><b>${n.p.toFixed(3)}</b><span>log P</span><b>${Math.log(n.p).toFixed(3)}</b><span>prefix admissibility A</span><b>${n.A.toFixed(3)}</b><span>physical feasibility F</span><b>${n.F.toFixed(3)}</b>${terminal?`<span>terminal S(τ)</span><b>${(n.terminal||(.65+.2*n.A)).toFixed(3)}</b>`:""}</div>
+  <div class="subhead">Admissibility + physical checks</div>
+  ${checkRow("primitive admissibility",c.primitive,c.primitive>=.70)}
+  ${checkRow("contact feasibility",c.contact,c.contact>=.70)}
+  ${checkRow("object legality",c.object,c.object>=.70)}
+  ${checkRow("bimanual consistency",c.bimanual,c.bimanual>=.70)}
+  ${checkRow("kinematic feasibility",c.kinematic,c.kinematic>=.70)}
+  ${checkRow("collision margin",c.collision,c.collision>=.70)}
+  ${checkRow("dynamic margin",c.dynamics,c.dynamics>=.70)}
+  <div class="subhead">Fidelity</div>
+  <div class="fidelityRow"><span>L0 · proposal / symbolic</span><b class="fidTag">DONE</b></div>
+  <div class="fidelityRow"><span>L1 · contact / role / geometry</span><b class="fidTag">${n.depth>=2?"DONE":"PENDING"}</b></div>
+  <div class="fidelityRow"><span>L2 · retarget / IK / collision</span><b class="fidTag">${retarget?"DONE":"LAZY"}</b></div>
+  <div class="fidelityRow"><span>L3 · physics rollout</span><b class="fidTag">${terminal?"FINALIST":"LAZY"}</b></div>
+  ${retarget?`<div class="subhead">Retarget · simulated trace</div><div class="kv"><span>IK residual</span><b>${(3.2+rnd()*3.0).toFixed(1)} mm</b><span>orientation</span><b>${(2.4+rnd()*2.1).toFixed(1)}°</b><span>clearance</span><b>${(4.0+rnd()*4.0).toFixed(1)} mm</b></div>`:""}
+  <div class="subhead">Decision</div><div class="note">${n.status==="rejected"?"Hard gate fails; branch is removed before expensive physical evaluation.":terminal?"Terminal program survives all gates and enters final ranking.":"Prefix remains in the diverse beam unless dominated by a stronger equivalent contact/object state."}</div>`;
+}
+function checkRow(name,v,ok){return `<div class="checkRow"><span>${name}</span><b>${v.toFixed(2)}</b><i class="${ok?"ok":"bad"}">${ok?"✓":"×"}</i></div>`}
+function inspectTransition(id){
+ const n=byId[id]; if(!n)return;
+ inspectNode(id);
+ const p=n.parent==="root"?"X_t":byId[n.parent].primitive;
+ document.getElementById("inspectorTitle").textContent=`${p} → ${n.primitive}`;
+}
+TREE.addEventListener("click",()=>{document.querySelectorAll(".node.inspect").forEach(x=>x.classList.remove("inspect"))});
+
+function setSearchMode(mode){
+ document.querySelectorAll(".modeBtn").forEach(b=>b.classList.toggle("active",b.dataset.mode===mode));
+ nodes.forEach(n=>{
+   const el=document.getElementById(`node_${n.id}`);
+   if(mode==="conceptual"){el.style.opacity="";el.style.filter=""}
+   if(mode==="online"){
+     const keep=SEL.has(n.id) || n.status==="rejected" || n.depth<=2 || (n.depth===3 && Number(n.id.split("_")[1]||0)%4===0) || (n.depth>=4 && n.rich);
+     el.style.opacity=keep?"":"0.07";el.style.filter=keep?"":"grayscale(.7)";
+   }
+   if(mode==="physical"){
+     const keep=SEL.has(n.id) || (n.rich && n.depth>=3);
+     el.style.opacity=keep?"":"0.04";el.style.filter=keep?"":"grayscale(.8)";
+   }
+ });
+}
+
+/* depth guides */
+[1,2,3,4,5].forEach(d=>{
+ const g=document.createElement("div");g.className="guide";g.style.left=X[d]+"px";TREE.appendChild(g);
+ const h=document.createElement("div");h.className="depthHead";h.style.left=X[d]+"px";h.innerHTML=`<div class="d">depth ${d}</div><b>${[5,25,125,625,3125][d-1].toLocaleString()}</b>`;TREE.appendChild(h);
+});
+createNodes();drawEdges();inspectNode("s3");
+
+/* ============================================================
+   ANIMATION HELPERS + GUIDED TOUR
+   ============================================================ */
+let speed=1, tourAbort=0, tourRunning=false, tourPaused=false, tourIndex=-1;
+function delay(ms){return new Promise(r=>setTimeout(r,ms/speed))}
+function pulse(el,ms=700){if(!el)return;el.classList.remove("pulse");void el.offsetWidth;el.classList.add("pulse");setTimeout(()=>el.classList.remove("pulse"),ms/speed+100)}
+async function scrollToTarget(id){
+ const el=document.getElementById(id); if(!el)return;
+ const y=el.getBoundingClientRect().top+window.scrollY-58;
+ window.scrollTo({top:y,behavior:"smooth"}); await delay(850);
+}
+function tourStatus(t){document.getElementById("tourBar").classList.add("show");document.getElementById("tourStatus").textContent=t}
+async function waitPause(local){while(tourPaused && local===tourAbort)await delay(100)}
+
+async function fxContext(){
+ await scrollToTarget("context");tourStatus("01 / 06 · CONSTRUCT DEXTERITY CONTEXT");
+ for(const id of ["ctxLang","ctxHands","ctxContact","ctxObject","ctxGoal","ctxScene"]){const e=document.getElementById(id);e.classList.add("active");pulse(e);await delay(310)}
+ document.getElementById("contextCore").classList.add("active");pulse(document.getElementById("contextCore"),900);await delay(700)
+}
+async function fxProposal(){
+ await scrollToTarget("proposal");tourStatus("02 / 06 · PROPOSE TOP-K DEXTERITY TOKENS");
+ for(const b of document.querySelectorAll(".propTrack i")){b.style.width=b.dataset.w+"%";await delay(260)}
+ pulse(document.getElementById("handoff"),800);await delay(500)
+}
+async function fxSearch(){
+ await scrollToTarget("search");tourStatus("03 / 06 · PREFIX-CONDITIONED SEARCH · K=5 · H=5 · B=32");
+ document.querySelectorAll(".node").forEach(el=>el.classList.add("hiddenStage"));
+ for(const c of document.querySelectorAll(".depthCell"))c.classList.remove("active");
+ const depthCells=[...document.querySelectorAll(".depthCell")];
+ for(let d=1;d<=5;d++){
+   depthCells.forEach((c,i)=>c.classList.toggle("active",i===d-1));
+   nodes.filter(n=>n.depth===d).forEach(n=>{const el=document.getElementById(`node_${n.id}`);el.classList.remove("hiddenStage");el.classList.add("proposed")});
+   document.querySelectorAll(`.edge`).forEach(e=>{const n=byId[e.dataset.child];if(n && n.depth===d)e.classList.add("edgeFlash")});
+   await delay(d===3?900:650);
+ }
+ document.querySelectorAll(".edgeFlash").forEach(e=>e.classList.remove("edgeFlash"));
+ /* show early POUR rejection */
+ inspectNode("r1");pulse(document.getElementById("node_r1"),850);pulse(document.getElementById("crossEarly"),850);await delay(850);
+ /* run fidelity funnel */
+ const funnel=[...document.querySelectorAll(".funnelBox")];
+ for(const f of funnel){f.classList.add("active");pulse(f);await delay(380)}
+ /* crossover later */
+ inspectNode("s5");pulse(document.getElementById("crossLate"),900);await delay(800);
+ /* select path */
+ for(const n of selectedSpec){pulse(document.getElementById(`node_${n.id}`),650);await delay(340)}
+ setSearchMode("conceptual");
+}
+async function fxRollout(){
+ await scrollToTarget("rollout");tourStatus("04 / 06 · SELECTED PROGRAM τ* · FIVE SYNCHRONIZED TRACKS");
+ pulse(document.getElementById("selectedBand"),900);await delay(500);
+ const rows=[...document.querySelectorAll("#rolloutTracks .rollRow")];
+ for(let c=0;c<5;c++){
+   rows.forEach(r=>{const cell=r.children[c+1];cell.classList.add("active")});
+   await delay(430)
+ }
+ for(const i of document.querySelectorAll(".termTrack i")){i.style.width=i.dataset.w+"%";await delay(180)}
+}
+async function fxRetarget(){
+ await scrollToTarget("retarget");tourStatus("05 / 06 · CONTACT-PRESERVING RETARGET + PHYSICAL VALIDATION");
+ for(const l of document.querySelectorAll(".mapLine")){l.style.strokeDashoffset="0";await delay(350)}
+ for(const i of document.querySelectorAll(".retBar i")){i.style.width=i.dataset.w+"%";await delay(240)}
+ for(const p of document.querySelectorAll("#physDiag .physItem")){pulse(p);await delay(160)}
+}
+async function fxExecute(){
+ await scrollToTarget("execute");tourStatus("06 / 06 · EXECUTE ONE → VERIFY CONTACT → REPLAN");
+ const toks=[...document.querySelectorAll(".commitTok")];await delay(400);for(let i=1;i<toks.length;i++){toks[i].classList.add("provisional");await delay(120)}
+ const cur=document.getElementById("clockCursor");for(const p of [0,25,50,75,100]){cur.style.left=p+"%";await delay(360)}
+ pulse(document.querySelector(".contactVerify .verifyCard:nth-child(3)"),700);await delay(300);
+ document.getElementById("miniTree").classList.add("draw");await delay(900)
+}
+
+const TOUR=[fxContext,fxProposal,fxSearch,fxRollout,fxRetarget,fxExecute];
+async function runFrom(index){
+ const local=++tourAbort;tourRunning=true;document.getElementById("tourBar").classList.add("show");
+ for(let i=index;i<TOUR.length;i++){
+   if(local!==tourAbort||!tourRunning)return;tourIndex=i;await waitPause(local);if(local!==tourAbort)return;await TOUR[i]();await delay(260)
+ }
+ if(local===tourAbort){tourRunning=false;tourStatus("COMPLETE · PLAN 5 · EXECUTE 1 · VERIFY CONTACT · REPLAN")}
+}
+function runMaster(){tourPaused=false;tourIndex=0;runFrom(0)}
+function tourPause(){tourPaused=!tourPaused;document.getElementById("pauseBtn").textContent=tourPaused?"RESUME":"PAUSE"}
+function tourExit(){tourRunning=false;tourPaused=false;++tourAbort;document.getElementById("tourBar").classList.remove("show")}
+function tourNext(){const n=Math.min(TOUR.length-1,tourIndex<0?0:tourIndex+1);tourRunning=false;++tourAbort;tourPaused=false;tourIndex=n;runFrom(n)}
+function tourPrev(){const n=Math.max(0,tourIndex<=0?0:tourIndex-1);tourRunning=false;++tourAbort;tourPaused=false;tourIndex=n;runFrom(n)}
+function setSpeed(s){speed=s;["spd05","spd10","spd15"].forEach(id=>document.getElementById(id).classList.remove("active"));document.getElementById(s===.5?"spd05":s===1?"spd10":"spd15").classList.add("active")}
+
+/* nav active */
+document.querySelectorAll(".topnav a").forEach(a=>{
+ const id=a.getAttribute("href").slice(1),el=document.getElementById(id);if(!el)return;
+ new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){document.querySelectorAll(".topnav a").forEach(x=>x.classList.remove("active"));a.classList.add("active")}}),{rootMargin:"-45% 0px -45% 0px"}).observe(el);
+});
+</script>
+
+<script>
+/* ===== v2 UI + ANIMATION PATCH ===== */
+const NODE_ASSET={s1:'dex_1.gif',s2:'dex_2.gif',s3:'dex_3.gif',s4:'dex_4.gif',s5:'dex_5.gif',r1:'dex_6.gif',r2:'dex_7.gif',r3:'dex_8.gif',r4:'dex_9.gif'};
+const _oldMakeRichHTML = makeRichHTML;
+makeRichHTML = function(n){
+ const asset=NODE_ASSET[n.id];
+ return `<div class="title">${n.primitive}</div>${asset?`<img class="nodeGif" src="${asset}" alt="${n.primitive}">`:''}<div class="lr"><b>L</b><span>${n.left}</span><b>R</b><span>${n.right}</span></div><div class="micro"><span class="lh"></span><span class="obj"></span><span class="rh"></span><span class="ct"></span></div><div class="metrics"><span>P ${n.p.toFixed(2)}</span><span>A ${n.A.toFixed(2)}</span><span>F ${n.F.toFixed(2)}</span></div>`;
+};
+/* Refresh already-rendered rich nodes with media. */
+nodes.filter(n=>n.rich).forEach(n=>{const el=document.getElementById(`node_${n.id}`);if(el){const mark=el.querySelector('.mark')?.outerHTML||'';const nid=el.querySelector('.nid')?.outerHTML||'';const pbar=el.querySelector('.pbar')?.outerHTML||'';el.innerHTML=makeRichHTML(n)+mark+nid+pbar;}});
+
+function openInspector(){const layout=document.getElementById('searchLayout');const ins=document.getElementById('inspector');layout?.classList.add('inspectorOpen');ins?.setAttribute('aria-hidden','false')}
+function closeInspector(e){if(e)e.stopPropagation();document.getElementById('searchLayout')?.classList.remove('inspectorOpen');document.getElementById('inspector')?.setAttribute('aria-hidden','true');document.querySelectorAll('.node.inspect').forEach(x=>x.classList.remove('inspect'))}
+const _inspectNodeV1=inspectNode;
+inspectNode=function(id){openInspector();_inspectNodeV1(id)};
+const _inspectTransitionV1=inspectTransition;
+inspectTransition=function(id){openInspector();_inspectTransitionV1(id)};
+TREE.onclick=function(e){if(e.target===TREE || e.target.id==='edges')closeInspector()};
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeInspector()});
+nodes.forEach(n=>{const el=document.getElementById(`node_${n.id}`);if(!el)return;el.onclick=e=>{e.stopPropagation();if(el.classList.contains('inspect'))closeInspector();else inspectNode(n.id)}});
+closeInspector();
+
+function setPreset(text){document.getElementById('instructionInput').value=text;document.getElementById('semanticIntent').classList.remove('show')}
+function startSimulation(){document.getElementById('semanticIntent').classList.add('show');pulse(document.getElementById('instructionShell'),900);setTimeout(()=>runMaster(),450)}
+
+function animateSvgPath(id){const el=document.getElementById(id);if(el){el.style.strokeDashoffset='0'}}
+function resetIndustryAnimations(){
+ document.querySelectorAll('#candidateBars .cand i b,#contribRows i b').forEach(x=>x.style.width='0');
+ ['entropyCurve','likelihoodLine','optTotal','optContact','optCollision','poseErrorLine','contactConfLine'].forEach(id=>{const e=document.getElementById(id);if(e)e.style.strokeDashoffset='700'});
+ document.querySelectorAll('.tokenLinks path,.bridgeEdge,.restartEdge').forEach(e=>e.style.strokeDashoffset='500');
+}
+resetIndustryAnimations();
+
+/* replace guided animation for non-search sections; keep search machinery */
+async function fxContext(){
+ await scrollToTarget('context');tourStatus('01 / 06 · TEXT → PHYSICAL CONTEXT');
+ document.getElementById('semanticIntent')?.classList.add('show');
+ pulse(document.getElementById('sceneStage'),850);await delay(500);
+ for(const x of document.querySelectorAll('#context .artifact')){pulse(x);await delay(300)}
+ pulse(document.getElementById('contextEquation'),850);await delay(550)
+}
+async function fxProposal(){
+ await scrollToTarget('proposal');tourStatus('02 / 06 · DEXTERITY TOKEN PROPOSAL');
+ document.querySelectorAll('.tokenLinks path').forEach(e=>e.style.strokeDashoffset='0');await delay(600);
+ for(const b of document.querySelectorAll('#candidateBars .cand i b')){b.style.width=b.dataset.w+'%';await delay(220)}
+ animateSvgPath('entropyCurve');await delay(500);pulse(document.getElementById('proposalHandoff'),800)
+}
+async function fxSearch(){
+ await scrollToTarget('search');tourStatus('03 / 06 · PREFIX-CONDITIONED SEARCH');closeInspector();
+ document.querySelectorAll('.node').forEach(el=>el.classList.add('hiddenStage'));for(const c of document.querySelectorAll('.depthCell'))c.classList.remove('active');
+ const depthCells=[...document.querySelectorAll('.depthCell')];
+ for(let d=1;d<=5;d++){depthCells.forEach((c,i)=>c.classList.toggle('active',i===d-1));nodes.filter(n=>n.depth===d).forEach(n=>{const el=document.getElementById(`node_${n.id}`);el.classList.remove('hiddenStage');el.classList.add('proposed')});await delay(d===3?850:600)}
+ inspectNode('r1');pulse(document.getElementById('node_r1'),850);pulse(document.getElementById('crossEarly'),850);await delay(1250);closeInspector();
+ const funnel=[...document.querySelectorAll('.funnelBox')];for(const f of funnel){f.classList.add('active');pulse(f);await delay(320)}
+ inspectNode('s3');pulse(document.getElementById('node_s3'),800);await delay(1000);closeInspector();
+ inspectNode('s5');pulse(document.getElementById('crossLate'),900);await delay(1200);closeInspector();
+ for(const n of selectedSpec){pulse(document.getElementById(`node_${n.id}`),600);await delay(280)}
+ setSearchMode('conceptual')
+}
+async function fxRollout(){
+ await scrollToTarget('rollout');tourStatus('04 / 06 · SELECTED PROGRAM τ*');
+ const films=[...document.querySelectorAll('.filmCard')];const rows=[...document.querySelectorAll('.syncRow')];
+ for(let i=0;i<5;i++){films.forEach((f,j)=>f.classList.toggle('active',i===j));rows.forEach(r=>[...r.querySelectorAll('i')].forEach((c,j)=>c.classList.toggle('active',i===j)));await delay(550)}
+ animateSvgPath('likelihoodLine');for(const b of document.querySelectorAll('#contribRows i b')){b.style.width=b.dataset.w+'%';await delay(160)}
+}
+async function fxRetarget(){
+ await scrollToTarget('retarget');tourStatus('05 / 06 · RETARGET + PHYSICAL VALIDATION');
+ document.querySelectorAll('.bridgeEdge').forEach(e=>e.style.strokeDashoffset='0');await delay(600);
+ ['optTotal','optContact','optCollision'].forEach(animateSvgPath);await delay(850);
+ for(const x of document.querySelectorAll('#feasibilityLine>div')){pulse(x);await delay(130)}
+}
+async function fxExecute(){
+ await scrollToTarget('execute');tourStatus('06 / 06 · EXECUTE ONE → OBSERVE → REPLAN');
+ const cursor=document.getElementById('execCursor');for(const p of [0,20,40,60,80,100]){cursor.style.left=p+'%';await delay(240)}
+ animateSvgPath('poseErrorLine');animateSvgPath('contactConfLine');await delay(600);
+ document.querySelectorAll('.restartEdge').forEach(e=>e.style.strokeDashoffset='0');await delay(800)
+}
+TOUR.splice(0,TOUR.length,fxContext,fxProposal,fxSearch,fxRollout,fxRetarget,fxExecute);
+</script>
+
+
+<script>
+/* ===== V3: semantic animation only ===== */
+function playEvidenceMedia(el,hold=1500){if(!el)return;const still=el.dataset.still,gif=el.dataset.gif;if(!gif)return;el.src=gif+'?t='+Date.now();if(still)setTimeout(()=>el.src=still,hold)}
+function drawV3(id){const e=document.getElementById(id);if(e)e.style.strokeDashoffset='0'}
+function resetV3(id,n=700){const e=document.getElementById(id);if(e)e.style.strokeDashoffset=String(n)}
+function selectProposalPreview(btn){
+ document.querySelectorAll('.evidencePreview').forEach(b=>{b.classList.toggle('selected',b===btn);const im=b.querySelector('img');if(im)im.src=b.dataset.still});
+ const im=btn.querySelector('img');if(im){im.src=btn.dataset.gif+'?t='+Date.now();setTimeout(()=>im.src=btn.dataset.still,1400)}
+ const d=document.getElementById('proposalPreviewDetail');if(d){d.querySelector('b').textContent=btn.dataset.label;d.querySelector('span').textContent='Physical motion evidence for the inspected decoder hypothesis. Search has not accepted this candidate yet.'}
+}
+document.querySelectorAll('.evidencePreview').forEach(b=>b.addEventListener('click',()=>selectProposalPreview(b)));
+(function(){const pts=[[142,240],[128,190],[116,145],[106,104],[153,235],[153,178],[154,122],[155,75],[163,238],[183,181],[196,131],[207,91],[170,244],[211,198],[233,158],[250,127],[137,246],[103,225],[75,204],[54,184],[145,263]];const g=document.querySelector('#landmarkPlot .landmarks');if(!g)return;pts.forEach(p=>{const c=document.createElementNS('http://www.w3.org/2000/svg','circle');c.setAttribute('cx',p[0]);c.setAttribute('cy',p[1]);c.setAttribute('r','3.7');g.appendChild(c)})})();
+function activateFilmStage(i,play=true){const cards=[...document.querySelectorAll('#filmstrip .filmCard')];cards.forEach((c,j)=>{c.classList.toggle('active',i===j);const im=c.querySelector('img');if(im&&im.dataset.still)im.src=(i===j&&play?im.dataset.gif+'?t='+Date.now():im.dataset.still)});[...document.querySelectorAll('.syncRow')].forEach(r=>[...r.querySelectorAll('i')].forEach((x,j)=>x.classList.toggle('active',i===j)))}
+async function fxContextV3(){await scrollToTarget('context');tourStatus('01 / 06 · OBSERVE → STRUCTURE PHYSICAL CONTEXT');playEvidenceMedia(document.getElementById('observedScene'),1700);await delay(700);drawV3('observedContactEdge');await delay(650);document.getElementById('contextEquation')?.classList.add('stateFused');await delay(450)}
+async function fxProposalV3(){await scrollToTarget('proposal');tourStatus('02 / 06 · DECODE → RANK PHYSICAL HYPOTHESES');playEvidenceMedia(document.getElementById('tokenEvidenceMedia'),1400);await delay(600);for(const b of document.querySelectorAll('#candidateBars .cand i b')){b.style.width=b.dataset.w+'%';await delay(180)}}
+async function fxSearchV3(){await fxSearch()}
+async function fxRolloutV3(){await scrollToTarget('rollout');tourStatus('04 / 06 · SELECTED PROGRAM τ*');for(let i=0;i<5;i++){activateFilmStage(i,true);await delay(700)}activateFilmStage(4,false);drawV3('likelihoodLine');for(const b of document.querySelectorAll('#contribRows i b')){b.style.width=b.dataset.w+'%';await delay(110)}playEvidenceMedia(document.getElementById('finalRolloutMedia'),2100);await delay(850)}
+async function fxRetargetV3(){await scrollToTarget('retarget');tourStatus('05 / 06 · CONTACT-PRESERVING RETARGET + VALIDATE');playEvidenceMedia(document.getElementById('retargetRobotMedia'),1500);await delay(650);['optTotalV3','optContactV3','optLimitV3','optCollisionV3'].forEach(drawV3);await delay(850)}
+async function fxExecuteV3(){await scrollToTarget('execute');tourStatus('06 / 06 · EXECUTE ONE → MEASURE → UPDATE → REPLAN');playEvidenceMedia(document.getElementById('executionMedia'),1700);const c=document.getElementById('execCursor');for(const p of [0,20,40,60,80,100]){if(c)c.style.left=p+'%';await delay(165)}drawV3('poseErrorLineV3');drawV3('contactConfLineV3');await delay(650)}
+TOUR.splice(0,TOUR.length,fxContextV3,fxProposalV3,fxSearchV3,fxRolloutV3,fxRetargetV3,fxExecuteV3);
+['observedContactEdge','likelihoodLine','optTotalV3','optContactV3','optLimitV3','optCollisionV3','poseErrorLineV3','contactConfLineV3'].forEach(id=>resetV3(id));
+document.querySelectorAll('#candidateBars .cand i b,#contribRows i b').forEach(x=>x.style.width='0');
+activateFilmStage(0,false);closeInspector();
+</script>
+
+</body>
+</html>
